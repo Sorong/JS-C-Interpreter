@@ -1,0 +1,65 @@
+import React from "react";
+import {TextField} from "@material-ui/core/index";
+import Button from '@material-ui/core/Button';
+import {withStyles} from '@material-ui/core/styles';
+
+const example = require('../assets/hello.c');
+
+const styles = theme => ({
+    root: {
+        margin: 5*theme.spacing.unit,
+        width: '50%'
+    },
+    button: {
+        margin: theme.spacing.unit,
+    },
+    input: {
+        display: 'none',
+    },
+});
+
+class CInput extends React.Component {
+    state = {
+        code: "code"//this.readFile(example)
+    };
+    loadExample = (url) => {
+        fetch(url).then(r => r.text()).then(t => {
+            this.setState({
+                code: t
+            })
+        })
+    };
+
+
+    constructor(props) {
+        super(props);
+        this.loadExample(example)
+    }
+
+    render() {
+        const {classes} = this.props;
+
+        //const { classes } = this.props;
+        return (
+            <div className={classes.root}>
+                <TextField
+                    id="multiline-static"
+                    label="Input"
+                    multiline
+                    rows="20"
+                    rowsMax={50}
+                    value={this.state.code}
+                    className={"???"}
+                    margin="normal"
+                    fullWidth={'100%'}
+                />
+                <Button variant="contained" className={classes.button} onClick={() => this.props.onClick(this.state.code)}>
+                    Default
+                </Button>
+            </div>
+        )
+    }
+}
+
+export default withStyles(styles, {withTheme: true}) (CInput);
+
