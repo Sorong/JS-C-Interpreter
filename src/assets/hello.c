@@ -1,4 +1,4 @@
-#include <stdio.h>
+//#include <stdio.h> geht aktuell nicht
 
 int fibonacci(int i) {
     if (i <= 1) {

@@ -2,6 +2,7 @@ import React from "react";
 import COutput from "./COutput";
 import CInput from "./CInput";
 import withStyles from "@material-ui/core/es/styles/withStyles";
+import Interpreter from "../logic/Interpreter";
 
 const styles = theme => ({
     root: {
@@ -15,19 +16,22 @@ const styles = theme => ({
     }
 });
 
-class Interpreter extends React.Component {
-
+class InterpreterView extends React.Component {
+    interpreter = new Interpreter();
     state = {
-      out : ''
+      out : "out"
     };
+
     constructor(props) {
         super(props);
         this.interpret = this.interpret.bind(this);
     }
 
     interpret(code) {
+        let result = this.interpreter.interpret(code);
+
         this.setState({
-            out : code
+            out : result
         })
     }
 
@@ -39,4 +43,4 @@ class Interpreter extends React.Component {
     }
 }
 
-export default withStyles(styles, {withTheme: true}) (Interpreter);
+export default withStyles(styles, {withTheme: true}) (InterpreterView);

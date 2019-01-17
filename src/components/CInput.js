@@ -3,7 +3,7 @@ import {TextField} from "@material-ui/core/index";
 import Button from '@material-ui/core/Button';
 import {withStyles} from '@material-ui/core/styles';
 
-const example = require('../assets/hello.c');
+const example = require('../assets/simple.c');
 
 const styles = theme => ({
     root: {
@@ -26,9 +26,16 @@ class CInput extends React.Component {
         fetch(url).then(r => r.text()).then(t => {
             this.setState({
                 code: t
-            })
+            });
+            this.props.onClick(t);
         })
     };
+    handleChange = name => event => {
+        this.setState({
+            [name]: event.target.value,
+        });
+    };
+
 
 
     constructor(props) {
@@ -51,7 +58,8 @@ class CInput extends React.Component {
                     value={this.state.code}
                     className={"???"}
                     margin="normal"
-                    fullWidth={'100%'}
+                    fullWidth={true}
+                    onChange={this.handleChange('code')}
                 />
                 <Button variant="contained" className={classes.button} onClick={() => this.props.onClick(this.state.code)}>
                     Default

@@ -1,8 +1,11 @@
-// Generated from D:\Workspaces\compilerbauprojekt\src\C.g4 by ANTLR 4.7.1
+// Generated from D:/Workspaces/compilerbauprojekt/src\C.g4 by ANTLR 4.7.2
 // jshint ignore: start
 var antlr4 = require('antlr4/index');
 var CListener = require('./CListener').CListener;
+var CVisitor = require('./CVisitor').CVisitor;
+
 var grammarFileName = "C.g4";
+
 
 var serializedATN = ["\u0003\u608b\ua72a\u8133\ub9ed\u417c\u3be7\u7786\u5964",
     "\u0003w\u0516\u0004\u0002\t\u0002\u0004\u0003\t\u0003\u0004\u0004\t",
@@ -1172,6 +1175,7 @@ CParser.RULE_externalDeclaration = 84;
 CParser.RULE_functionDefinition = 85;
 CParser.RULE_declarationList = 86;
 
+
 function PrimaryExpressionContext(parser, parent, invokingState) {
 	if(parent===undefined) {
 	    parent = null;
@@ -1208,8 +1212,16 @@ PrimaryExpressionContext.prototype.StringLiteral = function(i) {
 };
 
 
+PrimaryExpressionContext.prototype.LeftParen = function() {
+    return this.getToken(CParser.LeftParen, 0);
+};
+
 PrimaryExpressionContext.prototype.expression = function() {
     return this.getTypedRuleContext(ExpressionContext,0);
+};
+
+PrimaryExpressionContext.prototype.RightParen = function() {
+    return this.getToken(CParser.RightParen, 0);
 };
 
 PrimaryExpressionContext.prototype.genericSelection = function() {
@@ -1222,6 +1234,10 @@ PrimaryExpressionContext.prototype.compoundStatement = function() {
 
 PrimaryExpressionContext.prototype.unaryExpression = function() {
     return this.getTypedRuleContext(UnaryExpressionContext,0);
+};
+
+PrimaryExpressionContext.prototype.Comma = function() {
+    return this.getToken(CParser.Comma, 0);
 };
 
 PrimaryExpressionContext.prototype.typeName = function() {
@@ -1238,6 +1254,14 @@ PrimaryExpressionContext.prototype.exitRule = function(listener) {
     if(listener instanceof CListener ) {
         listener.exitPrimaryExpression(this);
 	}
+};
+
+PrimaryExpressionContext.prototype.accept = function(visitor) {
+    if ( visitor instanceof CVisitor ) {
+        return visitor.visitPrimaryExpression(this);
+    } else {
+        return visitor.visitChildren(this);
+    }
 };
 
 
@@ -1368,6 +1392,7 @@ CParser.prototype.primaryExpression = function() {
     return localctx;
 };
 
+
 function GenericSelectionContext(parser, parent, invokingState) {
 	if(parent===undefined) {
 	    parent = null;
@@ -1384,12 +1409,28 @@ function GenericSelectionContext(parser, parent, invokingState) {
 GenericSelectionContext.prototype = Object.create(antlr4.ParserRuleContext.prototype);
 GenericSelectionContext.prototype.constructor = GenericSelectionContext;
 
+GenericSelectionContext.prototype.Generic = function() {
+    return this.getToken(CParser.Generic, 0);
+};
+
+GenericSelectionContext.prototype.LeftParen = function() {
+    return this.getToken(CParser.LeftParen, 0);
+};
+
 GenericSelectionContext.prototype.assignmentExpression = function() {
     return this.getTypedRuleContext(AssignmentExpressionContext,0);
 };
 
+GenericSelectionContext.prototype.Comma = function() {
+    return this.getToken(CParser.Comma, 0);
+};
+
 GenericSelectionContext.prototype.genericAssocList = function() {
     return this.getTypedRuleContext(GenericAssocListContext,0);
+};
+
+GenericSelectionContext.prototype.RightParen = function() {
+    return this.getToken(CParser.RightParen, 0);
 };
 
 GenericSelectionContext.prototype.enterRule = function(listener) {
@@ -1402,6 +1443,14 @@ GenericSelectionContext.prototype.exitRule = function(listener) {
     if(listener instanceof CListener ) {
         listener.exitGenericSelection(this);
 	}
+};
+
+GenericSelectionContext.prototype.accept = function(visitor) {
+    if ( visitor instanceof CVisitor ) {
+        return visitor.visitGenericSelection(this);
+    } else {
+        return visitor.visitChildren(this);
+    }
 };
 
 
@@ -1441,6 +1490,7 @@ CParser.prototype.genericSelection = function() {
     return localctx;
 };
 
+
 function GenericAssocListContext(parser, parent, invokingState) {
 	if(parent===undefined) {
 	    parent = null;
@@ -1465,6 +1515,10 @@ GenericAssocListContext.prototype.genericAssocList = function() {
     return this.getTypedRuleContext(GenericAssocListContext,0);
 };
 
+GenericAssocListContext.prototype.Comma = function() {
+    return this.getToken(CParser.Comma, 0);
+};
+
 GenericAssocListContext.prototype.enterRule = function(listener) {
     if(listener instanceof CListener ) {
         listener.enterGenericAssocList(this);
@@ -1475,6 +1529,14 @@ GenericAssocListContext.prototype.exitRule = function(listener) {
     if(listener instanceof CListener ) {
         listener.exitGenericAssocList(this);
 	}
+};
+
+GenericAssocListContext.prototype.accept = function(visitor) {
+    if ( visitor instanceof CVisitor ) {
+        return visitor.visitGenericAssocList(this);
+    } else {
+        return visitor.visitChildren(this);
+    }
 };
 
 
@@ -1533,6 +1595,7 @@ CParser.prototype.genericAssocList = function(_p) {
     return localctx;
 };
 
+
 function GenericAssociationContext(parser, parent, invokingState) {
 	if(parent===undefined) {
 	    parent = null;
@@ -1553,8 +1616,16 @@ GenericAssociationContext.prototype.typeName = function() {
     return this.getTypedRuleContext(TypeNameContext,0);
 };
 
+GenericAssociationContext.prototype.Colon = function() {
+    return this.getToken(CParser.Colon, 0);
+};
+
 GenericAssociationContext.prototype.assignmentExpression = function() {
     return this.getTypedRuleContext(AssignmentExpressionContext,0);
+};
+
+GenericAssociationContext.prototype.Default = function() {
+    return this.getToken(CParser.Default, 0);
 };
 
 GenericAssociationContext.prototype.enterRule = function(listener) {
@@ -1567,6 +1638,14 @@ GenericAssociationContext.prototype.exitRule = function(listener) {
     if(listener instanceof CListener ) {
         listener.exitGenericAssociation(this);
 	}
+};
+
+GenericAssociationContext.prototype.accept = function(visitor) {
+    if ( visitor instanceof CVisitor ) {
+        return visitor.visitGenericAssociation(this);
+    } else {
+        return visitor.visitChildren(this);
+    }
 };
 
 
@@ -1640,6 +1719,7 @@ CParser.prototype.genericAssociation = function() {
     return localctx;
 };
 
+
 function PostfixExpressionContext(parser, parent, invokingState) {
 	if(parent===undefined) {
 	    parent = null;
@@ -1660,28 +1740,72 @@ PostfixExpressionContext.prototype.primaryExpression = function() {
     return this.getTypedRuleContext(PrimaryExpressionContext,0);
 };
 
+PostfixExpressionContext.prototype.LeftParen = function() {
+    return this.getToken(CParser.LeftParen, 0);
+};
+
 PostfixExpressionContext.prototype.typeName = function() {
     return this.getTypedRuleContext(TypeNameContext,0);
+};
+
+PostfixExpressionContext.prototype.RightParen = function() {
+    return this.getToken(CParser.RightParen, 0);
+};
+
+PostfixExpressionContext.prototype.LeftBrace = function() {
+    return this.getToken(CParser.LeftBrace, 0);
 };
 
 PostfixExpressionContext.prototype.initializerList = function() {
     return this.getTypedRuleContext(InitializerListContext,0);
 };
 
+PostfixExpressionContext.prototype.RightBrace = function() {
+    return this.getToken(CParser.RightBrace, 0);
+};
+
+PostfixExpressionContext.prototype.Comma = function() {
+    return this.getToken(CParser.Comma, 0);
+};
+
 PostfixExpressionContext.prototype.postfixExpression = function() {
     return this.getTypedRuleContext(PostfixExpressionContext,0);
+};
+
+PostfixExpressionContext.prototype.LeftBracket = function() {
+    return this.getToken(CParser.LeftBracket, 0);
 };
 
 PostfixExpressionContext.prototype.expression = function() {
     return this.getTypedRuleContext(ExpressionContext,0);
 };
 
+PostfixExpressionContext.prototype.RightBracket = function() {
+    return this.getToken(CParser.RightBracket, 0);
+};
+
 PostfixExpressionContext.prototype.argumentExpressionList = function() {
     return this.getTypedRuleContext(ArgumentExpressionListContext,0);
 };
 
+PostfixExpressionContext.prototype.Dot = function() {
+    return this.getToken(CParser.Dot, 0);
+};
+
 PostfixExpressionContext.prototype.Identifier = function() {
     return this.getToken(CParser.Identifier, 0);
+};
+
+PostfixExpressionContext.prototype.Arrow = function() {
+    return this.getToken(CParser.Arrow, 0);
+};
+
+PostfixExpressionContext.prototype.PlusPlus = function() {
+    return this.getToken(CParser.PlusPlus, 0);
+};
+
+PostfixExpressionContext.prototype.MinusMinus = function() {
+    return this.getToken(CParser.MinusMinus, 0);
 };
 
 PostfixExpressionContext.prototype.enterRule = function(listener) {
@@ -1694,6 +1818,14 @@ PostfixExpressionContext.prototype.exitRule = function(listener) {
     if(listener instanceof CListener ) {
         listener.exitPostfixExpression(this);
 	}
+};
+
+PostfixExpressionContext.prototype.accept = function(visitor) {
+    if ( visitor instanceof CVisitor ) {
+        return visitor.visitPostfixExpression(this);
+    } else {
+        return visitor.visitChildren(this);
+    }
 };
 
 
@@ -1908,6 +2040,7 @@ CParser.prototype.postfixExpression = function(_p) {
     return localctx;
 };
 
+
 function ArgumentExpressionListContext(parser, parent, invokingState) {
 	if(parent===undefined) {
 	    parent = null;
@@ -1932,6 +2065,10 @@ ArgumentExpressionListContext.prototype.argumentExpressionList = function() {
     return this.getTypedRuleContext(ArgumentExpressionListContext,0);
 };
 
+ArgumentExpressionListContext.prototype.Comma = function() {
+    return this.getToken(CParser.Comma, 0);
+};
+
 ArgumentExpressionListContext.prototype.enterRule = function(listener) {
     if(listener instanceof CListener ) {
         listener.enterArgumentExpressionList(this);
@@ -1942,6 +2079,14 @@ ArgumentExpressionListContext.prototype.exitRule = function(listener) {
     if(listener instanceof CListener ) {
         listener.exitArgumentExpressionList(this);
 	}
+};
+
+ArgumentExpressionListContext.prototype.accept = function(visitor) {
+    if ( visitor instanceof CVisitor ) {
+        return visitor.visitArgumentExpressionList(this);
+    } else {
+        return visitor.visitChildren(this);
+    }
 };
 
 
@@ -2000,6 +2145,7 @@ CParser.prototype.argumentExpressionList = function(_p) {
     return localctx;
 };
 
+
 function UnaryExpressionContext(parser, parent, invokingState) {
 	if(parent===undefined) {
 	    parent = null;
@@ -2020,8 +2166,16 @@ UnaryExpressionContext.prototype.postfixExpression = function() {
     return this.getTypedRuleContext(PostfixExpressionContext,0);
 };
 
+UnaryExpressionContext.prototype.PlusPlus = function() {
+    return this.getToken(CParser.PlusPlus, 0);
+};
+
 UnaryExpressionContext.prototype.unaryExpression = function() {
     return this.getTypedRuleContext(UnaryExpressionContext,0);
+};
+
+UnaryExpressionContext.prototype.MinusMinus = function() {
+    return this.getToken(CParser.MinusMinus, 0);
 };
 
 UnaryExpressionContext.prototype.unaryOperator = function() {
@@ -2032,8 +2186,28 @@ UnaryExpressionContext.prototype.castExpression = function() {
     return this.getTypedRuleContext(CastExpressionContext,0);
 };
 
+UnaryExpressionContext.prototype.Sizeof = function() {
+    return this.getToken(CParser.Sizeof, 0);
+};
+
+UnaryExpressionContext.prototype.LeftParen = function() {
+    return this.getToken(CParser.LeftParen, 0);
+};
+
 UnaryExpressionContext.prototype.typeName = function() {
     return this.getTypedRuleContext(TypeNameContext,0);
+};
+
+UnaryExpressionContext.prototype.RightParen = function() {
+    return this.getToken(CParser.RightParen, 0);
+};
+
+UnaryExpressionContext.prototype.Alignof = function() {
+    return this.getToken(CParser.Alignof, 0);
+};
+
+UnaryExpressionContext.prototype.AndAnd = function() {
+    return this.getToken(CParser.AndAnd, 0);
 };
 
 UnaryExpressionContext.prototype.Identifier = function() {
@@ -2050,6 +2224,14 @@ UnaryExpressionContext.prototype.exitRule = function(listener) {
     if(listener instanceof CListener ) {
         listener.exitUnaryExpression(this);
 	}
+};
+
+UnaryExpressionContext.prototype.accept = function(visitor) {
+    if ( visitor instanceof CVisitor ) {
+        return visitor.visitUnaryExpression(this);
+    } else {
+        return visitor.visitChildren(this);
+    }
 };
 
 
@@ -2151,6 +2333,7 @@ CParser.prototype.unaryExpression = function() {
     return localctx;
 };
 
+
 function UnaryOperatorContext(parser, parent, invokingState) {
 	if(parent===undefined) {
 	    parent = null;
@@ -2167,6 +2350,29 @@ function UnaryOperatorContext(parser, parent, invokingState) {
 UnaryOperatorContext.prototype = Object.create(antlr4.ParserRuleContext.prototype);
 UnaryOperatorContext.prototype.constructor = UnaryOperatorContext;
 
+UnaryOperatorContext.prototype.And = function() {
+    return this.getToken(CParser.And, 0);
+};
+
+UnaryOperatorContext.prototype.Star = function() {
+    return this.getToken(CParser.Star, 0);
+};
+
+UnaryOperatorContext.prototype.Plus = function() {
+    return this.getToken(CParser.Plus, 0);
+};
+
+UnaryOperatorContext.prototype.Minus = function() {
+    return this.getToken(CParser.Minus, 0);
+};
+
+UnaryOperatorContext.prototype.Tilde = function() {
+    return this.getToken(CParser.Tilde, 0);
+};
+
+UnaryOperatorContext.prototype.Not = function() {
+    return this.getToken(CParser.Not, 0);
+};
 
 UnaryOperatorContext.prototype.enterRule = function(listener) {
     if(listener instanceof CListener ) {
@@ -2178,6 +2384,14 @@ UnaryOperatorContext.prototype.exitRule = function(listener) {
     if(listener instanceof CListener ) {
         listener.exitUnaryOperator(this);
 	}
+};
+
+UnaryOperatorContext.prototype.accept = function(visitor) {
+    if ( visitor instanceof CVisitor ) {
+        return visitor.visitUnaryOperator(this);
+    } else {
+        return visitor.visitChildren(this);
+    }
 };
 
 
@@ -2215,6 +2429,7 @@ CParser.prototype.unaryOperator = function() {
     return localctx;
 };
 
+
 function CastExpressionContext(parser, parent, invokingState) {
 	if(parent===undefined) {
 	    parent = null;
@@ -2231,8 +2446,16 @@ function CastExpressionContext(parser, parent, invokingState) {
 CastExpressionContext.prototype = Object.create(antlr4.ParserRuleContext.prototype);
 CastExpressionContext.prototype.constructor = CastExpressionContext;
 
+CastExpressionContext.prototype.LeftParen = function() {
+    return this.getToken(CParser.LeftParen, 0);
+};
+
 CastExpressionContext.prototype.typeName = function() {
     return this.getTypedRuleContext(TypeNameContext,0);
+};
+
+CastExpressionContext.prototype.RightParen = function() {
+    return this.getToken(CParser.RightParen, 0);
 };
 
 CastExpressionContext.prototype.castExpression = function() {
@@ -2257,6 +2480,14 @@ CastExpressionContext.prototype.exitRule = function(listener) {
     if(listener instanceof CListener ) {
         listener.exitCastExpression(this);
 	}
+};
+
+CastExpressionContext.prototype.accept = function(visitor) {
+    if ( visitor instanceof CVisitor ) {
+        return visitor.visitCastExpression(this);
+    } else {
+        return visitor.visitChildren(this);
+    }
 };
 
 
@@ -2326,6 +2557,7 @@ CParser.prototype.castExpression = function() {
     return localctx;
 };
 
+
 function MultiplicativeExpressionContext(parser, parent, invokingState) {
 	if(parent===undefined) {
 	    parent = null;
@@ -2350,6 +2582,18 @@ MultiplicativeExpressionContext.prototype.multiplicativeExpression = function() 
     return this.getTypedRuleContext(MultiplicativeExpressionContext,0);
 };
 
+MultiplicativeExpressionContext.prototype.Star = function() {
+    return this.getToken(CParser.Star, 0);
+};
+
+MultiplicativeExpressionContext.prototype.Div = function() {
+    return this.getToken(CParser.Div, 0);
+};
+
+MultiplicativeExpressionContext.prototype.Mod = function() {
+    return this.getToken(CParser.Mod, 0);
+};
+
 MultiplicativeExpressionContext.prototype.enterRule = function(listener) {
     if(listener instanceof CListener ) {
         listener.enterMultiplicativeExpression(this);
@@ -2360,6 +2604,14 @@ MultiplicativeExpressionContext.prototype.exitRule = function(listener) {
     if(listener instanceof CListener ) {
         listener.exitMultiplicativeExpression(this);
 	}
+};
+
+MultiplicativeExpressionContext.prototype.accept = function(visitor) {
+    if ( visitor instanceof CVisitor ) {
+        return visitor.visitMultiplicativeExpression(this);
+    } else {
+        return visitor.visitChildren(this);
+    }
 };
 
 
@@ -2452,6 +2704,7 @@ CParser.prototype.multiplicativeExpression = function(_p) {
     return localctx;
 };
 
+
 function AdditiveExpressionContext(parser, parent, invokingState) {
 	if(parent===undefined) {
 	    parent = null;
@@ -2476,6 +2729,14 @@ AdditiveExpressionContext.prototype.additiveExpression = function() {
     return this.getTypedRuleContext(AdditiveExpressionContext,0);
 };
 
+AdditiveExpressionContext.prototype.Plus = function() {
+    return this.getToken(CParser.Plus, 0);
+};
+
+AdditiveExpressionContext.prototype.Minus = function() {
+    return this.getToken(CParser.Minus, 0);
+};
+
 AdditiveExpressionContext.prototype.enterRule = function(listener) {
     if(listener instanceof CListener ) {
         listener.enterAdditiveExpression(this);
@@ -2486,6 +2747,14 @@ AdditiveExpressionContext.prototype.exitRule = function(listener) {
     if(listener instanceof CListener ) {
         listener.exitAdditiveExpression(this);
 	}
+};
+
+AdditiveExpressionContext.prototype.accept = function(visitor) {
+    if ( visitor instanceof CVisitor ) {
+        return visitor.visitAdditiveExpression(this);
+    } else {
+        return visitor.visitChildren(this);
+    }
 };
 
 
@@ -2565,6 +2834,7 @@ CParser.prototype.additiveExpression = function(_p) {
     return localctx;
 };
 
+
 function ShiftExpressionContext(parser, parent, invokingState) {
 	if(parent===undefined) {
 	    parent = null;
@@ -2589,6 +2859,14 @@ ShiftExpressionContext.prototype.shiftExpression = function() {
     return this.getTypedRuleContext(ShiftExpressionContext,0);
 };
 
+ShiftExpressionContext.prototype.LeftShift = function() {
+    return this.getToken(CParser.LeftShift, 0);
+};
+
+ShiftExpressionContext.prototype.RightShift = function() {
+    return this.getToken(CParser.RightShift, 0);
+};
+
 ShiftExpressionContext.prototype.enterRule = function(listener) {
     if(listener instanceof CListener ) {
         listener.enterShiftExpression(this);
@@ -2599,6 +2877,14 @@ ShiftExpressionContext.prototype.exitRule = function(listener) {
     if(listener instanceof CListener ) {
         listener.exitShiftExpression(this);
 	}
+};
+
+ShiftExpressionContext.prototype.accept = function(visitor) {
+    if ( visitor instanceof CVisitor ) {
+        return visitor.visitShiftExpression(this);
+    } else {
+        return visitor.visitChildren(this);
+    }
 };
 
 
@@ -2678,6 +2964,7 @@ CParser.prototype.shiftExpression = function(_p) {
     return localctx;
 };
 
+
 function RelationalExpressionContext(parser, parent, invokingState) {
 	if(parent===undefined) {
 	    parent = null;
@@ -2702,6 +2989,22 @@ RelationalExpressionContext.prototype.relationalExpression = function() {
     return this.getTypedRuleContext(RelationalExpressionContext,0);
 };
 
+RelationalExpressionContext.prototype.Less = function() {
+    return this.getToken(CParser.Less, 0);
+};
+
+RelationalExpressionContext.prototype.Greater = function() {
+    return this.getToken(CParser.Greater, 0);
+};
+
+RelationalExpressionContext.prototype.LessEqual = function() {
+    return this.getToken(CParser.LessEqual, 0);
+};
+
+RelationalExpressionContext.prototype.GreaterEqual = function() {
+    return this.getToken(CParser.GreaterEqual, 0);
+};
+
 RelationalExpressionContext.prototype.enterRule = function(listener) {
     if(listener instanceof CListener ) {
         listener.enterRelationalExpression(this);
@@ -2712,6 +3015,14 @@ RelationalExpressionContext.prototype.exitRule = function(listener) {
     if(listener instanceof CListener ) {
         listener.exitRelationalExpression(this);
 	}
+};
+
+RelationalExpressionContext.prototype.accept = function(visitor) {
+    if ( visitor instanceof CVisitor ) {
+        return visitor.visitRelationalExpression(this);
+    } else {
+        return visitor.visitChildren(this);
+    }
 };
 
 
@@ -2817,6 +3128,7 @@ CParser.prototype.relationalExpression = function(_p) {
     return localctx;
 };
 
+
 function EqualityExpressionContext(parser, parent, invokingState) {
 	if(parent===undefined) {
 	    parent = null;
@@ -2841,6 +3153,14 @@ EqualityExpressionContext.prototype.equalityExpression = function() {
     return this.getTypedRuleContext(EqualityExpressionContext,0);
 };
 
+EqualityExpressionContext.prototype.Equal = function() {
+    return this.getToken(CParser.Equal, 0);
+};
+
+EqualityExpressionContext.prototype.NotEqual = function() {
+    return this.getToken(CParser.NotEqual, 0);
+};
+
 EqualityExpressionContext.prototype.enterRule = function(listener) {
     if(listener instanceof CListener ) {
         listener.enterEqualityExpression(this);
@@ -2851,6 +3171,14 @@ EqualityExpressionContext.prototype.exitRule = function(listener) {
     if(listener instanceof CListener ) {
         listener.exitEqualityExpression(this);
 	}
+};
+
+EqualityExpressionContext.prototype.accept = function(visitor) {
+    if ( visitor instanceof CVisitor ) {
+        return visitor.visitEqualityExpression(this);
+    } else {
+        return visitor.visitChildren(this);
+    }
 };
 
 
@@ -2930,6 +3258,7 @@ CParser.prototype.equalityExpression = function(_p) {
     return localctx;
 };
 
+
 function AndExpressionContext(parser, parent, invokingState) {
 	if(parent===undefined) {
 	    parent = null;
@@ -2954,6 +3283,10 @@ AndExpressionContext.prototype.andExpression = function() {
     return this.getTypedRuleContext(AndExpressionContext,0);
 };
 
+AndExpressionContext.prototype.And = function() {
+    return this.getToken(CParser.And, 0);
+};
+
 AndExpressionContext.prototype.enterRule = function(listener) {
     if(listener instanceof CListener ) {
         listener.enterAndExpression(this);
@@ -2964,6 +3297,14 @@ AndExpressionContext.prototype.exitRule = function(listener) {
     if(listener instanceof CListener ) {
         listener.exitAndExpression(this);
 	}
+};
+
+AndExpressionContext.prototype.accept = function(visitor) {
+    if ( visitor instanceof CVisitor ) {
+        return visitor.visitAndExpression(this);
+    } else {
+        return visitor.visitChildren(this);
+    }
 };
 
 
@@ -3022,6 +3363,7 @@ CParser.prototype.andExpression = function(_p) {
     return localctx;
 };
 
+
 function ExclusiveOrExpressionContext(parser, parent, invokingState) {
 	if(parent===undefined) {
 	    parent = null;
@@ -3046,6 +3388,10 @@ ExclusiveOrExpressionContext.prototype.exclusiveOrExpression = function() {
     return this.getTypedRuleContext(ExclusiveOrExpressionContext,0);
 };
 
+ExclusiveOrExpressionContext.prototype.Caret = function() {
+    return this.getToken(CParser.Caret, 0);
+};
+
 ExclusiveOrExpressionContext.prototype.enterRule = function(listener) {
     if(listener instanceof CListener ) {
         listener.enterExclusiveOrExpression(this);
@@ -3056,6 +3402,14 @@ ExclusiveOrExpressionContext.prototype.exitRule = function(listener) {
     if(listener instanceof CListener ) {
         listener.exitExclusiveOrExpression(this);
 	}
+};
+
+ExclusiveOrExpressionContext.prototype.accept = function(visitor) {
+    if ( visitor instanceof CVisitor ) {
+        return visitor.visitExclusiveOrExpression(this);
+    } else {
+        return visitor.visitChildren(this);
+    }
 };
 
 
@@ -3114,6 +3468,7 @@ CParser.prototype.exclusiveOrExpression = function(_p) {
     return localctx;
 };
 
+
 function InclusiveOrExpressionContext(parser, parent, invokingState) {
 	if(parent===undefined) {
 	    parent = null;
@@ -3138,6 +3493,10 @@ InclusiveOrExpressionContext.prototype.inclusiveOrExpression = function() {
     return this.getTypedRuleContext(InclusiveOrExpressionContext,0);
 };
 
+InclusiveOrExpressionContext.prototype.Or = function() {
+    return this.getToken(CParser.Or, 0);
+};
+
 InclusiveOrExpressionContext.prototype.enterRule = function(listener) {
     if(listener instanceof CListener ) {
         listener.enterInclusiveOrExpression(this);
@@ -3148,6 +3507,14 @@ InclusiveOrExpressionContext.prototype.exitRule = function(listener) {
     if(listener instanceof CListener ) {
         listener.exitInclusiveOrExpression(this);
 	}
+};
+
+InclusiveOrExpressionContext.prototype.accept = function(visitor) {
+    if ( visitor instanceof CVisitor ) {
+        return visitor.visitInclusiveOrExpression(this);
+    } else {
+        return visitor.visitChildren(this);
+    }
 };
 
 
@@ -3206,6 +3573,7 @@ CParser.prototype.inclusiveOrExpression = function(_p) {
     return localctx;
 };
 
+
 function LogicalAndExpressionContext(parser, parent, invokingState) {
 	if(parent===undefined) {
 	    parent = null;
@@ -3230,6 +3598,10 @@ LogicalAndExpressionContext.prototype.logicalAndExpression = function() {
     return this.getTypedRuleContext(LogicalAndExpressionContext,0);
 };
 
+LogicalAndExpressionContext.prototype.AndAnd = function() {
+    return this.getToken(CParser.AndAnd, 0);
+};
+
 LogicalAndExpressionContext.prototype.enterRule = function(listener) {
     if(listener instanceof CListener ) {
         listener.enterLogicalAndExpression(this);
@@ -3240,6 +3612,14 @@ LogicalAndExpressionContext.prototype.exitRule = function(listener) {
     if(listener instanceof CListener ) {
         listener.exitLogicalAndExpression(this);
 	}
+};
+
+LogicalAndExpressionContext.prototype.accept = function(visitor) {
+    if ( visitor instanceof CVisitor ) {
+        return visitor.visitLogicalAndExpression(this);
+    } else {
+        return visitor.visitChildren(this);
+    }
 };
 
 
@@ -3298,6 +3678,7 @@ CParser.prototype.logicalAndExpression = function(_p) {
     return localctx;
 };
 
+
 function LogicalOrExpressionContext(parser, parent, invokingState) {
 	if(parent===undefined) {
 	    parent = null;
@@ -3322,6 +3703,10 @@ LogicalOrExpressionContext.prototype.logicalOrExpression = function() {
     return this.getTypedRuleContext(LogicalOrExpressionContext,0);
 };
 
+LogicalOrExpressionContext.prototype.OrOr = function() {
+    return this.getToken(CParser.OrOr, 0);
+};
+
 LogicalOrExpressionContext.prototype.enterRule = function(listener) {
     if(listener instanceof CListener ) {
         listener.enterLogicalOrExpression(this);
@@ -3332,6 +3717,14 @@ LogicalOrExpressionContext.prototype.exitRule = function(listener) {
     if(listener instanceof CListener ) {
         listener.exitLogicalOrExpression(this);
 	}
+};
+
+LogicalOrExpressionContext.prototype.accept = function(visitor) {
+    if ( visitor instanceof CVisitor ) {
+        return visitor.visitLogicalOrExpression(this);
+    } else {
+        return visitor.visitChildren(this);
+    }
 };
 
 
@@ -3390,6 +3783,7 @@ CParser.prototype.logicalOrExpression = function(_p) {
     return localctx;
 };
 
+
 function ConditionalExpressionContext(parser, parent, invokingState) {
 	if(parent===undefined) {
 	    parent = null;
@@ -3410,8 +3804,16 @@ ConditionalExpressionContext.prototype.logicalOrExpression = function() {
     return this.getTypedRuleContext(LogicalOrExpressionContext,0);
 };
 
+ConditionalExpressionContext.prototype.Question = function() {
+    return this.getToken(CParser.Question, 0);
+};
+
 ConditionalExpressionContext.prototype.expression = function() {
     return this.getTypedRuleContext(ExpressionContext,0);
+};
+
+ConditionalExpressionContext.prototype.Colon = function() {
+    return this.getToken(CParser.Colon, 0);
 };
 
 ConditionalExpressionContext.prototype.conditionalExpression = function() {
@@ -3428,6 +3830,14 @@ ConditionalExpressionContext.prototype.exitRule = function(listener) {
     if(listener instanceof CListener ) {
         listener.exitConditionalExpression(this);
 	}
+};
+
+ConditionalExpressionContext.prototype.accept = function(visitor) {
+    if ( visitor instanceof CVisitor ) {
+        return visitor.visitConditionalExpression(this);
+    } else {
+        return visitor.visitChildren(this);
+    }
 };
 
 
@@ -3470,6 +3880,7 @@ CParser.prototype.conditionalExpression = function() {
     }
     return localctx;
 };
+
 
 function AssignmentExpressionContext(parser, parent, invokingState) {
 	if(parent===undefined) {
@@ -3517,6 +3928,14 @@ AssignmentExpressionContext.prototype.exitRule = function(listener) {
     if(listener instanceof CListener ) {
         listener.exitAssignmentExpression(this);
 	}
+};
+
+AssignmentExpressionContext.prototype.accept = function(visitor) {
+    if ( visitor instanceof CVisitor ) {
+        return visitor.visitAssignmentExpression(this);
+    } else {
+        return visitor.visitChildren(this);
+    }
 };
 
 
@@ -3570,6 +3989,7 @@ CParser.prototype.assignmentExpression = function() {
     return localctx;
 };
 
+
 function AssignmentOperatorContext(parser, parent, invokingState) {
 	if(parent===undefined) {
 	    parent = null;
@@ -3586,6 +4006,49 @@ function AssignmentOperatorContext(parser, parent, invokingState) {
 AssignmentOperatorContext.prototype = Object.create(antlr4.ParserRuleContext.prototype);
 AssignmentOperatorContext.prototype.constructor = AssignmentOperatorContext;
 
+AssignmentOperatorContext.prototype.Assign = function() {
+    return this.getToken(CParser.Assign, 0);
+};
+
+AssignmentOperatorContext.prototype.StarAssign = function() {
+    return this.getToken(CParser.StarAssign, 0);
+};
+
+AssignmentOperatorContext.prototype.DivAssign = function() {
+    return this.getToken(CParser.DivAssign, 0);
+};
+
+AssignmentOperatorContext.prototype.ModAssign = function() {
+    return this.getToken(CParser.ModAssign, 0);
+};
+
+AssignmentOperatorContext.prototype.PlusAssign = function() {
+    return this.getToken(CParser.PlusAssign, 0);
+};
+
+AssignmentOperatorContext.prototype.MinusAssign = function() {
+    return this.getToken(CParser.MinusAssign, 0);
+};
+
+AssignmentOperatorContext.prototype.LeftShiftAssign = function() {
+    return this.getToken(CParser.LeftShiftAssign, 0);
+};
+
+AssignmentOperatorContext.prototype.RightShiftAssign = function() {
+    return this.getToken(CParser.RightShiftAssign, 0);
+};
+
+AssignmentOperatorContext.prototype.AndAssign = function() {
+    return this.getToken(CParser.AndAssign, 0);
+};
+
+AssignmentOperatorContext.prototype.XorAssign = function() {
+    return this.getToken(CParser.XorAssign, 0);
+};
+
+AssignmentOperatorContext.prototype.OrAssign = function() {
+    return this.getToken(CParser.OrAssign, 0);
+};
 
 AssignmentOperatorContext.prototype.enterRule = function(listener) {
     if(listener instanceof CListener ) {
@@ -3597,6 +4060,14 @@ AssignmentOperatorContext.prototype.exitRule = function(listener) {
     if(listener instanceof CListener ) {
         listener.exitAssignmentOperator(this);
 	}
+};
+
+AssignmentOperatorContext.prototype.accept = function(visitor) {
+    if ( visitor instanceof CVisitor ) {
+        return visitor.visitAssignmentOperator(this);
+    } else {
+        return visitor.visitChildren(this);
+    }
 };
 
 
@@ -3634,6 +4105,7 @@ CParser.prototype.assignmentOperator = function() {
     return localctx;
 };
 
+
 function ExpressionContext(parser, parent, invokingState) {
 	if(parent===undefined) {
 	    parent = null;
@@ -3658,6 +4130,10 @@ ExpressionContext.prototype.expression = function() {
     return this.getTypedRuleContext(ExpressionContext,0);
 };
 
+ExpressionContext.prototype.Comma = function() {
+    return this.getToken(CParser.Comma, 0);
+};
+
 ExpressionContext.prototype.enterRule = function(listener) {
     if(listener instanceof CListener ) {
         listener.enterExpression(this);
@@ -3668,6 +4144,14 @@ ExpressionContext.prototype.exitRule = function(listener) {
     if(listener instanceof CListener ) {
         listener.exitExpression(this);
 	}
+};
+
+ExpressionContext.prototype.accept = function(visitor) {
+    if ( visitor instanceof CVisitor ) {
+        return visitor.visitExpression(this);
+    } else {
+        return visitor.visitChildren(this);
+    }
 };
 
 
@@ -3726,6 +4210,7 @@ CParser.prototype.expression = function(_p) {
     return localctx;
 };
 
+
 function ConstantExpressionContext(parser, parent, invokingState) {
 	if(parent===undefined) {
 	    parent = null;
@@ -3758,6 +4243,14 @@ ConstantExpressionContext.prototype.exitRule = function(listener) {
 	}
 };
 
+ConstantExpressionContext.prototype.accept = function(visitor) {
+    if ( visitor instanceof CVisitor ) {
+        return visitor.visitConstantExpression(this);
+    } else {
+        return visitor.visitChildren(this);
+    }
+};
+
 
 
 
@@ -3785,6 +4278,7 @@ CParser.prototype.constantExpression = function() {
     return localctx;
 };
 
+
 function DeclarationContext(parser, parent, invokingState) {
 	if(parent===undefined) {
 	    parent = null;
@@ -3809,6 +4303,10 @@ DeclarationContext.prototype.initDeclaratorList = function() {
     return this.getTypedRuleContext(InitDeclaratorListContext,0);
 };
 
+DeclarationContext.prototype.Semi = function() {
+    return this.getToken(CParser.Semi, 0);
+};
+
 DeclarationContext.prototype.staticAssertDeclaration = function() {
     return this.getTypedRuleContext(StaticAssertDeclarationContext,0);
 };
@@ -3823,6 +4321,14 @@ DeclarationContext.prototype.exitRule = function(listener) {
     if(listener instanceof CListener ) {
         listener.exitDeclaration(this);
 	}
+};
+
+DeclarationContext.prototype.accept = function(visitor) {
+    if ( visitor instanceof CVisitor ) {
+        return visitor.visitDeclaration(this);
+    } else {
+        return visitor.visitChildren(this);
+    }
 };
 
 
@@ -3878,6 +4384,7 @@ CParser.prototype.declaration = function() {
     return localctx;
 };
 
+
 function DeclarationSpecifiersContext(parser, parent, invokingState) {
 	if(parent===undefined) {
 	    parent = null;
@@ -3915,6 +4422,14 @@ DeclarationSpecifiersContext.prototype.exitRule = function(listener) {
     if(listener instanceof CListener ) {
         listener.exitDeclarationSpecifiers(this);
 	}
+};
+
+DeclarationSpecifiersContext.prototype.accept = function(visitor) {
+    if ( visitor instanceof CVisitor ) {
+        return visitor.visitDeclarationSpecifiers(this);
+    } else {
+        return visitor.visitChildren(this);
+    }
 };
 
 
@@ -3958,6 +4473,7 @@ CParser.prototype.declarationSpecifiers = function() {
     return localctx;
 };
 
+
 function DeclarationSpecifiers2Context(parser, parent, invokingState) {
 	if(parent===undefined) {
 	    parent = null;
@@ -3995,6 +4511,14 @@ DeclarationSpecifiers2Context.prototype.exitRule = function(listener) {
     if(listener instanceof CListener ) {
         listener.exitDeclarationSpecifiers2(this);
 	}
+};
+
+DeclarationSpecifiers2Context.prototype.accept = function(visitor) {
+    if ( visitor instanceof CVisitor ) {
+        return visitor.visitDeclarationSpecifiers2(this);
+    } else {
+        return visitor.visitChildren(this);
+    }
 };
 
 
@@ -4037,6 +4561,7 @@ CParser.prototype.declarationSpecifiers2 = function() {
     }
     return localctx;
 };
+
 
 function DeclarationSpecifierContext(parser, parent, invokingState) {
 	if(parent===undefined) {
@@ -4084,6 +4609,14 @@ DeclarationSpecifierContext.prototype.exitRule = function(listener) {
     if(listener instanceof CListener ) {
         listener.exitDeclarationSpecifier(this);
 	}
+};
+
+DeclarationSpecifierContext.prototype.accept = function(visitor) {
+    if ( visitor instanceof CVisitor ) {
+        return visitor.visitDeclarationSpecifier(this);
+    } else {
+        return visitor.visitChildren(this);
+    }
 };
 
 
@@ -4145,6 +4678,7 @@ CParser.prototype.declarationSpecifier = function() {
     return localctx;
 };
 
+
 function InitDeclaratorListContext(parser, parent, invokingState) {
 	if(parent===undefined) {
 	    parent = null;
@@ -4169,6 +4703,10 @@ InitDeclaratorListContext.prototype.initDeclaratorList = function() {
     return this.getTypedRuleContext(InitDeclaratorListContext,0);
 };
 
+InitDeclaratorListContext.prototype.Comma = function() {
+    return this.getToken(CParser.Comma, 0);
+};
+
 InitDeclaratorListContext.prototype.enterRule = function(listener) {
     if(listener instanceof CListener ) {
         listener.enterInitDeclaratorList(this);
@@ -4179,6 +4717,14 @@ InitDeclaratorListContext.prototype.exitRule = function(listener) {
     if(listener instanceof CListener ) {
         listener.exitInitDeclaratorList(this);
 	}
+};
+
+InitDeclaratorListContext.prototype.accept = function(visitor) {
+    if ( visitor instanceof CVisitor ) {
+        return visitor.visitInitDeclaratorList(this);
+    } else {
+        return visitor.visitChildren(this);
+    }
 };
 
 
@@ -4237,6 +4783,7 @@ CParser.prototype.initDeclaratorList = function(_p) {
     return localctx;
 };
 
+
 function InitDeclaratorContext(parser, parent, invokingState) {
 	if(parent===undefined) {
 	    parent = null;
@@ -4257,6 +4804,10 @@ InitDeclaratorContext.prototype.declarator = function() {
     return this.getTypedRuleContext(DeclaratorContext,0);
 };
 
+InitDeclaratorContext.prototype.Assign = function() {
+    return this.getToken(CParser.Assign, 0);
+};
+
 InitDeclaratorContext.prototype.initializer = function() {
     return this.getTypedRuleContext(InitializerContext,0);
 };
@@ -4271,6 +4822,14 @@ InitDeclaratorContext.prototype.exitRule = function(listener) {
     if(listener instanceof CListener ) {
         listener.exitInitDeclarator(this);
 	}
+};
+
+InitDeclaratorContext.prototype.accept = function(visitor) {
+    if ( visitor instanceof CVisitor ) {
+        return visitor.visitInitDeclarator(this);
+    } else {
+        return visitor.visitChildren(this);
+    }
 };
 
 
@@ -4318,6 +4877,7 @@ CParser.prototype.initDeclarator = function() {
     return localctx;
 };
 
+
 function StorageClassSpecifierContext(parser, parent, invokingState) {
 	if(parent===undefined) {
 	    parent = null;
@@ -4334,6 +4894,29 @@ function StorageClassSpecifierContext(parser, parent, invokingState) {
 StorageClassSpecifierContext.prototype = Object.create(antlr4.ParserRuleContext.prototype);
 StorageClassSpecifierContext.prototype.constructor = StorageClassSpecifierContext;
 
+StorageClassSpecifierContext.prototype.Typedef = function() {
+    return this.getToken(CParser.Typedef, 0);
+};
+
+StorageClassSpecifierContext.prototype.Extern = function() {
+    return this.getToken(CParser.Extern, 0);
+};
+
+StorageClassSpecifierContext.prototype.Static = function() {
+    return this.getToken(CParser.Static, 0);
+};
+
+StorageClassSpecifierContext.prototype.ThreadLocal = function() {
+    return this.getToken(CParser.ThreadLocal, 0);
+};
+
+StorageClassSpecifierContext.prototype.Auto = function() {
+    return this.getToken(CParser.Auto, 0);
+};
+
+StorageClassSpecifierContext.prototype.Register = function() {
+    return this.getToken(CParser.Register, 0);
+};
 
 StorageClassSpecifierContext.prototype.enterRule = function(listener) {
     if(listener instanceof CListener ) {
@@ -4345,6 +4928,14 @@ StorageClassSpecifierContext.prototype.exitRule = function(listener) {
     if(listener instanceof CListener ) {
         listener.exitStorageClassSpecifier(this);
 	}
+};
+
+StorageClassSpecifierContext.prototype.accept = function(visitor) {
+    if ( visitor instanceof CVisitor ) {
+        return visitor.visitStorageClassSpecifier(this);
+    } else {
+        return visitor.visitChildren(this);
+    }
 };
 
 
@@ -4382,6 +4973,7 @@ CParser.prototype.storageClassSpecifier = function() {
     return localctx;
 };
 
+
 function TypeSpecifierContext(parser, parent, invokingState) {
 	if(parent===undefined) {
 	    parent = null;
@@ -4397,6 +4989,58 @@ function TypeSpecifierContext(parser, parent, invokingState) {
 
 TypeSpecifierContext.prototype = Object.create(antlr4.ParserRuleContext.prototype);
 TypeSpecifierContext.prototype.constructor = TypeSpecifierContext;
+
+TypeSpecifierContext.prototype.Void = function() {
+    return this.getToken(CParser.Void, 0);
+};
+
+TypeSpecifierContext.prototype.Char = function() {
+    return this.getToken(CParser.Char, 0);
+};
+
+TypeSpecifierContext.prototype.Short = function() {
+    return this.getToken(CParser.Short, 0);
+};
+
+TypeSpecifierContext.prototype.Int = function() {
+    return this.getToken(CParser.Int, 0);
+};
+
+TypeSpecifierContext.prototype.Long = function() {
+    return this.getToken(CParser.Long, 0);
+};
+
+TypeSpecifierContext.prototype.Float = function() {
+    return this.getToken(CParser.Float, 0);
+};
+
+TypeSpecifierContext.prototype.Double = function() {
+    return this.getToken(CParser.Double, 0);
+};
+
+TypeSpecifierContext.prototype.Signed = function() {
+    return this.getToken(CParser.Signed, 0);
+};
+
+TypeSpecifierContext.prototype.Unsigned = function() {
+    return this.getToken(CParser.Unsigned, 0);
+};
+
+TypeSpecifierContext.prototype.Bool = function() {
+    return this.getToken(CParser.Bool, 0);
+};
+
+TypeSpecifierContext.prototype.Complex = function() {
+    return this.getToken(CParser.Complex, 0);
+};
+
+TypeSpecifierContext.prototype.LeftParen = function() {
+    return this.getToken(CParser.LeftParen, 0);
+};
+
+TypeSpecifierContext.prototype.RightParen = function() {
+    return this.getToken(CParser.RightParen, 0);
+};
 
 TypeSpecifierContext.prototype.atomicTypeSpecifier = function() {
     return this.getTypedRuleContext(AtomicTypeSpecifierContext,0);
@@ -4436,6 +5080,14 @@ TypeSpecifierContext.prototype.exitRule = function(listener) {
     if(listener instanceof CListener ) {
         listener.exitTypeSpecifier(this);
 	}
+};
+
+TypeSpecifierContext.prototype.accept = function(visitor) {
+    if ( visitor instanceof CVisitor ) {
+        return visitor.visitTypeSpecifier(this);
+    } else {
+        return visitor.visitChildren(this);
+    }
 };
 
 
@@ -4565,6 +5217,7 @@ CParser.prototype.typeSpecifier = function(_p) {
     return localctx;
 };
 
+
 function StructOrUnionSpecifierContext(parser, parent, invokingState) {
 	if(parent===undefined) {
 	    parent = null;
@@ -4585,8 +5238,16 @@ StructOrUnionSpecifierContext.prototype.structOrUnion = function() {
     return this.getTypedRuleContext(StructOrUnionContext,0);
 };
 
+StructOrUnionSpecifierContext.prototype.LeftBrace = function() {
+    return this.getToken(CParser.LeftBrace, 0);
+};
+
 StructOrUnionSpecifierContext.prototype.structDeclarationList = function() {
     return this.getTypedRuleContext(StructDeclarationListContext,0);
+};
+
+StructOrUnionSpecifierContext.prototype.RightBrace = function() {
+    return this.getToken(CParser.RightBrace, 0);
 };
 
 StructOrUnionSpecifierContext.prototype.Identifier = function() {
@@ -4603,6 +5264,14 @@ StructOrUnionSpecifierContext.prototype.exitRule = function(listener) {
     if(listener instanceof CListener ) {
         listener.exitStructOrUnionSpecifier(this);
 	}
+};
+
+StructOrUnionSpecifierContext.prototype.accept = function(visitor) {
+    if ( visitor instanceof CVisitor ) {
+        return visitor.visitStructOrUnionSpecifier(this);
+    } else {
+        return visitor.visitChildren(this);
+    }
 };
 
 
@@ -4663,6 +5332,7 @@ CParser.prototype.structOrUnionSpecifier = function() {
     return localctx;
 };
 
+
 function StructOrUnionContext(parser, parent, invokingState) {
 	if(parent===undefined) {
 	    parent = null;
@@ -4679,6 +5349,13 @@ function StructOrUnionContext(parser, parent, invokingState) {
 StructOrUnionContext.prototype = Object.create(antlr4.ParserRuleContext.prototype);
 StructOrUnionContext.prototype.constructor = StructOrUnionContext;
 
+StructOrUnionContext.prototype.Struct = function() {
+    return this.getToken(CParser.Struct, 0);
+};
+
+StructOrUnionContext.prototype.Union = function() {
+    return this.getToken(CParser.Union, 0);
+};
 
 StructOrUnionContext.prototype.enterRule = function(listener) {
     if(listener instanceof CListener ) {
@@ -4690,6 +5367,14 @@ StructOrUnionContext.prototype.exitRule = function(listener) {
     if(listener instanceof CListener ) {
         listener.exitStructOrUnion(this);
 	}
+};
+
+StructOrUnionContext.prototype.accept = function(visitor) {
+    if ( visitor instanceof CVisitor ) {
+        return visitor.visitStructOrUnion(this);
+    } else {
+        return visitor.visitChildren(this);
+    }
 };
 
 
@@ -4727,6 +5412,7 @@ CParser.prototype.structOrUnion = function() {
     return localctx;
 };
 
+
 function StructDeclarationListContext(parser, parent, invokingState) {
 	if(parent===undefined) {
 	    parent = null;
@@ -4761,6 +5447,14 @@ StructDeclarationListContext.prototype.exitRule = function(listener) {
     if(listener instanceof CListener ) {
         listener.exitStructDeclarationList(this);
 	}
+};
+
+StructDeclarationListContext.prototype.accept = function(visitor) {
+    if ( visitor instanceof CVisitor ) {
+        return visitor.visitStructDeclarationList(this);
+    } else {
+        return visitor.visitChildren(this);
+    }
 };
 
 
@@ -4817,6 +5511,7 @@ CParser.prototype.structDeclarationList = function(_p) {
     return localctx;
 };
 
+
 function StructDeclarationContext(parser, parent, invokingState) {
 	if(parent===undefined) {
 	    parent = null;
@@ -4837,6 +5532,10 @@ StructDeclarationContext.prototype.specifierQualifierList = function() {
     return this.getTypedRuleContext(SpecifierQualifierListContext,0);
 };
 
+StructDeclarationContext.prototype.Semi = function() {
+    return this.getToken(CParser.Semi, 0);
+};
+
 StructDeclarationContext.prototype.structDeclaratorList = function() {
     return this.getTypedRuleContext(StructDeclaratorListContext,0);
 };
@@ -4855,6 +5554,14 @@ StructDeclarationContext.prototype.exitRule = function(listener) {
     if(listener instanceof CListener ) {
         listener.exitStructDeclaration(this);
 	}
+};
+
+StructDeclarationContext.prototype.accept = function(visitor) {
+    if ( visitor instanceof CVisitor ) {
+        return visitor.visitStructDeclaration(this);
+    } else {
+        return visitor.visitChildren(this);
+    }
 };
 
 
@@ -4931,6 +5638,7 @@ CParser.prototype.structDeclaration = function() {
     return localctx;
 };
 
+
 function SpecifierQualifierListContext(parser, parent, invokingState) {
 	if(parent===undefined) {
 	    parent = null;
@@ -4969,6 +5677,14 @@ SpecifierQualifierListContext.prototype.exitRule = function(listener) {
     if(listener instanceof CListener ) {
         listener.exitSpecifierQualifierList(this);
 	}
+};
+
+SpecifierQualifierListContext.prototype.accept = function(visitor) {
+    if ( visitor instanceof CVisitor ) {
+        return visitor.visitSpecifierQualifierList(this);
+    } else {
+        return visitor.visitChildren(this);
+    }
 };
 
 
@@ -5028,6 +5744,7 @@ CParser.prototype.specifierQualifierList = function() {
     return localctx;
 };
 
+
 function StructDeclaratorListContext(parser, parent, invokingState) {
 	if(parent===undefined) {
 	    parent = null;
@@ -5052,6 +5769,10 @@ StructDeclaratorListContext.prototype.structDeclaratorList = function() {
     return this.getTypedRuleContext(StructDeclaratorListContext,0);
 };
 
+StructDeclaratorListContext.prototype.Comma = function() {
+    return this.getToken(CParser.Comma, 0);
+};
+
 StructDeclaratorListContext.prototype.enterRule = function(listener) {
     if(listener instanceof CListener ) {
         listener.enterStructDeclaratorList(this);
@@ -5062,6 +5783,14 @@ StructDeclaratorListContext.prototype.exitRule = function(listener) {
     if(listener instanceof CListener ) {
         listener.exitStructDeclaratorList(this);
 	}
+};
+
+StructDeclaratorListContext.prototype.accept = function(visitor) {
+    if ( visitor instanceof CVisitor ) {
+        return visitor.visitStructDeclaratorList(this);
+    } else {
+        return visitor.visitChildren(this);
+    }
 };
 
 
@@ -5120,6 +5849,7 @@ CParser.prototype.structDeclaratorList = function(_p) {
     return localctx;
 };
 
+
 function StructDeclaratorContext(parser, parent, invokingState) {
 	if(parent===undefined) {
 	    parent = null;
@@ -5140,6 +5870,10 @@ StructDeclaratorContext.prototype.declarator = function() {
     return this.getTypedRuleContext(DeclaratorContext,0);
 };
 
+StructDeclaratorContext.prototype.Colon = function() {
+    return this.getToken(CParser.Colon, 0);
+};
+
 StructDeclaratorContext.prototype.constantExpression = function() {
     return this.getTypedRuleContext(ConstantExpressionContext,0);
 };
@@ -5154,6 +5888,14 @@ StructDeclaratorContext.prototype.exitRule = function(listener) {
     if(listener instanceof CListener ) {
         listener.exitStructDeclarator(this);
 	}
+};
+
+StructDeclaratorContext.prototype.accept = function(visitor) {
+    if ( visitor instanceof CVisitor ) {
+        return visitor.visitStructDeclarator(this);
+    } else {
+        return visitor.visitChildren(this);
+    }
 };
 
 
@@ -5208,6 +5950,7 @@ CParser.prototype.structDeclarator = function() {
     return localctx;
 };
 
+
 function EnumSpecifierContext(parser, parent, invokingState) {
 	if(parent===undefined) {
 	    parent = null;
@@ -5224,12 +5967,28 @@ function EnumSpecifierContext(parser, parent, invokingState) {
 EnumSpecifierContext.prototype = Object.create(antlr4.ParserRuleContext.prototype);
 EnumSpecifierContext.prototype.constructor = EnumSpecifierContext;
 
+EnumSpecifierContext.prototype.Enum = function() {
+    return this.getToken(CParser.Enum, 0);
+};
+
+EnumSpecifierContext.prototype.LeftBrace = function() {
+    return this.getToken(CParser.LeftBrace, 0);
+};
+
 EnumSpecifierContext.prototype.enumeratorList = function() {
     return this.getTypedRuleContext(EnumeratorListContext,0);
 };
 
+EnumSpecifierContext.prototype.RightBrace = function() {
+    return this.getToken(CParser.RightBrace, 0);
+};
+
 EnumSpecifierContext.prototype.Identifier = function() {
     return this.getToken(CParser.Identifier, 0);
+};
+
+EnumSpecifierContext.prototype.Comma = function() {
+    return this.getToken(CParser.Comma, 0);
 };
 
 EnumSpecifierContext.prototype.enterRule = function(listener) {
@@ -5242,6 +6001,14 @@ EnumSpecifierContext.prototype.exitRule = function(listener) {
     if(listener instanceof CListener ) {
         listener.exitEnumSpecifier(this);
 	}
+};
+
+EnumSpecifierContext.prototype.accept = function(visitor) {
+    if ( visitor instanceof CVisitor ) {
+        return visitor.visitEnumSpecifier(this);
+    } else {
+        return visitor.visitChildren(this);
+    }
 };
 
 
@@ -5324,6 +6091,7 @@ CParser.prototype.enumSpecifier = function() {
     return localctx;
 };
 
+
 function EnumeratorListContext(parser, parent, invokingState) {
 	if(parent===undefined) {
 	    parent = null;
@@ -5348,6 +6116,10 @@ EnumeratorListContext.prototype.enumeratorList = function() {
     return this.getTypedRuleContext(EnumeratorListContext,0);
 };
 
+EnumeratorListContext.prototype.Comma = function() {
+    return this.getToken(CParser.Comma, 0);
+};
+
 EnumeratorListContext.prototype.enterRule = function(listener) {
     if(listener instanceof CListener ) {
         listener.enterEnumeratorList(this);
@@ -5358,6 +6130,14 @@ EnumeratorListContext.prototype.exitRule = function(listener) {
     if(listener instanceof CListener ) {
         listener.exitEnumeratorList(this);
 	}
+};
+
+EnumeratorListContext.prototype.accept = function(visitor) {
+    if ( visitor instanceof CVisitor ) {
+        return visitor.visitEnumeratorList(this);
+    } else {
+        return visitor.visitChildren(this);
+    }
 };
 
 
@@ -5416,6 +6196,7 @@ CParser.prototype.enumeratorList = function(_p) {
     return localctx;
 };
 
+
 function EnumeratorContext(parser, parent, invokingState) {
 	if(parent===undefined) {
 	    parent = null;
@@ -5436,6 +6217,10 @@ EnumeratorContext.prototype.enumerationConstant = function() {
     return this.getTypedRuleContext(EnumerationConstantContext,0);
 };
 
+EnumeratorContext.prototype.Assign = function() {
+    return this.getToken(CParser.Assign, 0);
+};
+
 EnumeratorContext.prototype.constantExpression = function() {
     return this.getTypedRuleContext(ConstantExpressionContext,0);
 };
@@ -5450,6 +6235,14 @@ EnumeratorContext.prototype.exitRule = function(listener) {
     if(listener instanceof CListener ) {
         listener.exitEnumerator(this);
 	}
+};
+
+EnumeratorContext.prototype.accept = function(visitor) {
+    if ( visitor instanceof CVisitor ) {
+        return visitor.visitEnumerator(this);
+    } else {
+        return visitor.visitChildren(this);
+    }
 };
 
 
@@ -5497,6 +6290,7 @@ CParser.prototype.enumerator = function() {
     return localctx;
 };
 
+
 function EnumerationConstantContext(parser, parent, invokingState) {
 	if(parent===undefined) {
 	    parent = null;
@@ -5529,6 +6323,14 @@ EnumerationConstantContext.prototype.exitRule = function(listener) {
 	}
 };
 
+EnumerationConstantContext.prototype.accept = function(visitor) {
+    if ( visitor instanceof CVisitor ) {
+        return visitor.visitEnumerationConstant(this);
+    } else {
+        return visitor.visitChildren(this);
+    }
+};
+
 
 
 
@@ -5556,6 +6358,7 @@ CParser.prototype.enumerationConstant = function() {
     return localctx;
 };
 
+
 function AtomicTypeSpecifierContext(parser, parent, invokingState) {
 	if(parent===undefined) {
 	    parent = null;
@@ -5572,8 +6375,20 @@ function AtomicTypeSpecifierContext(parser, parent, invokingState) {
 AtomicTypeSpecifierContext.prototype = Object.create(antlr4.ParserRuleContext.prototype);
 AtomicTypeSpecifierContext.prototype.constructor = AtomicTypeSpecifierContext;
 
+AtomicTypeSpecifierContext.prototype.Atomic = function() {
+    return this.getToken(CParser.Atomic, 0);
+};
+
+AtomicTypeSpecifierContext.prototype.LeftParen = function() {
+    return this.getToken(CParser.LeftParen, 0);
+};
+
 AtomicTypeSpecifierContext.prototype.typeName = function() {
     return this.getTypedRuleContext(TypeNameContext,0);
+};
+
+AtomicTypeSpecifierContext.prototype.RightParen = function() {
+    return this.getToken(CParser.RightParen, 0);
 };
 
 AtomicTypeSpecifierContext.prototype.enterRule = function(listener) {
@@ -5586,6 +6401,14 @@ AtomicTypeSpecifierContext.prototype.exitRule = function(listener) {
     if(listener instanceof CListener ) {
         listener.exitAtomicTypeSpecifier(this);
 	}
+};
+
+AtomicTypeSpecifierContext.prototype.accept = function(visitor) {
+    if ( visitor instanceof CVisitor ) {
+        return visitor.visitAtomicTypeSpecifier(this);
+    } else {
+        return visitor.visitChildren(this);
+    }
 };
 
 
@@ -5621,6 +6444,7 @@ CParser.prototype.atomicTypeSpecifier = function() {
     return localctx;
 };
 
+
 function TypeQualifierContext(parser, parent, invokingState) {
 	if(parent===undefined) {
 	    parent = null;
@@ -5637,6 +6461,21 @@ function TypeQualifierContext(parser, parent, invokingState) {
 TypeQualifierContext.prototype = Object.create(antlr4.ParserRuleContext.prototype);
 TypeQualifierContext.prototype.constructor = TypeQualifierContext;
 
+TypeQualifierContext.prototype.Const = function() {
+    return this.getToken(CParser.Const, 0);
+};
+
+TypeQualifierContext.prototype.Restrict = function() {
+    return this.getToken(CParser.Restrict, 0);
+};
+
+TypeQualifierContext.prototype.Volatile = function() {
+    return this.getToken(CParser.Volatile, 0);
+};
+
+TypeQualifierContext.prototype.Atomic = function() {
+    return this.getToken(CParser.Atomic, 0);
+};
 
 TypeQualifierContext.prototype.enterRule = function(listener) {
     if(listener instanceof CListener ) {
@@ -5648,6 +6487,14 @@ TypeQualifierContext.prototype.exitRule = function(listener) {
     if(listener instanceof CListener ) {
         listener.exitTypeQualifier(this);
 	}
+};
+
+TypeQualifierContext.prototype.accept = function(visitor) {
+    if ( visitor instanceof CVisitor ) {
+        return visitor.visitTypeQualifier(this);
+    } else {
+        return visitor.visitChildren(this);
+    }
 };
 
 
@@ -5685,6 +6532,7 @@ CParser.prototype.typeQualifier = function() {
     return localctx;
 };
 
+
 function FunctionSpecifierContext(parser, parent, invokingState) {
 	if(parent===undefined) {
 	    parent = null;
@@ -5701,12 +6549,28 @@ function FunctionSpecifierContext(parser, parent, invokingState) {
 FunctionSpecifierContext.prototype = Object.create(antlr4.ParserRuleContext.prototype);
 FunctionSpecifierContext.prototype.constructor = FunctionSpecifierContext;
 
+FunctionSpecifierContext.prototype.Inline = function() {
+    return this.getToken(CParser.Inline, 0);
+};
+
+FunctionSpecifierContext.prototype.Noreturn = function() {
+    return this.getToken(CParser.Noreturn, 0);
+};
+
 FunctionSpecifierContext.prototype.gccAttributeSpecifier = function() {
     return this.getTypedRuleContext(GccAttributeSpecifierContext,0);
 };
 
+FunctionSpecifierContext.prototype.LeftParen = function() {
+    return this.getToken(CParser.LeftParen, 0);
+};
+
 FunctionSpecifierContext.prototype.Identifier = function() {
     return this.getToken(CParser.Identifier, 0);
+};
+
+FunctionSpecifierContext.prototype.RightParen = function() {
+    return this.getToken(CParser.RightParen, 0);
 };
 
 FunctionSpecifierContext.prototype.enterRule = function(listener) {
@@ -5719,6 +6583,14 @@ FunctionSpecifierContext.prototype.exitRule = function(listener) {
     if(listener instanceof CListener ) {
         listener.exitFunctionSpecifier(this);
 	}
+};
+
+FunctionSpecifierContext.prototype.accept = function(visitor) {
+    if ( visitor instanceof CVisitor ) {
+        return visitor.visitFunctionSpecifier(this);
+    } else {
+        return visitor.visitChildren(this);
+    }
 };
 
 
@@ -5783,6 +6655,7 @@ CParser.prototype.functionSpecifier = function() {
     return localctx;
 };
 
+
 function AlignmentSpecifierContext(parser, parent, invokingState) {
 	if(parent===undefined) {
 	    parent = null;
@@ -5799,8 +6672,20 @@ function AlignmentSpecifierContext(parser, parent, invokingState) {
 AlignmentSpecifierContext.prototype = Object.create(antlr4.ParserRuleContext.prototype);
 AlignmentSpecifierContext.prototype.constructor = AlignmentSpecifierContext;
 
+AlignmentSpecifierContext.prototype.Alignas = function() {
+    return this.getToken(CParser.Alignas, 0);
+};
+
+AlignmentSpecifierContext.prototype.LeftParen = function() {
+    return this.getToken(CParser.LeftParen, 0);
+};
+
 AlignmentSpecifierContext.prototype.typeName = function() {
     return this.getTypedRuleContext(TypeNameContext,0);
+};
+
+AlignmentSpecifierContext.prototype.RightParen = function() {
+    return this.getToken(CParser.RightParen, 0);
 };
 
 AlignmentSpecifierContext.prototype.constantExpression = function() {
@@ -5817,6 +6702,14 @@ AlignmentSpecifierContext.prototype.exitRule = function(listener) {
     if(listener instanceof CListener ) {
         listener.exitAlignmentSpecifier(this);
 	}
+};
+
+AlignmentSpecifierContext.prototype.accept = function(visitor) {
+    if ( visitor instanceof CVisitor ) {
+        return visitor.visitAlignmentSpecifier(this);
+    } else {
+        return visitor.visitChildren(this);
+    }
 };
 
 
@@ -5872,6 +6765,7 @@ CParser.prototype.alignmentSpecifier = function() {
     return localctx;
 };
 
+
 function DeclaratorContext(parser, parent, invokingState) {
 	if(parent===undefined) {
 	    parent = null;
@@ -5917,6 +6811,14 @@ DeclaratorContext.prototype.exitRule = function(listener) {
     if(listener instanceof CListener ) {
         listener.exitDeclarator(this);
 	}
+};
+
+DeclaratorContext.prototype.accept = function(visitor) {
+    if ( visitor instanceof CVisitor ) {
+        return visitor.visitDeclarator(this);
+    } else {
+        return visitor.visitChildren(this);
+    }
 };
 
 
@@ -5968,6 +6870,7 @@ CParser.prototype.declarator = function() {
     return localctx;
 };
 
+
 function DirectDeclaratorContext(parser, parent, invokingState) {
 	if(parent===undefined) {
 	    parent = null;
@@ -5988,8 +6891,20 @@ DirectDeclaratorContext.prototype.Identifier = function() {
     return this.getToken(CParser.Identifier, 0);
 };
 
+DirectDeclaratorContext.prototype.LeftParen = function() {
+    return this.getToken(CParser.LeftParen, 0);
+};
+
 DirectDeclaratorContext.prototype.declarator = function() {
     return this.getTypedRuleContext(DeclaratorContext,0);
+};
+
+DirectDeclaratorContext.prototype.RightParen = function() {
+    return this.getToken(CParser.RightParen, 0);
+};
+
+DirectDeclaratorContext.prototype.Colon = function() {
+    return this.getToken(CParser.Colon, 0);
 };
 
 DirectDeclaratorContext.prototype.DigitSequence = function() {
@@ -6008,12 +6923,28 @@ DirectDeclaratorContext.prototype.typeSpecifier = function() {
     return this.getTypedRuleContext(TypeSpecifierContext,0);
 };
 
+DirectDeclaratorContext.prototype.LeftBracket = function() {
+    return this.getToken(CParser.LeftBracket, 0);
+};
+
+DirectDeclaratorContext.prototype.RightBracket = function() {
+    return this.getToken(CParser.RightBracket, 0);
+};
+
 DirectDeclaratorContext.prototype.typeQualifierList = function() {
     return this.getTypedRuleContext(TypeQualifierListContext,0);
 };
 
 DirectDeclaratorContext.prototype.assignmentExpression = function() {
     return this.getTypedRuleContext(AssignmentExpressionContext,0);
+};
+
+DirectDeclaratorContext.prototype.Static = function() {
+    return this.getToken(CParser.Static, 0);
+};
+
+DirectDeclaratorContext.prototype.Star = function() {
+    return this.getToken(CParser.Star, 0);
 };
 
 DirectDeclaratorContext.prototype.parameterTypeList = function() {
@@ -6034,6 +6965,14 @@ DirectDeclaratorContext.prototype.exitRule = function(listener) {
     if(listener instanceof CListener ) {
         listener.exitDirectDeclarator(this);
 	}
+};
+
+DirectDeclaratorContext.prototype.accept = function(visitor) {
+    if ( visitor instanceof CVisitor ) {
+        return visitor.visitDirectDeclarator(this);
+    } else {
+        return visitor.visitChildren(this);
+    }
 };
 
 
@@ -6265,6 +7204,7 @@ CParser.prototype.directDeclarator = function(_p) {
     return localctx;
 };
 
+
 function GccDeclaratorExtensionContext(parser, parent, invokingState) {
 	if(parent===undefined) {
 	    parent = null;
@@ -6280,6 +7220,14 @@ function GccDeclaratorExtensionContext(parser, parent, invokingState) {
 
 GccDeclaratorExtensionContext.prototype = Object.create(antlr4.ParserRuleContext.prototype);
 GccDeclaratorExtensionContext.prototype.constructor = GccDeclaratorExtensionContext;
+
+GccDeclaratorExtensionContext.prototype.LeftParen = function() {
+    return this.getToken(CParser.LeftParen, 0);
+};
+
+GccDeclaratorExtensionContext.prototype.RightParen = function() {
+    return this.getToken(CParser.RightParen, 0);
+};
 
 GccDeclaratorExtensionContext.prototype.StringLiteral = function(i) {
 	if(i===undefined) {
@@ -6307,6 +7255,14 @@ GccDeclaratorExtensionContext.prototype.exitRule = function(listener) {
     if(listener instanceof CListener ) {
         listener.exitGccDeclaratorExtension(this);
 	}
+};
+
+GccDeclaratorExtensionContext.prototype.accept = function(visitor) {
+    if ( visitor instanceof CVisitor ) {
+        return visitor.visitGccDeclaratorExtension(this);
+    } else {
+        return visitor.visitChildren(this);
+    }
 };
 
 
@@ -6364,6 +7320,7 @@ CParser.prototype.gccDeclaratorExtension = function() {
     return localctx;
 };
 
+
 function GccAttributeSpecifierContext(parser, parent, invokingState) {
 	if(parent===undefined) {
 	    parent = null;
@@ -6380,9 +7337,33 @@ function GccAttributeSpecifierContext(parser, parent, invokingState) {
 GccAttributeSpecifierContext.prototype = Object.create(antlr4.ParserRuleContext.prototype);
 GccAttributeSpecifierContext.prototype.constructor = GccAttributeSpecifierContext;
 
+GccAttributeSpecifierContext.prototype.LeftParen = function(i) {
+	if(i===undefined) {
+		i = null;
+	}
+    if(i===null) {
+        return this.getTokens(CParser.LeftParen);
+    } else {
+        return this.getToken(CParser.LeftParen, i);
+    }
+};
+
+
 GccAttributeSpecifierContext.prototype.gccAttributeList = function() {
     return this.getTypedRuleContext(GccAttributeListContext,0);
 };
+
+GccAttributeSpecifierContext.prototype.RightParen = function(i) {
+	if(i===undefined) {
+		i = null;
+	}
+    if(i===null) {
+        return this.getTokens(CParser.RightParen);
+    } else {
+        return this.getToken(CParser.RightParen, i);
+    }
+};
+
 
 GccAttributeSpecifierContext.prototype.enterRule = function(listener) {
     if(listener instanceof CListener ) {
@@ -6394,6 +7375,14 @@ GccAttributeSpecifierContext.prototype.exitRule = function(listener) {
     if(listener instanceof CListener ) {
         listener.exitGccAttributeSpecifier(this);
 	}
+};
+
+GccAttributeSpecifierContext.prototype.accept = function(visitor) {
+    if ( visitor instanceof CVisitor ) {
+        return visitor.visitGccAttributeSpecifier(this);
+    } else {
+        return visitor.visitChildren(this);
+    }
 };
 
 
@@ -6433,6 +7422,7 @@ CParser.prototype.gccAttributeSpecifier = function() {
     return localctx;
 };
 
+
 function GccAttributeListContext(parser, parent, invokingState) {
 	if(parent===undefined) {
 	    parent = null;
@@ -6460,6 +7450,18 @@ GccAttributeListContext.prototype.gccAttribute = function(i) {
     }
 };
 
+GccAttributeListContext.prototype.Comma = function(i) {
+	if(i===undefined) {
+		i = null;
+	}
+    if(i===null) {
+        return this.getTokens(CParser.Comma);
+    } else {
+        return this.getToken(CParser.Comma, i);
+    }
+};
+
+
 GccAttributeListContext.prototype.enterRule = function(listener) {
     if(listener instanceof CListener ) {
         listener.enterGccAttributeList(this);
@@ -6470,6 +7472,14 @@ GccAttributeListContext.prototype.exitRule = function(listener) {
     if(listener instanceof CListener ) {
         listener.exitGccAttributeList(this);
 	}
+};
+
+GccAttributeListContext.prototype.accept = function(visitor) {
+    if ( visitor instanceof CVisitor ) {
+        return visitor.visitGccAttributeList(this);
+    } else {
+        return visitor.visitChildren(this);
+    }
 };
 
 
@@ -6525,6 +7535,7 @@ CParser.prototype.gccAttributeList = function() {
     return localctx;
 };
 
+
 function GccAttributeContext(parser, parent, invokingState) {
 	if(parent===undefined) {
 	    parent = null;
@@ -6541,6 +7552,34 @@ function GccAttributeContext(parser, parent, invokingState) {
 GccAttributeContext.prototype = Object.create(antlr4.ParserRuleContext.prototype);
 GccAttributeContext.prototype.constructor = GccAttributeContext;
 
+GccAttributeContext.prototype.Comma = function() {
+    return this.getToken(CParser.Comma, 0);
+};
+
+GccAttributeContext.prototype.LeftParen = function(i) {
+	if(i===undefined) {
+		i = null;
+	}
+    if(i===null) {
+        return this.getTokens(CParser.LeftParen);
+    } else {
+        return this.getToken(CParser.LeftParen, i);
+    }
+};
+
+
+GccAttributeContext.prototype.RightParen = function(i) {
+	if(i===undefined) {
+		i = null;
+	}
+    if(i===null) {
+        return this.getTokens(CParser.RightParen);
+    } else {
+        return this.getToken(CParser.RightParen, i);
+    }
+};
+
+
 GccAttributeContext.prototype.argumentExpressionList = function() {
     return this.getTypedRuleContext(ArgumentExpressionListContext,0);
 };
@@ -6555,6 +7594,14 @@ GccAttributeContext.prototype.exitRule = function(listener) {
     if(listener instanceof CListener ) {
         listener.exitGccAttribute(this);
 	}
+};
+
+GccAttributeContext.prototype.accept = function(visitor) {
+    if ( visitor instanceof CVisitor ) {
+        return visitor.visitGccAttribute(this);
+    } else {
+        return visitor.visitChildren(this);
+    }
 };
 
 
@@ -6736,6 +7783,7 @@ CParser.prototype.gccAttribute = function() {
     return localctx;
 };
 
+
 function NestedParenthesesBlockContext(parser, parent, invokingState) {
 	if(parent===undefined) {
 	    parent = null;
@@ -6752,6 +7800,18 @@ function NestedParenthesesBlockContext(parser, parent, invokingState) {
 NestedParenthesesBlockContext.prototype = Object.create(antlr4.ParserRuleContext.prototype);
 NestedParenthesesBlockContext.prototype.constructor = NestedParenthesesBlockContext;
 
+NestedParenthesesBlockContext.prototype.LeftParen = function(i) {
+	if(i===undefined) {
+		i = null;
+	}
+    if(i===null) {
+        return this.getTokens(CParser.LeftParen);
+    } else {
+        return this.getToken(CParser.LeftParen, i);
+    }
+};
+
+
 NestedParenthesesBlockContext.prototype.nestedParenthesesBlock = function(i) {
     if(i===undefined) {
         i = null;
@@ -6763,6 +7823,18 @@ NestedParenthesesBlockContext.prototype.nestedParenthesesBlock = function(i) {
     }
 };
 
+NestedParenthesesBlockContext.prototype.RightParen = function(i) {
+	if(i===undefined) {
+		i = null;
+	}
+    if(i===null) {
+        return this.getTokens(CParser.RightParen);
+    } else {
+        return this.getToken(CParser.RightParen, i);
+    }
+};
+
+
 NestedParenthesesBlockContext.prototype.enterRule = function(listener) {
     if(listener instanceof CListener ) {
         listener.enterNestedParenthesesBlock(this);
@@ -6773,6 +7845,14 @@ NestedParenthesesBlockContext.prototype.exitRule = function(listener) {
     if(listener instanceof CListener ) {
         listener.exitNestedParenthesesBlock(this);
 	}
+};
+
+NestedParenthesesBlockContext.prototype.accept = function(visitor) {
+    if ( visitor instanceof CVisitor ) {
+        return visitor.visitNestedParenthesesBlock(this);
+    } else {
+        return visitor.visitChildren(this);
+    }
 };
 
 
@@ -6948,6 +8028,7 @@ CParser.prototype.nestedParenthesesBlock = function() {
     return localctx;
 };
 
+
 function PointerContext(parser, parent, invokingState) {
 	if(parent===undefined) {
 	    parent = null;
@@ -6964,12 +8045,20 @@ function PointerContext(parser, parent, invokingState) {
 PointerContext.prototype = Object.create(antlr4.ParserRuleContext.prototype);
 PointerContext.prototype.constructor = PointerContext;
 
+PointerContext.prototype.Star = function() {
+    return this.getToken(CParser.Star, 0);
+};
+
 PointerContext.prototype.typeQualifierList = function() {
     return this.getTypedRuleContext(TypeQualifierListContext,0);
 };
 
 PointerContext.prototype.pointer = function() {
     return this.getTypedRuleContext(PointerContext,0);
+};
+
+PointerContext.prototype.Caret = function() {
+    return this.getToken(CParser.Caret, 0);
 };
 
 PointerContext.prototype.enterRule = function(listener) {
@@ -6982,6 +8071,14 @@ PointerContext.prototype.exitRule = function(listener) {
     if(listener instanceof CListener ) {
         listener.exitPointer(this);
 	}
+};
+
+PointerContext.prototype.accept = function(visitor) {
+    if ( visitor instanceof CVisitor ) {
+        return visitor.visitPointer(this);
+    } else {
+        return visitor.visitChildren(this);
+    }
 };
 
 
@@ -7074,6 +8171,7 @@ CParser.prototype.pointer = function() {
     return localctx;
 };
 
+
 function TypeQualifierListContext(parser, parent, invokingState) {
 	if(parent===undefined) {
 	    parent = null;
@@ -7108,6 +8206,14 @@ TypeQualifierListContext.prototype.exitRule = function(listener) {
     if(listener instanceof CListener ) {
         listener.exitTypeQualifierList(this);
 	}
+};
+
+TypeQualifierListContext.prototype.accept = function(visitor) {
+    if ( visitor instanceof CVisitor ) {
+        return visitor.visitTypeQualifierList(this);
+    } else {
+        return visitor.visitChildren(this);
+    }
 };
 
 
@@ -7164,6 +8270,7 @@ CParser.prototype.typeQualifierList = function(_p) {
     return localctx;
 };
 
+
 function ParameterTypeListContext(parser, parent, invokingState) {
 	if(parent===undefined) {
 	    parent = null;
@@ -7184,6 +8291,14 @@ ParameterTypeListContext.prototype.parameterList = function() {
     return this.getTypedRuleContext(ParameterListContext,0);
 };
 
+ParameterTypeListContext.prototype.Comma = function() {
+    return this.getToken(CParser.Comma, 0);
+};
+
+ParameterTypeListContext.prototype.Ellipsis = function() {
+    return this.getToken(CParser.Ellipsis, 0);
+};
+
 ParameterTypeListContext.prototype.enterRule = function(listener) {
     if(listener instanceof CListener ) {
         listener.enterParameterTypeList(this);
@@ -7194,6 +8309,14 @@ ParameterTypeListContext.prototype.exitRule = function(listener) {
     if(listener instanceof CListener ) {
         listener.exitParameterTypeList(this);
 	}
+};
+
+ParameterTypeListContext.prototype.accept = function(visitor) {
+    if ( visitor instanceof CVisitor ) {
+        return visitor.visitParameterTypeList(this);
+    } else {
+        return visitor.visitChildren(this);
+    }
 };
 
 
@@ -7241,6 +8364,7 @@ CParser.prototype.parameterTypeList = function() {
     return localctx;
 };
 
+
 function ParameterListContext(parser, parent, invokingState) {
 	if(parent===undefined) {
 	    parent = null;
@@ -7265,6 +8389,10 @@ ParameterListContext.prototype.parameterList = function() {
     return this.getTypedRuleContext(ParameterListContext,0);
 };
 
+ParameterListContext.prototype.Comma = function() {
+    return this.getToken(CParser.Comma, 0);
+};
+
 ParameterListContext.prototype.enterRule = function(listener) {
     if(listener instanceof CListener ) {
         listener.enterParameterList(this);
@@ -7275,6 +8403,14 @@ ParameterListContext.prototype.exitRule = function(listener) {
     if(listener instanceof CListener ) {
         listener.exitParameterList(this);
 	}
+};
+
+ParameterListContext.prototype.accept = function(visitor) {
+    if ( visitor instanceof CVisitor ) {
+        return visitor.visitParameterList(this);
+    } else {
+        return visitor.visitChildren(this);
+    }
 };
 
 
@@ -7333,6 +8469,7 @@ CParser.prototype.parameterList = function(_p) {
     return localctx;
 };
 
+
 function ParameterDeclarationContext(parser, parent, invokingState) {
 	if(parent===undefined) {
 	    parent = null;
@@ -7375,6 +8512,14 @@ ParameterDeclarationContext.prototype.exitRule = function(listener) {
     if(listener instanceof CListener ) {
         listener.exitParameterDeclaration(this);
 	}
+};
+
+ParameterDeclarationContext.prototype.accept = function(visitor) {
+    if ( visitor instanceof CVisitor ) {
+        return visitor.visitParameterDeclaration(this);
+    } else {
+        return visitor.visitChildren(this);
+    }
 };
 
 
@@ -7428,6 +8573,7 @@ CParser.prototype.parameterDeclaration = function() {
     return localctx;
 };
 
+
 function IdentifierListContext(parser, parent, invokingState) {
 	if(parent===undefined) {
 	    parent = null;
@@ -7452,6 +8598,10 @@ IdentifierListContext.prototype.identifierList = function() {
     return this.getTypedRuleContext(IdentifierListContext,0);
 };
 
+IdentifierListContext.prototype.Comma = function() {
+    return this.getToken(CParser.Comma, 0);
+};
+
 IdentifierListContext.prototype.enterRule = function(listener) {
     if(listener instanceof CListener ) {
         listener.enterIdentifierList(this);
@@ -7462,6 +8612,14 @@ IdentifierListContext.prototype.exitRule = function(listener) {
     if(listener instanceof CListener ) {
         listener.exitIdentifierList(this);
 	}
+};
+
+IdentifierListContext.prototype.accept = function(visitor) {
+    if ( visitor instanceof CVisitor ) {
+        return visitor.visitIdentifierList(this);
+    } else {
+        return visitor.visitChildren(this);
+    }
 };
 
 
@@ -7520,6 +8678,7 @@ CParser.prototype.identifierList = function(_p) {
     return localctx;
 };
 
+
 function TypeNameContext(parser, parent, invokingState) {
 	if(parent===undefined) {
 	    parent = null;
@@ -7554,6 +8713,14 @@ TypeNameContext.prototype.exitRule = function(listener) {
     if(listener instanceof CListener ) {
         listener.exitTypeName(this);
 	}
+};
+
+TypeNameContext.prototype.accept = function(visitor) {
+    if ( visitor instanceof CVisitor ) {
+        return visitor.visitTypeName(this);
+    } else {
+        return visitor.visitChildren(this);
+    }
 };
 
 
@@ -7591,6 +8758,7 @@ CParser.prototype.typeName = function() {
     }
     return localctx;
 };
+
 
 function AbstractDeclaratorContext(parser, parent, invokingState) {
 	if(parent===undefined) {
@@ -7637,6 +8805,14 @@ AbstractDeclaratorContext.prototype.exitRule = function(listener) {
     if(listener instanceof CListener ) {
         listener.exitAbstractDeclarator(this);
 	}
+};
+
+AbstractDeclaratorContext.prototype.accept = function(visitor) {
+    if ( visitor instanceof CVisitor ) {
+        return visitor.visitAbstractDeclarator(this);
+    } else {
+        return visitor.visitChildren(this);
+    }
 };
 
 
@@ -7702,6 +8878,7 @@ CParser.prototype.abstractDeclarator = function() {
     return localctx;
 };
 
+
 function DirectAbstractDeclaratorContext(parser, parent, invokingState) {
 	if(parent===undefined) {
 	    parent = null;
@@ -7718,8 +8895,16 @@ function DirectAbstractDeclaratorContext(parser, parent, invokingState) {
 DirectAbstractDeclaratorContext.prototype = Object.create(antlr4.ParserRuleContext.prototype);
 DirectAbstractDeclaratorContext.prototype.constructor = DirectAbstractDeclaratorContext;
 
+DirectAbstractDeclaratorContext.prototype.LeftParen = function() {
+    return this.getToken(CParser.LeftParen, 0);
+};
+
 DirectAbstractDeclaratorContext.prototype.abstractDeclarator = function() {
     return this.getTypedRuleContext(AbstractDeclaratorContext,0);
+};
+
+DirectAbstractDeclaratorContext.prototype.RightParen = function() {
+    return this.getToken(CParser.RightParen, 0);
 };
 
 DirectAbstractDeclaratorContext.prototype.gccDeclaratorExtension = function(i) {
@@ -7733,12 +8918,28 @@ DirectAbstractDeclaratorContext.prototype.gccDeclaratorExtension = function(i) {
     }
 };
 
+DirectAbstractDeclaratorContext.prototype.LeftBracket = function() {
+    return this.getToken(CParser.LeftBracket, 0);
+};
+
+DirectAbstractDeclaratorContext.prototype.RightBracket = function() {
+    return this.getToken(CParser.RightBracket, 0);
+};
+
 DirectAbstractDeclaratorContext.prototype.typeQualifierList = function() {
     return this.getTypedRuleContext(TypeQualifierListContext,0);
 };
 
 DirectAbstractDeclaratorContext.prototype.assignmentExpression = function() {
     return this.getTypedRuleContext(AssignmentExpressionContext,0);
+};
+
+DirectAbstractDeclaratorContext.prototype.Static = function() {
+    return this.getToken(CParser.Static, 0);
+};
+
+DirectAbstractDeclaratorContext.prototype.Star = function() {
+    return this.getToken(CParser.Star, 0);
 };
 
 DirectAbstractDeclaratorContext.prototype.parameterTypeList = function() {
@@ -7759,6 +8960,14 @@ DirectAbstractDeclaratorContext.prototype.exitRule = function(listener) {
     if(listener instanceof CListener ) {
         listener.exitDirectAbstractDeclarator(this);
 	}
+};
+
+DirectAbstractDeclaratorContext.prototype.accept = function(visitor) {
+    if ( visitor instanceof CVisitor ) {
+        return visitor.visitDirectAbstractDeclarator(this);
+    } else {
+        return visitor.visitChildren(this);
+    }
 };
 
 
@@ -8052,6 +9261,7 @@ CParser.prototype.directAbstractDeclarator = function(_p) {
     return localctx;
 };
 
+
 function TypedefNameContext(parser, parent, invokingState) {
 	if(parent===undefined) {
 	    parent = null;
@@ -8084,6 +9294,14 @@ TypedefNameContext.prototype.exitRule = function(listener) {
 	}
 };
 
+TypedefNameContext.prototype.accept = function(visitor) {
+    if ( visitor instanceof CVisitor ) {
+        return visitor.visitTypedefName(this);
+    } else {
+        return visitor.visitChildren(this);
+    }
+};
+
 
 
 
@@ -8111,6 +9329,7 @@ CParser.prototype.typedefName = function() {
     return localctx;
 };
 
+
 function InitializerContext(parser, parent, invokingState) {
 	if(parent===undefined) {
 	    parent = null;
@@ -8131,8 +9350,20 @@ InitializerContext.prototype.assignmentExpression = function() {
     return this.getTypedRuleContext(AssignmentExpressionContext,0);
 };
 
+InitializerContext.prototype.LeftBrace = function() {
+    return this.getToken(CParser.LeftBrace, 0);
+};
+
 InitializerContext.prototype.initializerList = function() {
     return this.getTypedRuleContext(InitializerListContext,0);
+};
+
+InitializerContext.prototype.RightBrace = function() {
+    return this.getToken(CParser.RightBrace, 0);
+};
+
+InitializerContext.prototype.Comma = function() {
+    return this.getToken(CParser.Comma, 0);
 };
 
 InitializerContext.prototype.enterRule = function(listener) {
@@ -8145,6 +9376,14 @@ InitializerContext.prototype.exitRule = function(listener) {
     if(listener instanceof CListener ) {
         listener.exitInitializer(this);
 	}
+};
+
+InitializerContext.prototype.accept = function(visitor) {
+    if ( visitor instanceof CVisitor ) {
+        return visitor.visitInitializer(this);
+    } else {
+        return visitor.visitChildren(this);
+    }
 };
 
 
@@ -8204,6 +9443,7 @@ CParser.prototype.initializer = function() {
     return localctx;
 };
 
+
 function InitializerListContext(parser, parent, invokingState) {
 	if(parent===undefined) {
 	    parent = null;
@@ -8232,6 +9472,10 @@ InitializerListContext.prototype.initializerList = function() {
     return this.getTypedRuleContext(InitializerListContext,0);
 };
 
+InitializerListContext.prototype.Comma = function() {
+    return this.getToken(CParser.Comma, 0);
+};
+
 InitializerListContext.prototype.enterRule = function(listener) {
     if(listener instanceof CListener ) {
         listener.enterInitializerList(this);
@@ -8242,6 +9486,14 @@ InitializerListContext.prototype.exitRule = function(listener) {
     if(listener instanceof CListener ) {
         listener.exitInitializerList(this);
 	}
+};
+
+InitializerListContext.prototype.accept = function(visitor) {
+    if ( visitor instanceof CVisitor ) {
+        return visitor.visitInitializerList(this);
+    } else {
+        return visitor.visitChildren(this);
+    }
 };
 
 
@@ -8317,6 +9569,7 @@ CParser.prototype.initializerList = function(_p) {
     return localctx;
 };
 
+
 function DesignationContext(parser, parent, invokingState) {
 	if(parent===undefined) {
 	    parent = null;
@@ -8337,6 +9590,10 @@ DesignationContext.prototype.designatorList = function() {
     return this.getTypedRuleContext(DesignatorListContext,0);
 };
 
+DesignationContext.prototype.Assign = function() {
+    return this.getToken(CParser.Assign, 0);
+};
+
 DesignationContext.prototype.enterRule = function(listener) {
     if(listener instanceof CListener ) {
         listener.enterDesignation(this);
@@ -8347,6 +9604,14 @@ DesignationContext.prototype.exitRule = function(listener) {
     if(listener instanceof CListener ) {
         listener.exitDesignation(this);
 	}
+};
+
+DesignationContext.prototype.accept = function(visitor) {
+    if ( visitor instanceof CVisitor ) {
+        return visitor.visitDesignation(this);
+    } else {
+        return visitor.visitChildren(this);
+    }
 };
 
 
@@ -8377,6 +9642,7 @@ CParser.prototype.designation = function() {
     }
     return localctx;
 };
+
 
 function DesignatorListContext(parser, parent, invokingState) {
 	if(parent===undefined) {
@@ -8412,6 +9678,14 @@ DesignatorListContext.prototype.exitRule = function(listener) {
     if(listener instanceof CListener ) {
         listener.exitDesignatorList(this);
 	}
+};
+
+DesignatorListContext.prototype.accept = function(visitor) {
+    if ( visitor instanceof CVisitor ) {
+        return visitor.visitDesignatorList(this);
+    } else {
+        return visitor.visitChildren(this);
+    }
 };
 
 
@@ -8468,6 +9742,7 @@ CParser.prototype.designatorList = function(_p) {
     return localctx;
 };
 
+
 function DesignatorContext(parser, parent, invokingState) {
 	if(parent===undefined) {
 	    parent = null;
@@ -8484,8 +9759,20 @@ function DesignatorContext(parser, parent, invokingState) {
 DesignatorContext.prototype = Object.create(antlr4.ParserRuleContext.prototype);
 DesignatorContext.prototype.constructor = DesignatorContext;
 
+DesignatorContext.prototype.LeftBracket = function() {
+    return this.getToken(CParser.LeftBracket, 0);
+};
+
 DesignatorContext.prototype.constantExpression = function() {
     return this.getTypedRuleContext(ConstantExpressionContext,0);
+};
+
+DesignatorContext.prototype.RightBracket = function() {
+    return this.getToken(CParser.RightBracket, 0);
+};
+
+DesignatorContext.prototype.Dot = function() {
+    return this.getToken(CParser.Dot, 0);
 };
 
 DesignatorContext.prototype.Identifier = function() {
@@ -8502,6 +9789,14 @@ DesignatorContext.prototype.exitRule = function(listener) {
     if(listener instanceof CListener ) {
         listener.exitDesignator(this);
 	}
+};
+
+DesignatorContext.prototype.accept = function(visitor) {
+    if ( visitor instanceof CVisitor ) {
+        return visitor.visitDesignator(this);
+    } else {
+        return visitor.visitChildren(this);
+    }
 };
 
 
@@ -8550,6 +9845,7 @@ CParser.prototype.designator = function() {
     return localctx;
 };
 
+
 function StaticAssertDeclarationContext(parser, parent, invokingState) {
 	if(parent===undefined) {
 	    parent = null;
@@ -8566,8 +9862,28 @@ function StaticAssertDeclarationContext(parser, parent, invokingState) {
 StaticAssertDeclarationContext.prototype = Object.create(antlr4.ParserRuleContext.prototype);
 StaticAssertDeclarationContext.prototype.constructor = StaticAssertDeclarationContext;
 
+StaticAssertDeclarationContext.prototype.StaticAssert = function() {
+    return this.getToken(CParser.StaticAssert, 0);
+};
+
+StaticAssertDeclarationContext.prototype.LeftParen = function() {
+    return this.getToken(CParser.LeftParen, 0);
+};
+
 StaticAssertDeclarationContext.prototype.constantExpression = function() {
     return this.getTypedRuleContext(ConstantExpressionContext,0);
+};
+
+StaticAssertDeclarationContext.prototype.Comma = function() {
+    return this.getToken(CParser.Comma, 0);
+};
+
+StaticAssertDeclarationContext.prototype.RightParen = function() {
+    return this.getToken(CParser.RightParen, 0);
+};
+
+StaticAssertDeclarationContext.prototype.Semi = function() {
+    return this.getToken(CParser.Semi, 0);
 };
 
 StaticAssertDeclarationContext.prototype.StringLiteral = function(i) {
@@ -8592,6 +9908,14 @@ StaticAssertDeclarationContext.prototype.exitRule = function(listener) {
     if(listener instanceof CListener ) {
         listener.exitStaticAssertDeclaration(this);
 	}
+};
+
+StaticAssertDeclarationContext.prototype.accept = function(visitor) {
+    if ( visitor instanceof CVisitor ) {
+        return visitor.visitStaticAssertDeclaration(this);
+    } else {
+        return visitor.visitChildren(this);
+    }
 };
 
 
@@ -8642,6 +9966,7 @@ CParser.prototype.staticAssertDeclaration = function() {
     return localctx;
 };
 
+
 function StatementContext(parser, parent, invokingState) {
 	if(parent===undefined) {
 	    parent = null;
@@ -8682,6 +10007,22 @@ StatementContext.prototype.jumpStatement = function() {
     return this.getTypedRuleContext(JumpStatementContext,0);
 };
 
+StatementContext.prototype.LeftParen = function() {
+    return this.getToken(CParser.LeftParen, 0);
+};
+
+StatementContext.prototype.RightParen = function() {
+    return this.getToken(CParser.RightParen, 0);
+};
+
+StatementContext.prototype.Semi = function() {
+    return this.getToken(CParser.Semi, 0);
+};
+
+StatementContext.prototype.Volatile = function() {
+    return this.getToken(CParser.Volatile, 0);
+};
+
 StatementContext.prototype.logicalOrExpression = function(i) {
     if(i===undefined) {
         i = null;
@@ -8693,6 +10034,30 @@ StatementContext.prototype.logicalOrExpression = function(i) {
     }
 };
 
+StatementContext.prototype.Colon = function(i) {
+	if(i===undefined) {
+		i = null;
+	}
+    if(i===null) {
+        return this.getTokens(CParser.Colon);
+    } else {
+        return this.getToken(CParser.Colon, i);
+    }
+};
+
+
+StatementContext.prototype.Comma = function(i) {
+	if(i===undefined) {
+		i = null;
+	}
+    if(i===null) {
+        return this.getTokens(CParser.Comma);
+    } else {
+        return this.getToken(CParser.Comma, i);
+    }
+};
+
+
 StatementContext.prototype.enterRule = function(listener) {
     if(listener instanceof CListener ) {
         listener.enterStatement(this);
@@ -8703,6 +10068,14 @@ StatementContext.prototype.exitRule = function(listener) {
     if(listener instanceof CListener ) {
         listener.exitStatement(this);
 	}
+};
+
+StatementContext.prototype.accept = function(visitor) {
+    if ( visitor instanceof CVisitor ) {
+        return visitor.visitStatement(this);
+    } else {
+        return visitor.visitChildren(this);
+    }
 };
 
 
@@ -8849,6 +10222,7 @@ CParser.prototype.statement = function() {
     return localctx;
 };
 
+
 function LabeledStatementContext(parser, parent, invokingState) {
 	if(parent===undefined) {
 	    parent = null;
@@ -8869,12 +10243,24 @@ LabeledStatementContext.prototype.Identifier = function() {
     return this.getToken(CParser.Identifier, 0);
 };
 
+LabeledStatementContext.prototype.Colon = function() {
+    return this.getToken(CParser.Colon, 0);
+};
+
 LabeledStatementContext.prototype.statement = function() {
     return this.getTypedRuleContext(StatementContext,0);
 };
 
+LabeledStatementContext.prototype.Case = function() {
+    return this.getToken(CParser.Case, 0);
+};
+
 LabeledStatementContext.prototype.constantExpression = function() {
     return this.getTypedRuleContext(ConstantExpressionContext,0);
+};
+
+LabeledStatementContext.prototype.Default = function() {
+    return this.getToken(CParser.Default, 0);
 };
 
 LabeledStatementContext.prototype.enterRule = function(listener) {
@@ -8887,6 +10273,14 @@ LabeledStatementContext.prototype.exitRule = function(listener) {
     if(listener instanceof CListener ) {
         listener.exitLabeledStatement(this);
 	}
+};
+
+LabeledStatementContext.prototype.accept = function(visitor) {
+    if ( visitor instanceof CVisitor ) {
+        return visitor.visitLabeledStatement(this);
+    } else {
+        return visitor.visitChildren(this);
+    }
 };
 
 
@@ -8948,6 +10342,7 @@ CParser.prototype.labeledStatement = function() {
     return localctx;
 };
 
+
 function CompoundStatementContext(parser, parent, invokingState) {
 	if(parent===undefined) {
 	    parent = null;
@@ -8964,6 +10359,14 @@ function CompoundStatementContext(parser, parent, invokingState) {
 CompoundStatementContext.prototype = Object.create(antlr4.ParserRuleContext.prototype);
 CompoundStatementContext.prototype.constructor = CompoundStatementContext;
 
+CompoundStatementContext.prototype.LeftBrace = function() {
+    return this.getToken(CParser.LeftBrace, 0);
+};
+
+CompoundStatementContext.prototype.RightBrace = function() {
+    return this.getToken(CParser.RightBrace, 0);
+};
+
 CompoundStatementContext.prototype.blockItemList = function() {
     return this.getTypedRuleContext(BlockItemListContext,0);
 };
@@ -8978,6 +10381,14 @@ CompoundStatementContext.prototype.exitRule = function(listener) {
     if(listener instanceof CListener ) {
         listener.exitCompoundStatement(this);
 	}
+};
+
+CompoundStatementContext.prototype.accept = function(visitor) {
+    if ( visitor instanceof CVisitor ) {
+        return visitor.visitCompoundStatement(this);
+    } else {
+        return visitor.visitChildren(this);
+    }
 };
 
 
@@ -9018,6 +10429,7 @@ CParser.prototype.compoundStatement = function() {
     return localctx;
 };
 
+
 function BlockItemListContext(parser, parent, invokingState) {
 	if(parent===undefined) {
 	    parent = null;
@@ -9052,6 +10464,14 @@ BlockItemListContext.prototype.exitRule = function(listener) {
     if(listener instanceof CListener ) {
         listener.exitBlockItemList(this);
 	}
+};
+
+BlockItemListContext.prototype.accept = function(visitor) {
+    if ( visitor instanceof CVisitor ) {
+        return visitor.visitBlockItemList(this);
+    } else {
+        return visitor.visitChildren(this);
+    }
 };
 
 
@@ -9108,6 +10528,7 @@ CParser.prototype.blockItemList = function(_p) {
     return localctx;
 };
 
+
 function BlockItemContext(parser, parent, invokingState) {
 	if(parent===undefined) {
 	    parent = null;
@@ -9142,6 +10563,14 @@ BlockItemContext.prototype.exitRule = function(listener) {
     if(listener instanceof CListener ) {
         listener.exitBlockItem(this);
 	}
+};
+
+BlockItemContext.prototype.accept = function(visitor) {
+    if ( visitor instanceof CVisitor ) {
+        return visitor.visitBlockItem(this);
+    } else {
+        return visitor.visitChildren(this);
+    }
 };
 
 
@@ -9185,6 +10614,7 @@ CParser.prototype.blockItem = function() {
     return localctx;
 };
 
+
 function ExpressionStatementContext(parser, parent, invokingState) {
 	if(parent===undefined) {
 	    parent = null;
@@ -9201,6 +10631,10 @@ function ExpressionStatementContext(parser, parent, invokingState) {
 ExpressionStatementContext.prototype = Object.create(antlr4.ParserRuleContext.prototype);
 ExpressionStatementContext.prototype.constructor = ExpressionStatementContext;
 
+ExpressionStatementContext.prototype.Semi = function() {
+    return this.getToken(CParser.Semi, 0);
+};
+
 ExpressionStatementContext.prototype.expression = function() {
     return this.getTypedRuleContext(ExpressionContext,0);
 };
@@ -9215,6 +10649,14 @@ ExpressionStatementContext.prototype.exitRule = function(listener) {
     if(listener instanceof CListener ) {
         listener.exitExpressionStatement(this);
 	}
+};
+
+ExpressionStatementContext.prototype.accept = function(visitor) {
+    if ( visitor instanceof CVisitor ) {
+        return visitor.visitExpressionStatement(this);
+    } else {
+        return visitor.visitChildren(this);
+    }
 };
 
 
@@ -9253,6 +10695,7 @@ CParser.prototype.expressionStatement = function() {
     return localctx;
 };
 
+
 function SelectionStatementContext(parser, parent, invokingState) {
 	if(parent===undefined) {
 	    parent = null;
@@ -9269,8 +10712,20 @@ function SelectionStatementContext(parser, parent, invokingState) {
 SelectionStatementContext.prototype = Object.create(antlr4.ParserRuleContext.prototype);
 SelectionStatementContext.prototype.constructor = SelectionStatementContext;
 
+SelectionStatementContext.prototype.If = function() {
+    return this.getToken(CParser.If, 0);
+};
+
+SelectionStatementContext.prototype.LeftParen = function() {
+    return this.getToken(CParser.LeftParen, 0);
+};
+
 SelectionStatementContext.prototype.expression = function() {
     return this.getTypedRuleContext(ExpressionContext,0);
+};
+
+SelectionStatementContext.prototype.RightParen = function() {
+    return this.getToken(CParser.RightParen, 0);
 };
 
 SelectionStatementContext.prototype.statement = function(i) {
@@ -9284,6 +10739,14 @@ SelectionStatementContext.prototype.statement = function(i) {
     }
 };
 
+SelectionStatementContext.prototype.Else = function() {
+    return this.getToken(CParser.Else, 0);
+};
+
+SelectionStatementContext.prototype.Switch = function() {
+    return this.getToken(CParser.Switch, 0);
+};
+
 SelectionStatementContext.prototype.enterRule = function(listener) {
     if(listener instanceof CListener ) {
         listener.enterSelectionStatement(this);
@@ -9294,6 +10757,14 @@ SelectionStatementContext.prototype.exitRule = function(listener) {
     if(listener instanceof CListener ) {
         listener.exitSelectionStatement(this);
 	}
+};
+
+SelectionStatementContext.prototype.accept = function(visitor) {
+    if ( visitor instanceof CVisitor ) {
+        return visitor.visitSelectionStatement(this);
+    } else {
+        return visitor.visitChildren(this);
+    }
 };
 
 
@@ -9362,6 +10833,7 @@ CParser.prototype.selectionStatement = function() {
     return localctx;
 };
 
+
 function IterationStatementContext(parser, parent, invokingState) {
 	if(parent===undefined) {
 	    parent = null;
@@ -9382,8 +10854,16 @@ IterationStatementContext.prototype.While = function() {
     return this.getToken(CParser.While, 0);
 };
 
+IterationStatementContext.prototype.LeftParen = function() {
+    return this.getToken(CParser.LeftParen, 0);
+};
+
 IterationStatementContext.prototype.expression = function() {
     return this.getTypedRuleContext(ExpressionContext,0);
+};
+
+IterationStatementContext.prototype.RightParen = function() {
+    return this.getToken(CParser.RightParen, 0);
 };
 
 IterationStatementContext.prototype.statement = function() {
@@ -9392,6 +10872,10 @@ IterationStatementContext.prototype.statement = function() {
 
 IterationStatementContext.prototype.Do = function() {
     return this.getToken(CParser.Do, 0);
+};
+
+IterationStatementContext.prototype.Semi = function() {
+    return this.getToken(CParser.Semi, 0);
 };
 
 IterationStatementContext.prototype.For = function() {
@@ -9412,6 +10896,14 @@ IterationStatementContext.prototype.exitRule = function(listener) {
     if(listener instanceof CListener ) {
         listener.exitIterationStatement(this);
 	}
+};
+
+IterationStatementContext.prototype.accept = function(visitor) {
+    if ( visitor instanceof CVisitor ) {
+        return visitor.visitIterationStatement(this);
+    } else {
+        return visitor.visitChildren(this);
+    }
 };
 
 
@@ -9487,6 +10979,7 @@ CParser.prototype.iterationStatement = function() {
     return localctx;
 };
 
+
 function ForConditionContext(parser, parent, invokingState) {
 	if(parent===undefined) {
 	    parent = null;
@@ -9506,6 +10999,18 @@ ForConditionContext.prototype.constructor = ForConditionContext;
 ForConditionContext.prototype.forDeclaration = function() {
     return this.getTypedRuleContext(ForDeclarationContext,0);
 };
+
+ForConditionContext.prototype.Semi = function(i) {
+	if(i===undefined) {
+		i = null;
+	}
+    if(i===null) {
+        return this.getTokens(CParser.Semi);
+    } else {
+        return this.getToken(CParser.Semi, i);
+    }
+};
+
 
 ForConditionContext.prototype.forExpression = function(i) {
     if(i===undefined) {
@@ -9532,6 +11037,14 @@ ForConditionContext.prototype.exitRule = function(listener) {
     if(listener instanceof CListener ) {
         listener.exitForCondition(this);
 	}
+};
+
+ForConditionContext.prototype.accept = function(visitor) {
+    if ( visitor instanceof CVisitor ) {
+        return visitor.visitForCondition(this);
+    } else {
+        return visitor.visitChildren(this);
+    }
 };
 
 
@@ -9622,6 +11135,7 @@ CParser.prototype.forCondition = function() {
     return localctx;
 };
 
+
 function ForDeclarationContext(parser, parent, invokingState) {
 	if(parent===undefined) {
 	    parent = null;
@@ -9656,6 +11170,14 @@ ForDeclarationContext.prototype.exitRule = function(listener) {
     if(listener instanceof CListener ) {
         listener.exitForDeclaration(this);
 	}
+};
+
+ForDeclarationContext.prototype.accept = function(visitor) {
+    if ( visitor instanceof CVisitor ) {
+        return visitor.visitForDeclaration(this);
+    } else {
+        return visitor.visitChildren(this);
+    }
 };
 
 
@@ -9701,6 +11223,7 @@ CParser.prototype.forDeclaration = function() {
     return localctx;
 };
 
+
 function ForExpressionContext(parser, parent, invokingState) {
 	if(parent===undefined) {
 	    parent = null;
@@ -9725,6 +11248,10 @@ ForExpressionContext.prototype.forExpression = function() {
     return this.getTypedRuleContext(ForExpressionContext,0);
 };
 
+ForExpressionContext.prototype.Comma = function() {
+    return this.getToken(CParser.Comma, 0);
+};
+
 ForExpressionContext.prototype.enterRule = function(listener) {
     if(listener instanceof CListener ) {
         listener.enterForExpression(this);
@@ -9735,6 +11262,14 @@ ForExpressionContext.prototype.exitRule = function(listener) {
     if(listener instanceof CListener ) {
         listener.exitForExpression(this);
 	}
+};
+
+ForExpressionContext.prototype.accept = function(visitor) {
+    if ( visitor instanceof CVisitor ) {
+        return visitor.visitForExpression(this);
+    } else {
+        return visitor.visitChildren(this);
+    }
 };
 
 
@@ -9793,6 +11328,7 @@ CParser.prototype.forExpression = function(_p) {
     return localctx;
 };
 
+
 function JumpStatementContext(parser, parent, invokingState) {
 	if(parent===undefined) {
 	    parent = null;
@@ -9809,8 +11345,28 @@ function JumpStatementContext(parser, parent, invokingState) {
 JumpStatementContext.prototype = Object.create(antlr4.ParserRuleContext.prototype);
 JumpStatementContext.prototype.constructor = JumpStatementContext;
 
+JumpStatementContext.prototype.Goto = function() {
+    return this.getToken(CParser.Goto, 0);
+};
+
 JumpStatementContext.prototype.Identifier = function() {
     return this.getToken(CParser.Identifier, 0);
+};
+
+JumpStatementContext.prototype.Semi = function() {
+    return this.getToken(CParser.Semi, 0);
+};
+
+JumpStatementContext.prototype.Continue = function() {
+    return this.getToken(CParser.Continue, 0);
+};
+
+JumpStatementContext.prototype.Break = function() {
+    return this.getToken(CParser.Break, 0);
+};
+
+JumpStatementContext.prototype.Return = function() {
+    return this.getToken(CParser.Return, 0);
 };
 
 JumpStatementContext.prototype.expression = function() {
@@ -9831,6 +11387,14 @@ JumpStatementContext.prototype.exitRule = function(listener) {
     if(listener instanceof CListener ) {
         listener.exitJumpStatement(this);
 	}
+};
+
+JumpStatementContext.prototype.accept = function(visitor) {
+    if ( visitor instanceof CVisitor ) {
+        return visitor.visitJumpStatement(this);
+    } else {
+        return visitor.visitChildren(this);
+    }
 };
 
 
@@ -9915,6 +11479,7 @@ CParser.prototype.jumpStatement = function() {
     return localctx;
 };
 
+
 function CompilationUnitContext(parser, parent, invokingState) {
 	if(parent===undefined) {
 	    parent = null;
@@ -9949,6 +11514,14 @@ CompilationUnitContext.prototype.exitRule = function(listener) {
     if(listener instanceof CListener ) {
         listener.exitCompilationUnit(this);
 	}
+};
+
+CompilationUnitContext.prototype.accept = function(visitor) {
+    if ( visitor instanceof CVisitor ) {
+        return visitor.visitCompilationUnit(this);
+    } else {
+        return visitor.visitChildren(this);
+    }
 };
 
 
@@ -9987,6 +11560,7 @@ CParser.prototype.compilationUnit = function() {
     return localctx;
 };
 
+
 function TranslationUnitContext(parser, parent, invokingState) {
 	if(parent===undefined) {
 	    parent = null;
@@ -10021,6 +11595,14 @@ TranslationUnitContext.prototype.exitRule = function(listener) {
     if(listener instanceof CListener ) {
         listener.exitTranslationUnit(this);
 	}
+};
+
+TranslationUnitContext.prototype.accept = function(visitor) {
+    if ( visitor instanceof CVisitor ) {
+        return visitor.visitTranslationUnit(this);
+    } else {
+        return visitor.visitChildren(this);
+    }
 };
 
 
@@ -10077,6 +11659,7 @@ CParser.prototype.translationUnit = function(_p) {
     return localctx;
 };
 
+
 function ExternalDeclarationContext(parser, parent, invokingState) {
 	if(parent===undefined) {
 	    parent = null;
@@ -10101,6 +11684,10 @@ ExternalDeclarationContext.prototype.declaration = function() {
     return this.getTypedRuleContext(DeclarationContext,0);
 };
 
+ExternalDeclarationContext.prototype.Semi = function() {
+    return this.getToken(CParser.Semi, 0);
+};
+
 ExternalDeclarationContext.prototype.enterRule = function(listener) {
     if(listener instanceof CListener ) {
         listener.enterExternalDeclaration(this);
@@ -10111,6 +11698,14 @@ ExternalDeclarationContext.prototype.exitRule = function(listener) {
     if(listener instanceof CListener ) {
         listener.exitExternalDeclaration(this);
 	}
+};
+
+ExternalDeclarationContext.prototype.accept = function(visitor) {
+    if ( visitor instanceof CVisitor ) {
+        return visitor.visitExternalDeclaration(this);
+    } else {
+        return visitor.visitChildren(this);
+    }
 };
 
 
@@ -10160,6 +11755,7 @@ CParser.prototype.externalDeclaration = function() {
     return localctx;
 };
 
+
 function FunctionDefinitionContext(parser, parent, invokingState) {
 	if(parent===undefined) {
 	    parent = null;
@@ -10202,6 +11798,14 @@ FunctionDefinitionContext.prototype.exitRule = function(listener) {
     if(listener instanceof CListener ) {
         listener.exitFunctionDefinition(this);
 	}
+};
+
+FunctionDefinitionContext.prototype.accept = function(visitor) {
+    if ( visitor instanceof CVisitor ) {
+        return visitor.visitFunctionDefinition(this);
+    } else {
+        return visitor.visitChildren(this);
+    }
 };
 
 
@@ -10250,6 +11854,7 @@ CParser.prototype.functionDefinition = function() {
     return localctx;
 };
 
+
 function DeclarationListContext(parser, parent, invokingState) {
 	if(parent===undefined) {
 	    parent = null;
@@ -10284,6 +11889,14 @@ DeclarationListContext.prototype.exitRule = function(listener) {
     if(listener instanceof CListener ) {
         listener.exitDeclarationList(this);
 	}
+};
+
+DeclarationListContext.prototype.accept = function(visitor) {
+    if ( visitor instanceof CVisitor ) {
+        return visitor.visitDeclarationList(this);
+    } else {
+        return visitor.visitChildren(this);
+    }
 };
 
 

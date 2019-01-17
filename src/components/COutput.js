@@ -17,17 +17,14 @@ const styles = theme => ({
 });
 
 class COutput extends React.Component {
-
-    constructor(props) {
-        super(props);
-
-    }
-
+    state = {
+        out: ""//this.readFile(example)
+    };
     setOutput = (output) => {
         this.setState({
             out: output
         });
-    }
+    };
 
     render() {
         const {classes} = this.props;
@@ -39,10 +36,10 @@ class COutput extends React.Component {
                     multiline
                     rows="20"
                     //rowsMax={50}
-                    defaultValue="empty"
+                    //defaultValue="empty"
                     className={"???"}
                     margin="normal"
-                    fullWidth={'100%'}
+                    fullWidth={true}
                     value={this.props.out}
                 />
             </div>)

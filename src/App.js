@@ -2,7 +2,7 @@ import React, { Component } from 'react';
 
 import './App.css';
 
-import Interpreter from "./components/Interpreter";
+import Interpreter from "./components/InterpreterView";
 
 class App extends Component {
   render() {
