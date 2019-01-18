@@ -1,5 +1,5 @@
 import ParseTreeVisitor from "./ParseTreeVisitor";
-import ParseTreeListener from "./ParseTreeListener";
+import SymbolTableBuilder from "./SymbolTableBuilder";
 import TreeMinimizer from "./TreeMinimizer";
 import ASTBuilder from "./AST/ASTBuilder"
 
@@ -11,7 +11,7 @@ const antlr4 = require('antlr4');
 class Interpreter {
     treeMinimizer = new ASTBuilder();
     pstVisitor = new ParseTreeVisitor();
-    pstListener = new ParseTreeListener();
+    pstListener = new SymbolTableBuilder();
     chars;
     lexer;
     tokens;

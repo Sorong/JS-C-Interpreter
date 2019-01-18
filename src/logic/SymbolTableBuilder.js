@@ -4,10 +4,11 @@ import LocalScope from "./Scope/LocalScope";
 import VariableSymbol from "./Symbol/VariableSymbol";
 import ScopedSymbol from "./Symbol/ScopedSymbol";
 import FunctionSymbol from "./Symbol/FunctionSymbol";
+import StructSymbol from "./Symbol/StructSymbol";
 
 const CListener = require("../grammar/CListener").CListener;
 
-class ParseTreeListener extends CListener {
+class SymbolTableBuilder extends CListener {
     globalScope;
     currentScope;
 
@@ -49,10 +50,14 @@ class ParseTreeListener extends CListener {
     }
 
     exitDeclaration(ctx) {
-        if(ctx.typeSpecifier === undefined) {
+        let typeSpecifer = ctx.typeSpecifier;
+        if(typeSpecifer === undefined) {
+            typeSpecifer = ctx.typedefName;
+        }
+        if(typeSpecifer === undefined) {
             return;
         }
-        let type = ctx.typeSpecifier().getText();
+        let type = typeSpecifer().getText();
         let variable;
         if (ctx.initDeclarator !== undefined) {
             variable = new VariableSymbol(ctx.initDeclarator().directDeclarator().getText(), type);
@@ -97,15 +102,40 @@ class ParseTreeListener extends CListener {
         }
 
         if(func instanceof VariableSymbol) {
-            throw name + " ist keine Funktion";
+            let struct = this.currentScope.resolve(func.type);
+            if(struct instanceof StructSymbol) {
+                func = struct.resolveMember(ctx.Identifier().getText()); // "."Operator gefolgt vom Identifier A a; a. --> b <--
+                if(func == null) {
+                    throw name + " existiert nicht im struct";
+                }
+            } else {
+                throw name + " ist keine Funktion";
+            }
         }
 
         //primaryExpression = funktionsname
     }
-
+    enterStructOrUnionSpecifier(ctx) {
+        let type = ctx.structOrUnion().getText();
+        let name = ctx.Identifier().getText();
+        let struct = new StructSymbol(name, type, this.currentScope);
+        this.currentScope.bind(struct);
+        this.currentScope = struct;
+    }
     exitStructOrUnionSpecifier(ctx) {
+      this.currentScope = this.currentScope.enclosingScope;
+    }
 
+    enterSpecifierQualifierList(ctx) {
+
+    }
+
+    exitSpecifierQualifierList(ctx) {
+        let type = ctx.typeSpecifier().getText();
+        let name = ctx.typedefName().getText();
+        let variable = new VariableSymbol(name, type);
+        this.currentScope.bind(variable);
     }
 }
 
-export default ParseTreeListener;
+export default SymbolTableBuilder;

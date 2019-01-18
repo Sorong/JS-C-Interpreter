@@ -7,10 +7,6 @@ class ASTBuilder extends TreeMinimizer {
         return super.start(ctx);
     }
 
-    visitInitDeclarator(ctx) {
-        return this.visitChildren(ctx);
-    }
-
     visitTypeSpecifier(ctx) {
         let parent = ctx.parentCtx;
         if (parent.typeSpecifier !== undefined && parent.typeSpecifier() !== ctx) {
@@ -79,7 +75,21 @@ class ASTBuilder extends TreeMinimizer {
         if(this.symbolicNames !== undefined && ctx.getSymbol().type < this.symbolicNames.length) {
             ctx.tokenName = this.symbolicNames[ctx.getSymbol().type];
         }
+        if(ctx.tokenName == "Identifier" && ctx.parentCtx.structOrUnion !== undefined) {
+            ctx.getParent().Identifier = () => {return ctx};
+        }
         return super.visitTerminal(ctx);
+    }
+
+    visitTypedefName(ctx) {
+        let parent = ctx.parentCtx;
+        if (parent.typedefName !== undefined && parent.typedefName() !== ctx) {
+            throw "Hat schon anderen typedefName"
+        }
+        ctx.parentCtx.typedefName = () => {
+            return ctx
+        };
+        return this.visitChildren(ctx);
     }
 
 }

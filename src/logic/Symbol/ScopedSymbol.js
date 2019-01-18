@@ -11,7 +11,8 @@ class ScopedSymbol extends Symbol {
     }
 
     bind(sym) { //define?
-        this.symbols[sym.name] = sym
+        this.symbols[sym.name] = sym;
+        sym.scope = this;
     }
 
     resolve(name) {
