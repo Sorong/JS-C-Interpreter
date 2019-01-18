@@ -57,15 +57,28 @@ class SymbolTableBuilder extends CListener {
         if(typeSpecifer === undefined) {
             return;
         }
+        if(ctx.initDeclaratorList() !== undefined) {
+            console.log("declaratorlist");
+        }
         let type = typeSpecifer().getText();
         let variable;
+        let declaratorList;
         if (ctx.initDeclarator !== undefined) {
-            variable = new VariableSymbol(ctx.initDeclarator().directDeclarator().getText(), type);
+            declaratorList = ctx.initDeclarator().directDeclarator();
+        } else if(ctx.directDeclarator !== undefined) {
+            declaratorList = ctx.directDeclarator()
         } else {
-            variable = new VariableSymbol(ctx.directDeclarator().getText(), type)
+            declaratorList = ctx.initDeclaratorList().directDeclarator();
         }
-        this.currentScope.bind(variable);
+        if(declaratorList !== undefined) {
+            for(let i = 0; i < declaratorList.length; i++) {
+                variable = new VariableSymbol(declaratorList[i].getText(), type);
+                this.currentScope.bind(variable);
+            }
+        }
+
     }
+
 
     exitPrimaryExpression(ctx) {
         if(ctx.getChild(0).tokenName === undefined || ctx.getChild(0).tokenName !== "Constant") {

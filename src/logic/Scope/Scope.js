@@ -2,8 +2,14 @@ class Scope {
     name;
     enclosingScope; // null if global (outermost) scope
     symbols = {};
+    childScope = []; //Für debuggingzwecke
+    childScopeIndex = 0;
     constructor(enclosingScope) {
         this.enclosingScope = enclosingScope;
+        if(enclosingScope != null && enclosingScope !== undefined) {
+            enclosingScope.childScope[this.childScopeIndex] = this;
+            enclosingScope.childScopeIndex++;
+        }
     }
 
     bind(sym) { //define?

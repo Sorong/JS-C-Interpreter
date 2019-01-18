@@ -20,7 +20,7 @@ class ASTBuilder extends TreeMinimizer {
 
     visitInitDeclarator(ctx) {
         let parent = ctx.parentCtx;
-        if (parent.initDeclarator !== undefined && parent.initDeclarator() !== ctx) {
+        if (parent.initDeclarator !== undefined && parent.initDeclarator()[0] !== ctx) {
             throw "Hat schon anderen InitDeclarator"
         }
         ctx.parentCtx.initDeclarator = () => {
@@ -32,7 +32,15 @@ class ASTBuilder extends TreeMinimizer {
     visitDirectDeclarator(ctx) {
         let parent = ctx.parentCtx;
         if (parent.directDeclarator !== undefined && parent.directDeclarator() !== ctx) {
-            throw "Hat schon anderen DirectDeclarator"
+           let list = ctx.parentCtx.directDeclarator();
+           if(list.length === undefined) {
+               list = [list];
+           }
+           list.push(ctx);
+           ctx.parentCtx.directDeclarator = () => {
+               return list;
+           };
+           return this.visitChildren(ctx);
         }
         ctx.parentCtx.directDeclarator = () => {
             return ctx

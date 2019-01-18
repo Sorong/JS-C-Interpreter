@@ -4,10 +4,16 @@ import Scope from "../Scope/Scope";
 class ScopedSymbol extends Symbol {
     enclosingScope; // null if global (outermost) scope
     symbols = {};
+    childScope = {};
+    childScopeIndex = 0;
     constructor(name, type, enclosingScope) {
         super(name);
         this.type = type;
         this.enclosingScope = enclosingScope;
+        if(enclosingScope != null && enclosingScope !== undefined) {
+            enclosingScope.childScope[this.childScopeIndex] = this;
+            enclosingScope.childScopeIndex++;
+        }
     }
 
     bind(sym) { //define?

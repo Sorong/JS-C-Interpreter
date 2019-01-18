@@ -16,12 +16,14 @@ int fibonacci(int i) {
 
 int main()
 {
-    int i;
+    int i,j;
     i = 0;
     while (i <= 10) {
         fibonacci(i);
         //printf("fibonacci(%2d) = %d\n", i, fibonacci(i));
         i = i + 1;
+
     }
+    int *ptr = &j;
     return 0;
 }
