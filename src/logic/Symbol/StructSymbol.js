@@ -1,11 +1,8 @@
-import Symbol from "./Symbol";
-import Type from "./Type";
+import ScopedSymbol from "./ScopedSymbol";
 
 
-class StructSymbol extends Type(Symbol) {
-    constructor(type) {
-        super(type)
-    }
+class StructSymbol extends ScopedSymbol {
+
 }
 
 export default StructSymbol;

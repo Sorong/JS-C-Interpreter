@@ -37,7 +37,6 @@ class ParseTreeListener extends CListener {
     }
 
     exitCompoundStatement(ctx) {
-        console.log(this.currentScope);
         this.currentScope = this.currentScope.enclosingScope;
         if (this.currentScope == null) {
             throw "kein Scope mehr am Blockende"
@@ -50,6 +49,9 @@ class ParseTreeListener extends CListener {
     }
 
     exitDeclaration(ctx) {
+        if(ctx.typeSpecifier === undefined) {
+            return;
+        }
         let type = ctx.typeSpecifier().getText();
         let variable;
         if (ctx.initDeclarator !== undefined) {
@@ -78,7 +80,6 @@ class ParseTreeListener extends CListener {
     }
 
     exitFunctionDefinition(ctx) {
-        console.log(this.currentScope);
         this.currentScope = this.currentScope.enclosingScope;
     }
 
@@ -86,6 +87,24 @@ class ParseTreeListener extends CListener {
         let type = ctx.typeSpecifier().getText();
         let variable = new VariableSymbol(ctx.directDeclarator().getText(), type);
         this.currentScope.bind(variable);
+    }
+
+    exitPostfixExpression(ctx) {
+        let name = ctx.primaryExpression().getText();
+        let func = this.currentScope.resolve(name);
+        if(func == null) {
+            throw "Funktion nicht vorhanden";
+        }
+
+        if(func instanceof VariableSymbol) {
+            throw name + " ist keine Funktion";
+        }
+
+        //primaryExpression = funktionsname
+    }
+
+    exitStructOrUnionSpecifier(ctx) {
+
     }
 }
 
