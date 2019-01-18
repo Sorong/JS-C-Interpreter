@@ -11,7 +11,7 @@ class ScopedSymbol extends Symbol {
         this.type = type;
         this.enclosingScope = enclosingScope;
         if(enclosingScope != null && enclosingScope !== undefined) {
-            enclosingScope.childScope[this.childScopeIndex] = this;
+            enclosingScope.childScope[enclosingScope.childScopeIndex] = this;
             enclosingScope.childScopeIndex++;
         }
     }

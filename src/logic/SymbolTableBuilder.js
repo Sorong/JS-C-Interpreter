@@ -11,6 +11,7 @@ const CListener = require("../grammar/CListener").CListener;
 class SymbolTableBuilder extends CListener {
     globalScope;
     currentScope;
+    scopes = [];
 
     enterCompilationUnit(ctx) {
         this.globalScope = new GlobalScope(null);
@@ -27,6 +28,8 @@ class SymbolTableBuilder extends CListener {
         // //long
 
         this.currentScope = this.globalScope;
+        this.scopes.push(this.currentScope);
+        ctx.scope = this.currentScope;
     }
 
     exitCompilationUnit(ctx) {
@@ -35,6 +38,8 @@ class SymbolTableBuilder extends CListener {
 
     enterCompoundStatement(ctx) { //Block { ... }
         this.currentScope = new LocalScope(this.currentScope);
+        this.scopes.push(this.currentScope);
+        ctx.scope = this.currentScope;
     }
 
     exitCompoundStatement(ctx) {
@@ -58,7 +63,7 @@ class SymbolTableBuilder extends CListener {
             return;
         }
         if(ctx.initDeclaratorList() !== undefined) {
-            console.log("declaratorlist");
+            //console.log("declaratorlist");
         }
         let type = typeSpecifer().getText();
         let variable;
@@ -95,10 +100,16 @@ class SymbolTableBuilder extends CListener {
         let func = new FunctionSymbol(name, type, this.currentScope);
         this.currentScope.bind(func);
         this.currentScope = func;
+
+
+        this.scopes.push(this.currentScope);
+        ctx.scope = this.currentScope;
     }
 
     exitFunctionDefinition(ctx) {
         this.currentScope = this.currentScope.enclosingScope;
+        this.scopes.push(this.currentScope);
+        ctx.scope = this.currentScope;
     }
 
     exitParameterDeclaration(ctx) {
@@ -134,9 +145,13 @@ class SymbolTableBuilder extends CListener {
         let struct = new StructSymbol(name, type, this.currentScope);
         this.currentScope.bind(struct);
         this.currentScope = struct;
+        this.scopes.push(this.currentScope);
+        ctx.scope = this.currentScope;
     }
     exitStructOrUnionSpecifier(ctx) {
       this.currentScope = this.currentScope.enclosingScope;
+        this.scopes.push(this.currentScope);
+        ctx.scope = this.currentScope;
     }
 
     enterSpecifierQualifierList(ctx) {

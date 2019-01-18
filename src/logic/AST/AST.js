@@ -1,11 +1,10 @@
 const antlr4 = require('antlr4');
 
-class AST extends antlr4.tree.Trees{
+class AST {
     token;
     children;
 
     constructor(token) {
-        super();
         this.token = token;
         this.children = [];
     }

@@ -7,7 +7,7 @@ class Scope {
     constructor(enclosingScope) {
         this.enclosingScope = enclosingScope;
         if(enclosingScope != null && enclosingScope !== undefined) {
-            enclosingScope.childScope[this.childScopeIndex] = this;
+            enclosingScope.childScope[enclosingScope.childScopeIndex] = this;
             enclosingScope.childScopeIndex++;
         }
     }
