@@ -1,6 +1,6 @@
-import ScopedSymbol from "./ScopedSymbol";
+import Symbol from "../Symbol/Symbol";
 
-class FunctionSymbol extends ScopedSymbol {
+class ScopedSymbol extends Symbol {
     enclosingScope; // null if global (outermost) scope
     symbols = {};
     constructor(name, type, enclosingScope) {
@@ -23,4 +23,4 @@ class FunctionSymbol extends ScopedSymbol {
     }
 }
 
-export default FunctionSymbol
+export default ScopedSymbol;

@@ -3,6 +3,7 @@ import BuiltInTypeSymbol from "./Symbol/BuiltInTypeSymbol";
 import LocalScope from "./Scope/LocalScope";
 import VariableSymbol from "./Symbol/VariableSymbol";
 import ScopedSymbol from "./Symbol/ScopedSymbol";
+import FunctionSymbol from "./Symbol/FunctionSymbol";
 
 const CListener = require("../grammar/CListener").CListener;
 
@@ -63,9 +64,28 @@ class ParseTreeListener extends CListener {
         if(ctx.getChild(0).tokenName === undefined || ctx.getChild(0).tokenName !== "Constant") {
             let variable = this.currentScope.resolve(ctx.getText());
             if(variable == null) {
-                console.log(ctx.getText().toString() + " nicht gefunden");
+                throw ctx.getText().toString() + " nicht gefunden";
             }
         }
+    }
+
+    enterFunctionDefinition(ctx) {
+        let type = ctx.typeSpecifier().getText();
+        let name = ctx.directDeclarator().directDeclarator().getText();
+        let func = new FunctionSymbol(name, type, this.currentScope);
+        this.currentScope.bind(func);
+        this.currentScope = func;
+    }
+
+    exitFunctionDefinition(ctx) {
+        console.log(this.currentScope);
+        this.currentScope = this.currentScope.enclosingScope;
+    }
+
+    exitParameterDeclaration(ctx) {
+        let type = ctx.typeSpecifier().getText();
+        let variable = new VariableSymbol(ctx.directDeclarator().getText(), type);
+        this.currentScope.bind(variable);
     }
 }
 
