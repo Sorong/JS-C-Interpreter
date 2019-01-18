@@ -3,7 +3,7 @@ import {TextField} from "@material-ui/core/index";
 import Button from '@material-ui/core/Button';
 import {withStyles} from '@material-ui/core/styles';
 
-const example = require('../assets/struct.c');
+const example = require('../assets/hello.c');
 
 const styles = theme => ({
     root: {

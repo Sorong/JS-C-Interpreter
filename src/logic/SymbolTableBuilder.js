@@ -132,6 +132,11 @@ class SymbolTableBuilder extends CListener {
 
     exitSpecifierQualifierList(ctx) {
         let type = ctx.typeSpecifier().getText();
+        let typedef = this.currentScope.resolve(type);
+        if(typedef == null) {
+            throw "Typ ist unbekannt " + type;
+        }
+
         let name = ctx.typedefName().getText();
         let variable = new VariableSymbol(name, type);
         this.currentScope.bind(variable);

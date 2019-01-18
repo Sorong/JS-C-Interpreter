@@ -7,7 +7,7 @@ class Scope {
     }
 
     bind(sym) { //define?
-        this.symbols[sym.name] = sym
+        this.symbols[sym.name] = sym;
         sym.scope = this;
     }
 

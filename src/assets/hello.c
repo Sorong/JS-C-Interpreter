@@ -2,8 +2,8 @@
 
 
 struct tag_name {
-   type member1;
-   type member2;
+   int member1;
+   char member2;
    /* declare as many members as desired, but the entire structure size must be known to the compiler. */
 };
 

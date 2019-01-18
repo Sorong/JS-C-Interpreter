@@ -84,7 +84,15 @@ class ASTBuilder extends TreeMinimizer {
     visitTypedefName(ctx) {
         let parent = ctx.parentCtx;
         if (parent.typedefName !== undefined && parent.typedefName() !== ctx) {
-            throw "Hat schon anderen typedefName"
+            if(parent.directDeclarator !== undefined && parent.directDeclarator() !== ctx) {
+                throw "Hat schon anderen typedefName"
+            } else {
+                ctx.parentCtx.directDeclarator = () => {
+                    return ctx;
+                };
+                return this.visitChildren(ctx);
+            }
+
         }
         ctx.parentCtx.typedefName = () => {
             return ctx
