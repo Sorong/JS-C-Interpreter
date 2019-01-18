@@ -6,6 +6,7 @@
     "@material-ui/core": "^3.8.1",
     "antlr4": "^4.7.2",
     "file-system": "^2.2.2",
+    "mixin": "^0.2.0",
     "react": "^16.7.0",
     "react-dom": "^16.7.0",
     "react-native-fs": "^2.13.3",

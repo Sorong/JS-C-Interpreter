@@ -1,49 +1,71 @@
-import GlobalScope from "./GlobalScope";
-import BuiltInTypeSymbol from "./BuiltInTypeSymbol";
-import LocalScope from "./LocalScope";
-import VariableSymbol from "./VariableSymbol";
+import GlobalScope from "./Scope/GlobalScope";
+import BuiltInTypeSymbol from "./Symbol/BuiltInTypeSymbol";
+import LocalScope from "./Scope/LocalScope";
+import VariableSymbol from "./Symbol/VariableSymbol";
+import ScopedSymbol from "./Symbol/ScopedSymbol";
 
 const CListener = require("../grammar/CListener").CListener;
 
 class ParseTreeListener extends CListener {
-    scope;
+    globalScope;
+    currentScope;
+
     enterCompilationUnit(ctx) {
-        let globals = new GlobalScope(null);
-        globals.bind(new BuiltInTypeSymbol("char"));
-        //signed + unsinged
-        globals.bind(new BuiltInTypeSymbol("int"));
-        //unsigned
-        globals.bind(new BuiltInTypeSymbol("short"));
-        //unsigned
-        globals.bind(new BuiltInTypeSymbol("long"));
-        //unsigned
-        globals.bind(new BuiltInTypeSymbol("float"));
-        globals.bind(new BuiltInTypeSymbol("double"));
-        //long
-        this.scope = globals;
-        console.log(ctx.getText())
+        this.globalScope = new GlobalScope(null);
+        // this.globalScope.bind(new BuiltInTypeSymbol("char"));
+        // //signed + unsinged
+        // this.globalScope.bind(new BuiltInTypeSymbol("int"));
+        // //unsigned
+        // this.globalScope.bind(new BuiltInTypeSymbol("short"));
+        // //unsigned
+        // this.globalScope.bind(new BuiltInTypeSymbol("long"));
+        // //unsigned
+        // this.globalScope.bind(new BuiltInTypeSymbol("float"));
+        // this.globalScope.bind(new BuiltInTypeSymbol("double"));
+        // //long
+
+        this.currentScope = this.globalScope;
     }
+
+    exitCompilationUnit(ctx) {
+        console.log(this.currentScope);
+    }
+
     enterCompoundStatement(ctx) { //Block { ... }
-        this.scope = new LocalScope(this.scope);
+        this.currentScope = new LocalScope(this.currentScope);
     }
+
     exitCompoundStatement(ctx) {
-        this.scope = this.scope.enclosingScope;
+        console.log(this.currentScope);
+        this.currentScope = this.currentScope.enclosingScope;
+        if (this.currentScope == null) {
+            throw "kein Scope mehr am Blockende"
+        }
+
     }
+
     enterDeclaration(ctx) {
 
     }
+
     exitDeclaration(ctx) {
-      //  let t = this.scope.resolve(ctx.typeSpecifier.getText());
-       // let variable = new VariableSymbol(ctx.Identifier.getText(), t)
-       // this.scope.bind(variable);
+        let type = ctx.typeSpecifier().getText();
+        let variable;
+        if (ctx.initDeclarator !== undefined) {
+            variable = new VariableSymbol(ctx.initDeclarator().directDeclarator().getText(), type);
+        } else {
+            variable = new VariableSymbol(ctx.directDeclarator().getText(), type)
+        }
+        this.currentScope.bind(variable);
     }
 
-    exitAssignmentExpression(ctx) {
-        //console.log(ctx.getText());
-    }
-
-    exitTypeSpecifier(ctx) {
-        //console.log(ctx.getText())
+    exitPrimaryExpression(ctx) {
+        if(ctx.getChild(0).tokenName === undefined || ctx.getChild(0).tokenName !== "Constant") {
+            let variable = this.currentScope.resolve(ctx.getText());
+            if(variable == null) {
+                console.log(ctx.getText().toString() + " nicht gefunden");
+            }
+        }
     }
 }
 
