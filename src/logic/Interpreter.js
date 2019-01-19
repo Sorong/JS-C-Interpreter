@@ -52,7 +52,12 @@ class Interpreter {
        // this.refListener.setScopes(globalScope, allScopes);
        // antlr4.tree.ParseTreeWalker.DEFAULT.walk(this.refListener, tree);
 
-        return tree.toStringTree(this.parser.ruleNames);
+        try {
+            return this.dispatcher.executeCode("main");
+        } catch (e) {
+            return "ExitCode: 0"
+        }
+        
 
     };
 

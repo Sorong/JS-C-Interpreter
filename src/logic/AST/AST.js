@@ -32,7 +32,7 @@ class AST {
     }
 
     getNodeType() {
-        return this.token.type;
+        return this.tokentype;
     }
 
     isNull() {

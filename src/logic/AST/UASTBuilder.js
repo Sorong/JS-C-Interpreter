@@ -1,53 +1,9 @@
 import AST from "./AST";
 import GlobalScope from "../Scope/GlobalScope";
+import {Operator} from "../util/Operator";
 
 const CVisitor = require("../../grammar/CVisitor").CVisitor;
-const Operator =
-    {
-        'Constant': 'Constant',
-        'Identifier': 'Identifier',
-        'return': 'Return',
-        '<': 'Less',
-        '<=': 'LessEqual',
-        '>': 'Greater',
-        '>=': 'GreaterEqual',
-        '<<': 'LeftShift',
-        '>>': 'RightShift',
-        '+': 'Plus',
-        '++': 'PlusPlus',
-        '-': 'Minus',
-        '--': 'MinusMinus',
-        '*': 'Star',
-        '/': 'Div',
-        '%': 'Mod',
-        '&': 'And',
-        '|': 'Or',
-        '&&': 'AndAnd',
-        '||': 'OrOr',
-        '^': 'Caret',
-        '!': 'Not',
-        '~': 'Tilde',
-        '?': 'Question',
-        ':': 'colon',
-        ',': 'Comma',
-        '=': 'Assign',
-// '*=' | '/=' | '%=' | '+=' | '-=' | '<<=' | '>>=' | '&=' | '^=' | '|='
-    '*=': 'StarAssign',
-    '/=': 'DivAssign',
-    ModAssign: '%=',
-    PlusAssign: '+=',
-    MinusAssign: '-=',
-    LeftShiftAssign: '<<=',
-    RightShiftAssign: '>>=',
-    AndAssign: '&=',
-    XorAssign: '^=',
-    OrAssign: '|=',
-    Equal: '==',
-    NotEqual: '!=',
-    Arrow: '->',
-    Dot: '.',
-    Ellipsis: '...'
-};
+
 
 class UASTBuilder extends CVisitor {
     AST;
@@ -70,7 +26,8 @@ class UASTBuilder extends CVisitor {
                     delete ctx.scope.ctx;
                 }
                 if (ctx.scope.AST === undefined || ctx.scope.AST === null) {
-                    ctx.scope.AST = new AST();
+                    ctx.scope.AST = new AST("Block");
+                    ctx.scope.AST.tokentype = "Block";
                     ctx.scope.AST.scope = ctx.scope;
                 }
                 astNodes = this.visit(child);
@@ -127,11 +84,14 @@ class UASTBuilder extends CVisitor {
     }
 
     visitAssignmentExpression(ctx) {
-        let ast = new AST("=");
+        let ast = new AST();
         for (let i = 0; i < ctx.getChildCount(); i++) {
-            if (ctx.getChild(i).getText() !== "=") {
-                let astNode = this.visit(ctx.getChild(i));
-                if (astNode !== null) {
+            let astNode = this.visit(ctx.getChild(i));
+            if (astNode !== null) {
+                if (Operator[astNode[0].token] !== undefined) {
+                    ast.tokentype = Operator[astNode[0].token];
+                    ast.token = astNode[0].token;
+                } else {
                     ast.addChild(astNode);
                 }
             }
