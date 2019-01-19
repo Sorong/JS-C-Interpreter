@@ -2,14 +2,21 @@ const antlr4 = require('antlr4');
 
 class AST {
     token;
+    tokentype;
     children;
 
     constructor(token) {
-        this.token = token;
+        this.token = token == undefined ? null : token;
         this.children = [];
     }
 
     addChild(otherAST) {
+        if(otherAST instanceof Array) {
+            if(otherAST.length > 1) {
+                throw "OtherAST is array and size is > 1; invalid AST";
+            }
+            otherAST = otherAST[0];
+        }
         if(otherAST != null) {
             this.children.push(otherAST);
         }

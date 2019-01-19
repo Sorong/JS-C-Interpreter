@@ -36,8 +36,10 @@ class Interpreter {
         antlr4.tree.ParseTreeWalker.DEFAULT.walk(this.defListener, tree);
         let globalScope = this.defListener.globalScope;
         let allScopes = this.defListener.scopes;
+        console.log(tree.toStringTree(this.parser.ruleNames));
         let tree2 = this.uastBuilder.start(tree, this.parser.symbolicNames);
         let ast = this.uastBuilder.AST;
+        console.log(globalScope.AST.toStringTree(this.parser.ruleNames));
        // this.refListener.setScopes(globalScope, allScopes);
        // antlr4.tree.ParseTreeWalker.DEFAULT.walk(this.refListener, tree);
 
