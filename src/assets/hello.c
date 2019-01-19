@@ -24,6 +24,6 @@ int main()
         i = i + 1;
 
     }
-    int *ptr = &j;
+    //int *ptr = &j;
     return 0;
 }

@@ -4,6 +4,7 @@ import TreeMinimizer from "./TreeMinimizer";
 import ASTBuilder from "./AST/ASTBuilder";
 import UASTBuilder from "./AST/UASTBuilder";
 import RefListener from "./RefListener";
+import Dispatcher from "./Dispatcher";
 
 const Parser = require("../grammar/CParser").CParser;
 const Lexer = require("../grammar/CLexer").CLexer;
@@ -16,6 +17,7 @@ class Interpreter {
     pstVisitor = new ParseTreeVisitor();
     defListener = new SymbolTableBuilder();
     refListener = new RefListener();
+    dispatcher = new Dispatcher();
     chars;
     lexer;
     tokens;
@@ -39,7 +41,14 @@ class Interpreter {
         console.log(tree.toStringTree(this.parser.ruleNames));
         let tree2 = this.uastBuilder.start(tree, this.parser.symbolicNames);
         let ast = this.uastBuilder.AST;
-        console.log(globalScope.AST.toStringTree(this.parser.ruleNames));
+        for(let i = 0; i < allScopes.length; i++) {
+            if(allScopes[i].AST === undefined) {
+                console.log(allScopes[i] + " has no AST");
+                continue;
+            }
+            console.log(allScopes[i].AST.toStringTree(this.parser.ruleNames));
+        }
+        this.dispatcher.globalScope = globalScope;
        // this.refListener.setScopes(globalScope, allScopes);
        // antlr4.tree.ParseTreeWalker.DEFAULT.walk(this.refListener, tree);
 

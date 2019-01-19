@@ -88,10 +88,16 @@ class SymbolTableBuilder extends CListener {
             declaratorList = ctx.initDeclaratorList().directDeclarator();
         }
         if(declaratorList !== undefined) {
-            for(let i = 0; i < declaratorList.length; i++) {
-                variable = new VariableSymbol(declaratorList[i].getText(), type);
+            if(declaratorList instanceof Array) {
+                for(let i = 0; i < declaratorList.length; i++) {
+                    variable = new VariableSymbol(declaratorList[i].getText(), type);
+                    this.currentScope.bind(variable);
+                }
+            } else {
+                variable = new VariableSymbol(declaratorList.getText(),type);
                 this.currentScope.bind(variable);
             }
+
         }
 
     }
@@ -101,7 +107,7 @@ class SymbolTableBuilder extends CListener {
         if(ctx.getChild(0).tokenName === undefined || ctx.getChild(0).tokenName !== "Constant") {
             let variable = this.currentScope.resolve(ctx.getText());
             if(variable == null) {
-                throw ctx.getText().toString() + " nicht gefunden";
+                throw "PrimaryExpression nicht gefunden" + ctx.getText().toString() + " nicht gefunden";
             }
         }
     }

@@ -4,21 +4,30 @@ class AST {
     token;
     tokentype;
     children;
+    scope;
 
     constructor(token) {
-        this.token = token == undefined ? null : token;
+        this.token = token === undefined ? null : token;
+        this.tokentype = null;
         this.children = [];
+        this.scope = null;
     }
 
     addChild(otherAST) {
+        if(otherAST == null) {return;}
         if(otherAST instanceof Array) {
-            if(otherAST.length > 1) {
-                throw "OtherAST is array and size is > 1; invalid AST";
+            for(let i = 0; i < otherAST.length; i++) {
+                if(otherAST[i] != null && otherAST[i].length === undefined) {
+                    this.children.push(otherAST[i]);
+                    otherAST[i].scope = this.scope;
+                    if(otherAST[i].token === null) {
+                        console.log("empty token added");
+                    }
+                }
             }
-            otherAST = otherAST[0];
-        }
-        if(otherAST != null) {
+        } else {
             this.children.push(otherAST);
+            otherAST.scope = this.scope;
         }
     }
 
