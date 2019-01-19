@@ -1,7 +1,8 @@
 import ParseTreeVisitor from "./ParseTreeVisitor";
 import SymbolTableBuilder from "./SymbolTableBuilder";
 import TreeMinimizer from "./TreeMinimizer";
-import ASTBuilder from "./AST/ASTBuilder"
+import ASTBuilder from "./AST/ASTBuilder";
+import UASTBuilder from "./AST/UASTBuilder";
 import RefListener from "./RefListener";
 
 const Parser = require("../grammar/CParser").CParser;
@@ -11,6 +12,7 @@ const antlr4 = require('antlr4');
 
 class Interpreter {
     treeMinimizer = new ASTBuilder();
+    uastBuilder = new UASTBuilder();
     pstVisitor = new ParseTreeVisitor();
     defListener = new SymbolTableBuilder();
     refListener = new RefListener();
@@ -34,8 +36,10 @@ class Interpreter {
         antlr4.tree.ParseTreeWalker.DEFAULT.walk(this.defListener, tree);
         let globalScope = this.defListener.globalScope;
         let allScopes = this.defListener.scopes;
-        this.refListener.setScopes(globalScope, allScopes);
-        antlr4.tree.ParseTreeWalker.DEFAULT.walk(this.refListener, tree);
+        let tree2 = this.uastBuilder.start(tree, this.parser.symbolicNames);
+        let ast = this.uastBuilder.AST;
+       // this.refListener.setScopes(globalScope, allScopes);
+       // antlr4.tree.ParseTreeWalker.DEFAULT.walk(this.refListener, tree);
 
         return tree.toStringTree(this.parser.ruleNames);
 

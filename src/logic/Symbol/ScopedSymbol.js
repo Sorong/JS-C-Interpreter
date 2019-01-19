@@ -4,7 +4,7 @@ import Scope from "../Scope/Scope";
 class ScopedSymbol extends Symbol {
     enclosingScope; // null if global (outermost) scope
     symbols = {};
-    childScope = {};
+    childScope = [];
     childScopeIndex = 0;
     constructor(name, type, enclosingScope) {
         super(name);

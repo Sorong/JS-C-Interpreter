@@ -28,18 +28,30 @@ class SymbolTableBuilder extends CListener {
         // //long
 
         this.currentScope = this.globalScope;
+
+
         this.scopes.push(this.currentScope);
         ctx.scope = this.currentScope;
+        this.currentScope.ctx = ctx;
     }
 
     exitCompilationUnit(ctx) {
-        console.log(this.currentScope);
+        console.log("Scopes found: " + this.scopes.length);
+        for(let i = 0; i < this.scopes.length; i++) {
+
+            this.scopes[i].scopeNumber = i;
+            this.scopes[i].ctx.scopeNumber = i;
+            console.log(this.scopes[i]);
+        }
+        //console.log(this.currentScope);
     }
 
     enterCompoundStatement(ctx) { //Block { ... }
         this.currentScope = new LocalScope(this.currentScope);
+
         this.scopes.push(this.currentScope);
         ctx.scope = this.currentScope;
+        this.currentScope.ctx = ctx;
     }
 
     exitCompoundStatement(ctx) {
@@ -104,12 +116,11 @@ class SymbolTableBuilder extends CListener {
 
         this.scopes.push(this.currentScope);
         ctx.scope = this.currentScope;
+        this.currentScope.ctx = ctx;
     }
 
     exitFunctionDefinition(ctx) {
         this.currentScope = this.currentScope.enclosingScope;
-        this.scopes.push(this.currentScope);
-        ctx.scope = this.currentScope;
     }
 
     exitParameterDeclaration(ctx) {
@@ -145,13 +156,13 @@ class SymbolTableBuilder extends CListener {
         let struct = new StructSymbol(name, type, this.currentScope);
         this.currentScope.bind(struct);
         this.currentScope = struct;
+
         this.scopes.push(this.currentScope);
         ctx.scope = this.currentScope;
+        this.currentScope.ctx = ctx;
     }
     exitStructOrUnionSpecifier(ctx) {
       this.currentScope = this.currentScope.enclosingScope;
-        this.scopes.push(this.currentScope);
-        ctx.scope = this.currentScope;
     }
 
     enterSpecifierQualifierList(ctx) {
