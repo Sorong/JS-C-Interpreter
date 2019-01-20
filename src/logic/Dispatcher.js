@@ -187,8 +187,8 @@ class Dispatcher {
 
 
     getSpaceWithSymbol(name) {
-        if(this.stack.length > 0 && this.stack[0].get(name) !== null) {
-            return this.stack[0];
+        if(this.stack.length > 0 && this.stack[this.stack.length-1].get(name) !== null) {
+            return this.stack[this.stack.length-1];
         }
         if(this.globals.get(name) !== null) {return this.globals;}
         return null;
@@ -205,9 +205,9 @@ class Dispatcher {
 
     ifstat(ast) {
         let cond = this.exec(ast.children[0]);
-        if(cond === true && ast.children.length >= 1) {
+        if(cond === true && ast.children.length > 1) {
             this.exec(ast.children[1]);
-        } else if(cond === false && ast.children.length >= 2) {
+        } else if(cond === false && ast.children.length > 2) {
             this.exec(ast.children[2]);
         } else if(cond !== false && cond !== true) {
             throw "Ungültiger Vergleich"
@@ -238,7 +238,7 @@ class Dispatcher {
             for(let i = 0; i < fArgs.length; i++) {
                 let param = ast.children[i];
                 let arg = this.exec(param);
-                fspace.put(fArgs.name, arg);
+                fspace.put(fArgs[i].name, arg);
             }
         }
         this.stack.push(fspace);
