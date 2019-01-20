@@ -1,10 +1,15 @@
 export const Operator =
     {
+        'if' : 'If',
+        'switch' : 'Switch',
         'struct': 'Struct',
         'union': 'Union',
         'Constant': 'Constant',
         'Identifier': 'Identifier',
         'return': 'Return',
+        'while' : 'While',
+        'do' : 'Do',
+        'for' : 'For',
         '<': 'Less',
         '<=': 'LessEqual',
         '>': 'Greater',

@@ -1,15 +1,17 @@
 import AST from "./AST";
 import GlobalScope from "../Scope/GlobalScope";
 import {Operator} from "../util/Operator";
+import FunctionSymbol from "../Symbol/FunctionSymbol";
 
 const CVisitor = require("../../grammar/CVisitor").CVisitor;
 
 
 class UASTBuilder extends CVisitor {
-    AST;
+    lastBlock;
     symbolicNames;
 
     start(ctx, symbolicNames) {
+        this.lastBlock = null;
         this.symbolicNames = symbolicNames;
         this.visitCompilationUnit(ctx);
 
@@ -17,6 +19,10 @@ class UASTBuilder extends CVisitor {
     }
 
     addASTNodesToCurrentScope(scope, astNodes) {
+        if(astNodes != null && astNodes.length === undefined && astNodes.tokentype !== "Declaration") {
+            scope.AST.addChild(astNodes);
+            return;
+        }
         for (let j = 0; j < astNodes.length; j++) {
             if (astNodes[j] == null) {
                 continue;
@@ -49,12 +55,14 @@ class UASTBuilder extends CVisitor {
                     ctx.scope.AST = new AST("Block");
                     ctx.scope.AST.tokentype = "Block";
                     ctx.scope.AST.scope = ctx.scope;
+                    astNodes.push(ctx.scope.AST);
                 }
-                astNodes = this.visit(child);
-                if (astNodes == null) {
+                let childAstNodes = this.visit(child);
+                if (childAstNodes == null) {
                     continue;
                 }
-                this.addASTNodesToCurrentScope(ctx.scope, astNodes);
+                this.addASTNodesToCurrentScope(ctx.scope, childAstNodes);
+
             } else {
                 if (astNodes != null) {
                     astNodes.push(this.visit(child));
@@ -66,8 +74,30 @@ class UASTBuilder extends CVisitor {
     }
 
     visitCompoundStatement(ctx) {
+        //ctx.parentCtx.scope.AST.addChild(ast);
         return this.visitChildren(ctx);
     }
+    // visitBlockItemList(ctx) {
+    //     let ast = new AST();
+    //     if(ctx.scope !== undefined) {
+    //         if(ctx.scope instanceof FunctionSymbol) {
+    //             ast.token = ctx.scope.name;
+    //             ast.tokentype = "Function";
+    //         } else {
+    //             ast.token = "Block";
+    //             ast.tokentype = "Block";
+    //             ast.scope = ctx.scope;
+    //         }
+    //     }
+    //
+    //     for(let i = 1; i < ctx.getChildCount(); i++) {
+    //         let astNode = this.visit(ctx.getChild(i));
+    //         if(astNode !== null) {
+    //             ast.addChild(astNode);
+    //         }
+    //     }
+    //     return ast;
+    // }
 
     visitInitDeclarator(ctx) {
         let ast = new AST("=");
@@ -99,7 +129,7 @@ class UASTBuilder extends CVisitor {
     }
 
 
-     visitDirectDeclarator(ctx) {
+     visitDirectDeclarator(ctx) { //2x directdeclarator hintereinander ist möglich
          let ast = new AST("Declaration");
          ast.tokentype = "Declaration";
          ast.addChild(this.visit(ctx.getChild(0)));
@@ -206,6 +236,35 @@ class UASTBuilder extends CVisitor {
             }
         }
         return ast;
+    }
+
+    visitSelectionStatement(ctx) {
+        let ast = new AST(ctx.getChild(0).getText());
+        ast.tokentype = Operator[ctx.getChild(0).getText()];
+        for(let i = 1; i < ctx.getChildCount(); i++) {
+            let astNode = this.visit(ctx.getChild(i));
+            if(astNode !== null) {
+                ast.addChild(astNode);
+            }
+        }
+        return ast;
+    }
+
+    visitRelationalExpression(ctx) {
+        let ast = new AST(ctx.getChild(1).getText());
+        ast.tokentype = Operator[ast.token];
+        for(let i = 0; i < ctx.getChildCount(); i++) {
+            if(i === 1) {continue;}
+            let astNode = this.visit(ctx.getChild(i));
+            if(astNode !== null) {
+                ast.addChild(astNode);
+            }
+        }
+        return ast;
+    }
+
+    visitIterationStatement(ctx) {
+        return this.visitSelectionStatement(ctx);
     }
 }
 
