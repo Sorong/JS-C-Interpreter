@@ -61,8 +61,9 @@ class Interpreter {
 
         let finish = "";
         try {
-            this.dispatcher.executeCode("main");
+            let out = this.dispatcher.executeCode("main");
             finish += this.dispatcher.outStr;
+            finish += "ExitCode: " + out;
         } catch (e) {
             finish += this.dispatcher.outStr;
             finish += "ExitCode: " + e;

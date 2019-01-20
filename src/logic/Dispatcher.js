@@ -39,7 +39,8 @@ class Dispatcher {
         if(startSymbol == null) {
             return start + " nicht gefunden";
         }
-        return this.exec(startSymbol.AST);
+        let ret = this.exec(startSymbol.AST);
+        return ret;
     }
 
     exec(ast) {

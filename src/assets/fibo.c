@@ -26,5 +26,5 @@ int main()
 
     }
     //int *ptr = &j;
-    return x;
+    return 1337;
 }
