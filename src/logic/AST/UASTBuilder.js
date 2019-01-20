@@ -84,6 +84,28 @@ class UASTBuilder extends CVisitor {
         }
         return ast;
     }
+    visitInitDeclaratorList(ctx) {
+        let ast = new AST(",");
+        ast.tokentype = "Declaration";
+        for(let i = 0; i < ctx.getChildCount();i++) {
+            if(ctx.getChild(i).getText() !== ",") {
+                let astNode = this.visit(ctx.getChild(i));
+                if (astNode !== null) {
+                    ast.addChild(astNode);
+                }
+            }
+        }
+        return ast;
+    }
+
+
+     visitDirectDeclarator(ctx) {
+         let ast = new AST("Declaration");
+         ast.tokentype = "Declaration";
+         ast.addChild(this.visit(ctx.getChild(0)));
+
+         return ast;
+     }
 
     visitAssignmentExpression(ctx) {
         let ast = new AST();

@@ -2,11 +2,12 @@ import {Operator} from "./util/Operator";
 import FunctionSymbol from "./Symbol/FunctionSymbol";
 import MemorySpace from "./Memory/MemorySpace";
 import StructSymbol from "./Symbol/StructSymbol";
+import StructInstance from "./Memory/StructInstance";
 
 class Dispatcher {
     globalScope;
     sharedReturnValue;
-    memorySpace;
+    globals;
     currentSpace;
     stack;
 
@@ -25,7 +26,10 @@ class Dispatcher {
         this.exec(this.globalScope.AST);
         let startSymbol = this.globalScope.resolve(start);
         if(startSymbol instanceof FunctionSymbol) {
+            this.stack.push(new MemorySpace(startSymbol))
+            this.currentSpace = this.stack[0];
             startSymbol = startSymbol.childScope[0]; //erster Scope der Funktion sollte der lokale scope sein
+
         }
         if(startSymbol == null) {
             return start + " nicht gefunden";
@@ -55,6 +59,9 @@ class Dispatcher {
                 return this.resolveIdentifier(ast);
             case "Struct":
                 return this.instance(ast);
+            case "Declaration":
+                this.declaration(ast);
+                break;
             default:
                 throw "Unknown Tokentype " + tokentype;
         }
@@ -98,19 +105,37 @@ class Dispatcher {
         //     fieldassign(lhs, value); // field ^('=' ^('.' a x) expr)
         //     return;
         // }
-        let space = this.getSpaceWithSymbol();
+        let space = this.getSpaceWithSymbol(left.token);
         if(space == null) { space = this.currentSpace}
         space.put(left.token, v);
     }
 
     fieldAssign(ast, val) {
-        let type = ast.children[0];
+        let name = ast.children[0];
         let member = ast.children[1];
-        let o = this.load(member);
-        if(o instanceof StructSymbol) {
+        let o = this.load(name);
+        let m = o.scope.resolveMember(member.token);
+        if(o instanceof StructInstance && m != null && m.name == member.token) {
+            o.put(member.token, val);
+        } else {
+            throw "Ungültiges Feld " + member + " in " + name
+        }
+    }
+    declaration(ast) {
+        for(let i = 0; i < ast.children.length; i++) {
+            let space = this.getSpaceWithSymbol(ast.children[i].token);
+            if(space != null) {
+                throw "Mehrfachdeklaration von " + ast.children[i].token;
+            }
+            let declType = ast.scope.resolve(ast.children[i].token);
+            let instance = ast.scope.resolve(declType.type);
+            if(instance instanceof StructSymbol) {
+                this.currentSpace.put(ast.children[i].token, new StructInstance(instance));
+            } else {
+                this.currentSpace.put(ast.children[i], null);
+            }
 
         }
-
     }
 
     operator(ast) {
@@ -160,7 +185,10 @@ class Dispatcher {
     instance(ast) {
         let structAST = ast.children[0];
         let structInstance = ast.scope.resolve(structAST.token);
-        return new MemorySpace(structInstance);
+        if(structInstance != null)  {
+            structInstance = new StructInstance(structInstance);
+        }
+        return structInstance;
     }
 }
 
