@@ -1,5 +1,7 @@
 export const Operator =
     {
+        'struct': 'Struct',
+        'union': 'Union',
         'Constant': 'Constant',
         'Identifier': 'Identifier',
         'return': 'Return',
@@ -30,17 +32,17 @@ export const Operator =
 // '*=' | '/=' | '%=' | '+=' | '-=' | '<<=' | '>>=' | '&=' | '^=' | '|='
     '*=': 'StarAssign',
     '/=': 'DivAssign',
-    '%=' : 'ModAssign',
-    '+=' : 'PlusAssign',
-    MinusAssign: '-=',
-    LeftShiftAssign: '<<=',
-    RightShiftAssign: '>>=',
-    AndAssign: '&=',
-    XorAssign: '^=',
-    OrAssign: '|=',
-    Equal: '==',
-    NotEqual: '!=',
-    Arrow: '->',
-    Dot: '.',
-    Ellipsis: '...'
+    '%=': 'ModAssign',
+    '+=': 'PlusAssign',
+    '-=': 'MinusAssign',
+    '<<=': 'LeftShiftAssign',
+    '>>=': 'RightShiftAssign',
+    '&=': 'AndAssign',
+    '^=': 'XorAssign',
+    '|=': 'OrAssign',
+    '==': 'Equal',
+    '!=': 'NotEqual',
+    '->': 'Arrow',
+    '.': 'Dot',
+    '...': 'Ellipsis'
 };

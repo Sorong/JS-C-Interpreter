@@ -21,7 +21,7 @@ class UASTBuilder extends CVisitor {
             if (astNodes[j] == null) {
                 continue;
             }
-            if(astNodes[j] instanceof AST) {
+            if (astNodes[j] instanceof AST) {
                 scope.AST.addChild(astNodes[j]);
             } else {
                 for (let k = 0; k < astNodes[j].length; k++) {
@@ -96,7 +96,7 @@ class UASTBuilder extends CVisitor {
                 } else {
                     ast.addChild(astNode);
                 }
-            } else if(astNode !== null) {
+            } else if (astNode !== null) {
                 ast.addChild(astNode);
             }
         }
@@ -121,13 +121,23 @@ class UASTBuilder extends CVisitor {
 
     visitPostfixExpression(ctx) { //z.B.  Funktionaufruf
         let ast = new AST();
-        ast.tokentype = "Function";
+        let secondTokenIsOperator = false;
+        if (ctx.getChildCount() > 1 && ctx.getChild(1).getText()) {
+            let op = Operator[ctx.getChild(1).getText()];
+            if (op !== undefined) {
+                ast.tokentype = op;
+                ast.token = ctx.getChild(1).getText();
+                secondTokenIsOperator = true;
+            }
+        }
         for (let i = 0; i < ctx.getChildCount(); i++) {
             let astNode = this.visit(ctx.getChild(i));
-            if (i === 0 && astNode != null) {
-                if (astNode[0].tokentype === Operator["Identifier"]) {
-                    ast.token = ctx.getChild(i).getText();
-                }
+            if (secondTokenIsOperator && i === 1) {
+                continue;
+            }
+            if (ast.tokentype == null && Operator[astNode.token] !== undefined) {
+                ast.token = ctx.getChild(i).getText();
+                ast.tokentype = "Function"
             } else if (astNode !== null) {
                 ast.addChild(astNode);
             }
@@ -136,7 +146,9 @@ class UASTBuilder extends CVisitor {
     }
 
     visitStructOrUnionSpecifier(ctx) {
-        return null;
+        let ast = this.visit(ctx.getChild(0))[0];
+        ast.addChild(this.visit(ctx.getChild(1)));
+        return ast;
     }
 
     visitTerminal(ctx) {
@@ -157,15 +169,18 @@ class UASTBuilder extends CVisitor {
 
     visitJumpStatement(ctx) {
         let ast = new AST();
-        for (let i = 0; i < ctx.getChildCount(); i++) {
+        let secondTokenIsOperator = false;
+        if (ctx.getChildCount() > 0 && ctx.getChild(0).getText()) {
+            let op = Operator[ctx.getChild(0).getText()];
+            if (op !== undefined) {
+                ast.tokentype = op;
+                ast.token = ctx.getChild(0).getText();
+            }
+        }
+        for (let i = 1; i < ctx.getChildCount(); i++) {
             let astNode = this.visit(ctx.getChild(i));
             if (astNode !== null) {
-                if (Operator[astNode.token] !== undefined) {
-                    ast.tokentype = Operator[astNode.token];
-                    ast.token = astNode.token;
-                } else {
-                    ast.addChild(astNode);
-                }
+                ast.addChild(astNode);
             }
         }
         return ast;

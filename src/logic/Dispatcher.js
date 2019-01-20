@@ -1,6 +1,7 @@
 import {Operator} from "./util/Operator";
 import FunctionSymbol from "./Symbol/FunctionSymbol";
 import MemorySpace from "./Memory/MemorySpace";
+import StructSymbol from "./Symbol/StructSymbol";
 
 class Dispatcher {
     globalScope;
@@ -44,13 +45,16 @@ class Dispatcher {
             case "Assign":
                 this.assign(ast);
                 break;
+            case "Dot":
             case "Constant":
-                return ast.token;
+                return this.load(ast);
             case "Minus":
             case "Plus":
                 return this.operator(ast);
             case "Identifier":
                 return this.resolveIdentifier(ast);
+            case "Struct":
+                return this.instance(ast);
             default:
                 throw "Unknown Tokentype " + tokentype;
         }
@@ -86,13 +90,27 @@ class Dispatcher {
         let left = ast.children[0];
         let right = ast.children[1];
         let v = this.exec(right);
-        let space = this.getSpaceWithSymbol();
+        if(left.tokentype == "Dot") {
+            this.fieldAssign(left, right);
+            return;
+        }
         // if ( lhs.getType()==PieParser.DOT ) {    struct member
         //     fieldassign(lhs, value); // field ^('=' ^('.' a x) expr)
         //     return;
         // }
+        let space = this.getSpaceWithSymbol();
         if(space == null) { space = this.currentSpace}
         space.put(left.token, v);
+    }
+
+    fieldAssign(ast, val) {
+        let type = ast.children[0];
+        let member = ast.children[1];
+        let o = this.load(member);
+        if(o instanceof StructSymbol) {
+
+        }
+
     }
 
     operator(ast) {
@@ -105,6 +123,31 @@ class Dispatcher {
         return eval(left + ast.token + right);
     }
 
+    load(ast) {
+        if(ast.tokentype === "Constant") {
+            return ast.token;
+        }
+        if(ast.tokentype === "Dot") {
+            return this.fieldLoad(ast);
+        }
+        let memSpace = this.getSpaceWithSymbol(ast.token);
+        if(memSpace != null) {
+            return memSpace.get(ast.token);
+        }
+        return null;
+    }
+
+    fieldLoad(ast) {
+        let expr = ast.children[0];
+        let b = ast.children[1];
+        let struct = this.load(expr);
+        if(struct == null || (!(struct.scope instanceof StructSymbol) && struct.scope.resolveMember(b.token) == null)) {
+            //Todo: Errorhandling
+            return null;
+        }
+        return struct.get(b.token)
+    }
+
 
     getSpaceWithSymbol(name) {
         if(this.stack.length > 0 && this.stack[0].get(name) !== null) {
@@ -112,6 +155,12 @@ class Dispatcher {
         }
         if(this.globals.get(name) !== null) {return this.globals;}
         return null;
+    }
+
+    instance(ast) {
+        let structAST = ast.children[0];
+        let structInstance = ast.scope.resolve(structAST.token);
+        return new MemorySpace(structInstance);
     }
 }
 
