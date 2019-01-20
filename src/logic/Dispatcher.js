@@ -98,7 +98,7 @@ class Dispatcher {
         let right = ast.children[1];
         let v = this.exec(right);
         if(left.tokentype == "Dot") {
-            this.fieldAssign(left, right);
+            this.fieldAssign(left, v);
             return;
         }
         // if ( lhs.getType()==PieParser.DOT ) {    struct member
@@ -132,7 +132,7 @@ class Dispatcher {
             if(instance instanceof StructSymbol) {
                 this.currentSpace.put(ast.children[i].token, new StructInstance(instance));
             } else {
-                this.currentSpace.put(ast.children[i], null);
+                this.currentSpace.put(ast.children[i].token, null);
             }
 
         }

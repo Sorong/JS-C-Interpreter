@@ -22,8 +22,15 @@ class Interpreter {
     lexer;
     tokens;
     parser;
+    initMember() {
+        this.treeMinimizer = new ASTBuilder();
+        this.uastBuilder = new UASTBuilder();
+        this.defListener = new SymbolTableBuilder();
+        this.dispatcher = new Dispatcher();
+    }
 
     init = (input) => {
+        this.initMember()
         this.chars = new antlr4.InputStream(input);
         this.lexer = new Lexer(this.chars);
         this.lexer.strictMode = false;

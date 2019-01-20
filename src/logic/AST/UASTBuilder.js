@@ -157,7 +157,7 @@ class UASTBuilder extends CVisitor {
             if (secondTokenIsOperator && i === 1) {
                 continue;
             }
-            if (ast.tokentype == null && Operator[astNode.token] !== undefined) {
+            if (ast.tokentype == null) {
                 ast.token = ctx.getChild(i).getText();
                 ast.tokentype = "Function"
             } else if (astNode !== null) {
