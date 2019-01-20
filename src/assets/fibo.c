@@ -19,9 +19,9 @@ int main()
 {
     int i;
     i = 0;
-    while (i <= 2) {
-        fibonacci(i);
+    while (i <= 12) {
         //printf("fibonacci(%2d) = %d\n", i, fibonacci(i));
+        print(fibonacci(i));
         i = i + 1;
 
     }

@@ -11,6 +11,7 @@ class Dispatcher {
     globals;
     currentSpace;
     stack;
+    outStr;
 
     constructor() {
         this.globalScope = null;
@@ -18,6 +19,7 @@ class Dispatcher {
         this.currentSpace = this.globals;
         this.stack = [];
         this.skipFunction = true;
+        this.outStr = "";
     }
 
     executeCode(start) {
@@ -72,6 +74,9 @@ class Dispatcher {
                 return this.call(ast);
             case "While":
                 this.whileloop(ast);
+                break;
+            case "Print":
+                this.print(ast);
                 break;
             default:
                 throw "Unknown Tokentype " + tokentype;
@@ -252,7 +257,6 @@ class Dispatcher {
 
         } catch (e) {
             result = e;
-            console.log(e);
             this.stack.pop();
             this.currentSpace = saveSpace;
         }
@@ -264,6 +268,12 @@ class Dispatcher {
             this.exec(ast.children[1]);
             cond = this.exec(ast.children[0]);
         }
+    }
+
+    print(ast) {
+        let o = this.exec(ast.children[0]);
+        this.outStr = this.outStr.concat(o);
+        this.outStr += "\n";
     }
 }
 

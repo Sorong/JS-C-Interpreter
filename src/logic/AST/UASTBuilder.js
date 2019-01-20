@@ -45,7 +45,8 @@ class UASTBuilder extends CVisitor {
         let ast = new AST()
         if(ctx.scope instanceof FunctionSymbol) {
             ast.token = ctx.scope.name;
-            ast.tokentype = "Function";
+            let type = Operator[ast.token];
+            ast.tokentype = type !== undefined ? type : "Function";
         } else {
             ast.token = "Block";
             ast.tokentype = "Block";
@@ -200,7 +201,8 @@ class UASTBuilder extends CVisitor {
             }
             if (ast.tokentype == null) {
                 ast.token = ctx.getChild(i).getText();
-                ast.tokentype = "Function"
+                let type = Operator[ctx.getChild(i).getText()];
+                ast.tokentype = type !== undefined ? type : "Function";
             } else if (astNode !== null) {
                 ast.addChild(astNode);
             }

@@ -59,12 +59,15 @@ class Interpreter {
        // this.refListener.setScopes(globalScope, allScopes);
        // antlr4.tree.ParseTreeWalker.DEFAULT.walk(this.refListener, tree);
 
+        let finish = "";
         try {
-            return this.dispatcher.executeCode("main");
+            this.dispatcher.executeCode("main");
+            finish += this.dispatcher.outStr;
         } catch (e) {
-            return "ExitCode: " + e;
+            finish += this.dispatcher.outStr;
+            finish += "ExitCode: " + e;
         }
-        
+        return finish;
 
     };
 

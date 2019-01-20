@@ -15,6 +15,7 @@ class SymbolTableBuilder extends CListener {
 
     enterCompilationUnit(ctx) {
         this.globalScope = new GlobalScope(null);
+        this.globalScope.bind(new BuiltInTypeSymbol("print"));
         // this.globalScope.bind(new BuiltInTypeSymbol("char"));
         // //signed + unsinged
         // this.globalScope.bind(new BuiltInTypeSymbol("int"));
@@ -36,12 +37,10 @@ class SymbolTableBuilder extends CListener {
     }
 
     exitCompilationUnit(ctx) {
-        console.log("Scopes found: " + this.scopes.length);
         for(let i = 0; i < this.scopes.length; i++) {
 
             this.scopes[i].scopeNumber = i;
             this.scopes[i].ctx.scopeNumber = i;
-            console.log(this.scopes[i]);
         }
         //console.log(this.currentScope);
     }
@@ -107,7 +106,7 @@ class SymbolTableBuilder extends CListener {
         if(ctx.getChild(0).tokenName === undefined || ctx.getChild(0).tokenName !== "Constant") {
             let variable = this.currentScope.resolve(ctx.getText());
             if(variable == null) {
-                throw "PrimaryExpression nicht gefunden" + ctx.getText().toString() + " nicht gefunden";
+                throw "PrimaryExpression " + ctx.getText().toString() + " nicht gefunden";
             }
         }
     }

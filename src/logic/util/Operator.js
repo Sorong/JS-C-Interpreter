@@ -1,5 +1,6 @@
 export const Operator =
     {
+        'print' : 'Print',
         'if' : 'If',
         'switch' : 'Switch',
         'struct': 'Struct',
