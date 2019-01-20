@@ -55,7 +55,7 @@ class Interpreter {
         try {
             return this.dispatcher.executeCode("main");
         } catch (e) {
-            return "ExitCode: 0"
+            return "ExitCode: " + e;
         }
         
 

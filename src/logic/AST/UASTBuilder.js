@@ -16,6 +16,26 @@ class UASTBuilder extends CVisitor {
         return ctx;
     }
 
+    addASTNodesToCurrentScope(scope, astNodes) {
+        for (let j = 0; j < astNodes.length; j++) {
+            if (astNodes[j] == null) {
+                continue;
+            }
+            if(astNodes[j] instanceof AST) {
+                scope.AST.addChild(astNodes[j]);
+            } else {
+                for (let k = 0; k < astNodes[j].length; k++) {
+
+                    let node = astNodes[j][k];
+                    if (node != null) {
+                        scope.AST.addChild(node);
+                    }
+
+                }
+            }
+        }
+    }
+
     visitChildren(ctx) {
 
         let astNodes = [];
@@ -34,24 +54,7 @@ class UASTBuilder extends CVisitor {
                 if (astNodes == null) {
                     continue;
                 }
-                for (let j = 0; j < astNodes.length; j++) {
-                    if (astNodes[j] == null) {
-                        continue;
-                    }
-                    for (let k = 0; k < astNodes[j].length; k++) {
-                        if (astNodes[j] != null) {
-                            let node = astNodes[j][k];
-                            if (node instanceof Array) {
-                                node = node[0];
-                            }
-                            if (node != null) {
-                                ctx.scope.AST.addChild(node);
-                            }
-                        }
-                    }
-
-                }
-
+                this.addASTNodesToCurrentScope(ctx.scope, astNodes);
             } else {
                 if (astNodes != null) {
                     astNodes.push(this.visit(child));
@@ -69,9 +72,12 @@ class UASTBuilder extends CVisitor {
     visitInitDeclarator(ctx) {
         let ast = new AST("=");
         for (let i = 0; i < ctx.getChildCount(); i++) {
-            if (ctx.getChild(i).getText() !== "=") {
-                let astNode = this.visit(ctx.getChild(i));
-                if (astNode !== null) {
+            let astNode = this.visit(ctx.getChild(i));
+            if (astNode !== null) {
+                if (i === 1 && Operator[astNode.token] !== undefined) {
+                    ast.tokentype = Operator[astNode.token];
+                    ast.token = astNode.token;
+                } else {
                     ast.addChild(astNode);
                 }
             }
@@ -79,21 +85,19 @@ class UASTBuilder extends CVisitor {
         return ast;
     }
 
-    visitInitDeclarator(ctx) { //int i,j; removed from tree
-        return null;
-    }
-
     visitAssignmentExpression(ctx) {
         let ast = new AST();
         for (let i = 0; i < ctx.getChildCount(); i++) {
             let astNode = this.visit(ctx.getChild(i));
-            if (astNode !== null) {
+            if (astNode !== null && astNode.length > 0) {
                 if (Operator[astNode[0].token] !== undefined) {
                     ast.tokentype = Operator[astNode[0].token];
                     ast.token = astNode[0].token;
                 } else {
                     ast.addChild(astNode);
                 }
+            } else if(astNode !== null) {
+                ast.addChild(astNode);
             }
         }
         return ast;
@@ -104,15 +108,13 @@ class UASTBuilder extends CVisitor {
         for (let i = 0; i < ctx.getChildCount(); i++) {
             let astNode = this.visit(ctx.getChild(i));
             if (astNode !== null) {
-                if (Operator[astNode.token] !== undefined) {
+                if (i === 1 && Operator[astNode.token] !== undefined) {
                     ast.tokentype = Operator[astNode.token];
                     ast.token = astNode.token;
                 } else {
                     ast.addChild(astNode);
                 }
             }
-
-
         }
         return ast;
     }
@@ -141,13 +143,29 @@ class UASTBuilder extends CVisitor {
         let ast = new AST(ctx.getText());
         if (this.symbolicNames !== undefined && ctx.getSymbol().type < this.symbolicNames.length) {
 
-            ast.tokentype = this.symbolicNames[ctx.getSymbol().type]
+            ast.tokentype = this.symbolicNames[ctx.getSymbol().type];
             if (Operator[ast.tokentype] === undefined) {
                 ast.tokentype = Operator[ctx.getText()]
             }//this.symbolicNames[ctx.getSymbol().type];
             //console.log(ast.tokentype);
             if (ast.tokentype === undefined) {
                 return null;
+            }
+        }
+        return ast;
+    }
+
+    visitJumpStatement(ctx) {
+        let ast = new AST();
+        for (let i = 0; i < ctx.getChildCount(); i++) {
+            let astNode = this.visit(ctx.getChild(i));
+            if (astNode !== null) {
+                if (Operator[astNode.token] !== undefined) {
+                    ast.tokentype = Operator[astNode.token];
+                    ast.token = astNode.token;
+                } else {
+                    ast.addChild(astNode);
+                }
             }
         }
         return ast;
