@@ -19,15 +19,25 @@ class AST {
             for(let i = 0; i < otherAST.length; i++) {
                 if(otherAST[i] != null && otherAST[i].length === undefined) {
                     this.children.push(otherAST[i]);
-                    otherAST[i].scope = this.scope;
+                    otherAST[i].setScope(this.scope);
                     if(otherAST[i].token === null) {
                         console.log("empty token added");
                     }
+                } else if(otherAST[i] != null) {
+                    this.addChild(otherAST[i]);
                 }
             }
         } else {
             this.children.push(otherAST);
-            otherAST.scope = this.scope;
+            otherAST.setScope(this.scope);
+        }
+    }
+
+    setScope(scope) {
+        if(this.scope != null) {return;}
+        this.scope = scope;
+        for(let i = 0; i < this.children.length; i++) {
+            this.children[i].setScope(scope);
         }
     }
 

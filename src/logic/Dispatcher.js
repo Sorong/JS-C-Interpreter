@@ -3,6 +3,7 @@ import FunctionSymbol from "./Symbol/FunctionSymbol";
 import MemorySpace from "./Memory/MemorySpace";
 import StructSymbol from "./Symbol/StructSymbol";
 import StructInstance from "./Memory/StructInstance";
+import FunctionSpace from "./Memory/FunctionSpace";
 
 class Dispatcher {
     globalScope;
@@ -16,21 +17,23 @@ class Dispatcher {
         this.globals = new MemorySpace("globals");
         this.currentSpace = this.globals;
         this.stack = [];
-
+        this.skipFunction = true;
     }
 
     executeCode(start) {
         if(this.globalScope === null) {
             return "";
         }
+        this.skipFunction = true;
         this.exec(this.globalScope.AST);
+        this.skipFunction = false;
         let startSymbol = this.globalScope.resolve(start);
-        if(startSymbol instanceof FunctionSymbol) {
-            this.stack.push(new MemorySpace(startSymbol))
-            this.currentSpace = this.stack[0];
-            startSymbol = startSymbol.childScope[0]; //erster Scope der Funktion sollte der lokale scope sein
-
-        }
+        // if(startSymbol instanceof FunctionSymbol) {
+        //     this.stack.push(new MemorySpace(startSymbol));
+        //     this.currentSpace = this.stack[0];
+        //     startSymbol = startSymbol.childScope[0]; //erster Scope der Funktion sollte der lokale scope sein
+        //
+        // }
         if(startSymbol == null) {
             return start + " nicht gefunden";
         }
@@ -52,9 +55,7 @@ class Dispatcher {
             case "Dot":
             case "Constant":
                 return this.load(ast);
-            case "GreaterEqual":
-            case "LessEqual":
-            case "Minus":
+            case "Compare":
             case "Plus":
                 return this.operator(ast);
             case "Identifier":
@@ -66,6 +67,11 @@ class Dispatcher {
                 break;
             case "If":
                 this.ifstat(ast);
+                break;
+            case "Function":
+                return this.call(ast);
+            case "While":
+                this.whileloop(ast);
                 break;
             default:
                 throw "Unknown Tokentype " + tokentype;
@@ -199,14 +205,65 @@ class Dispatcher {
 
     ifstat(ast) {
         let cond = this.exec(ast.children[0]);
-        if(cond === true && ast.children.length > 1) {
+        if(cond === true && ast.children.length >= 1) {
             this.exec(ast.children[1]);
-        } else if(cond === false && ast.children.length > 2) {
+        } else if(cond === false && ast.children.length >= 2) {
             this.exec(ast.children[2]);
         } else if(cond !== false && cond !== true) {
             throw "Ungültiger Vergleich"
         }
+    }
 
+    call(ast) {
+        if(this.skipFunction) { //damit beim initialisieren des Globalscope nicht jede Funktion ausgeführt wird die gefunden wird.
+            return null;
+        }
+        let fnSymbol = ast.scope.resolve(ast.token);
+        if(fnSymbol == null) {
+            throw "Funktion nicht gefunden";
+        }
+        let fspace = new FunctionSpace(fnSymbol);
+        let saveSpace = this.currentSpace;
+        this.currentSpace = fspace;
+
+        let argcount = ast.children.length;
+        if(ast.children.length > 0 && ast.children[0].token == "Block") {
+            argcount -= 1;
+        }
+        let fArgs = fspace.formalArgs();
+        if( (fArgs == null && argcount > 0) || fArgs != null && fArgs.length !== argcount) {
+            throw "Ungültiger Funktionsaufruf für " + ast.token;
+        }
+        if(fArgs != null) {
+            for(let i = 0; i < fArgs.length; i++) {
+                let param = ast.children[i];
+                let arg = this.exec(param);
+                fspace.put(fArgs.name, arg);
+            }
+        }
+        this.stack.push(fspace);
+        let result = null;
+        try {
+            if(fnSymbol.AST.children[0].token === "Block") {
+                this.exec(fnSymbol.AST.children[0]);
+            } else {
+                this.exec(fnSymbol.childScope[0].AST);
+            }
+
+        } catch (e) {
+            result = e;
+            console.log(e);
+            this.stack.pop();
+            this.currentSpace = saveSpace;
+        }
+        return result;
+    }
+    whileloop(ast) {
+        let cond = this.exec(ast.children[0]);
+        while(cond) {
+            this.exec(ast.children[1]);
+            cond = this.exec(ast.children[0]);
+        }
     }
 }
 

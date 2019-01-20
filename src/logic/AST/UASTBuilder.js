@@ -41,6 +41,20 @@ class UASTBuilder extends CVisitor {
             }
         }
     }
+    createASTForScope(ctx) {
+        let ast = new AST()
+        if(ctx.scope instanceof FunctionSymbol) {
+            ast.token = ctx.scope.name;
+            ast.tokentype = "Function";
+        } else {
+            ast.token = "Block";
+            ast.tokentype = "Block";
+
+        }
+        ctx.scope.AST = ast;
+        ctx.scope.AST.scope = ctx.scope;
+        return ast;
+    }
 
     visitChildren(ctx) {
 
@@ -52,10 +66,7 @@ class UASTBuilder extends CVisitor {
                     delete ctx.scope.ctx;
                 }
                 if (ctx.scope.AST === undefined || ctx.scope.AST === null) {
-                    ctx.scope.AST = new AST("Block");
-                    ctx.scope.AST.tokentype = "Block";
-                    ctx.scope.AST.scope = ctx.scope;
-                    astNodes.push(ctx.scope.AST);
+                    astNodes.push(this.createASTForScope(ctx));
                 }
                 let childAstNodes = this.visit(child);
                 if (childAstNodes == null) {

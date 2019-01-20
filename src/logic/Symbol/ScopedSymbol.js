@@ -4,6 +4,7 @@ import Scope from "../Scope/Scope";
 class ScopedSymbol extends Symbol {
     enclosingScope; // null if global (outermost) scope
     symbols = {};
+    symbolList = [];
     childScope = [];
     childScopeIndex = 0;
     constructor(name, type, enclosingScope) {
@@ -19,6 +20,7 @@ class ScopedSymbol extends Symbol {
     bind(sym) { //define?
         this.symbols[sym.name] = sym;
         sym.scope = this;
+        this.symbolList.push(sym);
     }
 
     resolve(name) {

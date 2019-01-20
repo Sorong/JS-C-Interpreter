@@ -3,7 +3,7 @@ import {TextField} from "@material-ui/core/index";
 import Button from '@material-ui/core/Button';
 import {withStyles} from '@material-ui/core/styles';
 
-const example = require('../assets/if.c');
+const example = require('../assets/functionCall.c');
 
 const styles = theme => ({
     root: {
@@ -62,7 +62,7 @@ class CInput extends React.Component {
                     onChange={this.handleChange('code')}
                 />
                 <Button variant="contained" className={classes.button} onClick={() => this.props.onClick(this.state.code)}>
-                    Default
+                    Ob du das interpretieren kannst?
                 </Button>
             </div>
         )

@@ -1,5 +1,6 @@
 //#include <stdio.h> geht aktuell nicht
 
+int x = 0;
 
 struct tag_name {
    int member1;
@@ -16,14 +17,14 @@ int fibonacci(int i) {
 
 int main()
 {
-    int i,j;
+    int i;
     i = 0;
-    while (i <= 10) {
+    while (i <= 2) {
         fibonacci(i);
         //printf("fibonacci(%2d) = %d\n", i, fibonacci(i));
         i = i + 1;
 
     }
     //int *ptr = &j;
-    return 0;
+    return x;
 }
