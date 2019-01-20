@@ -1,9 +1,9 @@
-int i = 0;
+int i = 12;
 
 
 int main(int argc, char* argv[]) {
-    if(i > 1) {
-        return 1;
+    if(i >= 1) {
+        return i;
     }
     return 0;
 }

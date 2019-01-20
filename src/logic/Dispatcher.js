@@ -52,6 +52,8 @@ class Dispatcher {
             case "Dot":
             case "Constant":
                 return this.load(ast);
+            case "GreaterEqual":
+            case "LessEqual":
             case "Minus":
             case "Plus":
                 return this.operator(ast);
@@ -61,6 +63,9 @@ class Dispatcher {
                 return this.instance(ast);
             case "Declaration":
                 this.declaration(ast);
+                break;
+            case "If":
+                this.ifstat(ast);
                 break;
             default:
                 throw "Unknown Tokentype " + tokentype;
@@ -94,6 +99,7 @@ class Dispatcher {
     }
 
     assign(ast) {
+
         let left = ast.children[0];
         let right = ast.children[1];
         let v = this.exec(right);
@@ -189,6 +195,18 @@ class Dispatcher {
             structInstance = new StructInstance(structInstance);
         }
         return structInstance;
+    }
+
+    ifstat(ast) {
+        let cond = this.exec(ast.children[0]);
+        if(cond === true && ast.children.length > 1) {
+            this.exec(ast.children[1]);
+        } else if(cond === false && ast.children.length > 2) {
+            this.exec(ast.children[2]);
+        } else if(cond !== false && cond !== true) {
+            throw "Ungültiger Vergleich"
+        }
+
     }
 }
 

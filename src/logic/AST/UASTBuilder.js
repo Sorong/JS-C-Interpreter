@@ -130,7 +130,7 @@ class UASTBuilder extends CVisitor {
 
 
      visitDirectDeclarator(ctx) { //2x directdeclarator hintereinander ist möglich
-         let ast = new AST("Declaration");
+         let ast = new AST(ctx.getChild(0).getText());
          ast.tokentype = "Declaration";
          ast.addChild(this.visit(ctx.getChild(0)));
 
