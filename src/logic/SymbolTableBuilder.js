@@ -23,7 +23,7 @@ class SymbolTableBuilder extends CListener {
         // this.globalScope.bind(new BuiltInTypeSymbol("short"));
         // //unsigned
         // this.globalScope.bind(new BuiltInTypeSymbol("long"));
-        // //unsigned
+        // //unsignedwür
         // this.globalScope.bind(new BuiltInTypeSymbol("float"));
         // this.globalScope.bind(new BuiltInTypeSymbol("double"));
         // //long
@@ -163,7 +163,7 @@ class SymbolTableBuilder extends CListener {
         this.currentScope = struct;
 
         this.scopes.push(this.currentScope);
-        ctx.scope = this.currentScope;
+
         this.currentScope.ctx = ctx;
     }
     exitStructOrUnionSpecifier(ctx) {

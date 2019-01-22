@@ -30,7 +30,7 @@ class Interpreter {
     }
 
     init = (input) => {
-        this.initMember()
+        this.initMember();
         this.chars = new antlr4.InputStream(input);
         this.lexer = new Lexer(this.chars);
         this.lexer.strictMode = false;

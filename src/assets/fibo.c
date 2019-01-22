@@ -25,6 +25,8 @@ int main()
         i = i + 1;
 
     }
+    tag_name t;
+    t.member1 = 123456789;
     //int *ptr = &j;
-    return 1337;
+    return t.member1;
 }
