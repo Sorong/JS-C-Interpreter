@@ -297,6 +297,9 @@ class UASTBuilder extends CVisitor {
         let ast = this.visit(ctx.getChild(0));
         return ast;
     }
+    visitMultiplicativeExpression(ctx) {
+        return this.visitAdditiveExpression(ctx);
+    }
 }
 
 export default UASTBuilder;

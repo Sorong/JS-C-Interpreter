@@ -64,6 +64,7 @@ class Dispatcher {
                 return this.loadArray(ast);
             case "Compare":
             case "Plus":
+            case "Star":
                 return this.operator(ast);
             case "Identifier":
                 return this.resolveIdentifier(ast);
