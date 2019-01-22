@@ -8,9 +8,6 @@ FH-Bielefeld, Campus Minden, Minden 2019 1
 # Realisierung eines C-Interpreters mit Javascript
 
 ```
-Patrick Lukas Starzynski^1
-```
-```
 Abstract:
 Im Rahmen diese Arbeit und des Projekt wird ein rudimentärer C-Interpreter zur Ausführung der
 Programmiersprache C innerhalb der Browserumgebung realisiert. Diese Implementierung basiert
@@ -47,9 +44,6 @@ patrick\protect_lukas.starzynski@fh-bielefeld.de
 
 
 ```
-2 Patrick Lukas Starzynski
-```
-```
 Abb. 1: Phasen des Compilerprogrammierung (Grafik entnommen aus [Pa09])
 ```
 In dieser Arbeit wird eine Implementierung zur Ausführung von C-Programmcode im
@@ -82,9 +76,6 @@ In diesem Beispiel wird eine Grammatik _hello_ definiert, die einen einfachen Sy
 z.B. _hello world_ erzeugen kann. Dabei werden die Token als reguläre Ausdrücke definiert
 
 
-```
-JS-C-Interpreter 3
-```
 und bilden die Blätter des Syntaxbaumes. Die angewandte Regel bildet den (Eltern-) Knoten
 des Baumes.
 
@@ -115,9 +106,6 @@ und Manipulationen, anhand der im Syntaxbaum enthalten Informationen, durchführ
 können.
 
 
-```
-4 Patrick Lukas Starzynski
-```
 ## 3 C-Interpreter
 
 Die Implementierung im Rahmen dieses Projekt ist in diverse Teilschritte gegliedert und
@@ -160,9 +148,6 @@ Definition eines Datentyps, erhalten.
 
 
 ```
-JS-C-Interpreter 5
-```
-```
 Abb. 3: Erzeugter Teilbaum einer Variablendeklaration
 ```
 **3.2 Symboltabelle**
@@ -177,9 +162,6 @@ Geltungsbereich hinzugefügt werden.
 Abb. 4: vereinfachte Darstellung der Symboltabelle (Grafik entnommen aus [Pa09])
 ```
 
-```
-6 Patrick Lukas Starzynski
-```
 Dabei erfolgt eine Unterscheidung zwischen Geltungsbereichen, Symbolen und den Symbo-
 len denen ebenfalls ein Geltungsbereich zugeordnet werden kann.
 
@@ -220,9 +202,6 @@ this.currentScope = this.currentScope.enclosingScope;
 }
 ```
 
-```
-JS-C-Interpreter 7
-```
 Diese Verschachtelung erlaubt die Auflösung von Symbolen. Zunächst wird im lokalen
 Geltungsbereich geprüft ob ein Symbol bekannt ist. Diese Überprüfung erfolgt rekursiv,
 bis kein weiterer Geltungsbereich vorhanden, oder das Symbol ausgelöst werden kann. Für
@@ -255,9 +234,6 @@ jeder Knoten mit dem entsprechenden Geltungsbereich verknüpft werden. Der erzeu
 Syntaxbaum bildet die Grundlage für die Ausführung des C-Codes innerhalb des Dispatchers.
 
 
-```
-8 Patrick Lukas Starzynski
-```
 **3.4 Dispatcher**
 
 Zur Programmausführung wird eine Instanz des Dispatchers erzeugt, dieser erzeugt initial
@@ -301,10 +277,6 @@ lich dazu, muss beim Aufruf einer Funktion ein neuer virtueller Speicherbereich 
 hinzugefügt werden und als aktueller Speicherbereich gesetzt werden, in diesem wird der
 Wert jeder lokal auftretenden Variable gespeichert.
 
-
-```
-JS-C-Interpreter 9
-```
 ```
 call(ast) {
 let fnSymbol = ast.scope.resolve(ast.token);
@@ -345,9 +317,6 @@ Folglich spiegelt der aktuelle Implementierungsstand nur die grundsätzliche Mö
 eines C-Interpreters mittels Javascript wider.
 
 
-```
-10 Patrick Lukas Starzynski
-```
 ## Literaturverzeichnis
 
 [an19] antlr grammars-v4.https://github.com/antlr/grammars-v4/blob/master/c/C.g4.
