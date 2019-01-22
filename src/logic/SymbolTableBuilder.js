@@ -5,6 +5,7 @@ import VariableSymbol from "./Symbol/VariableSymbol";
 import ScopedSymbol from "./Symbol/ScopedSymbol";
 import FunctionSymbol from "./Symbol/FunctionSymbol";
 import StructSymbol from "./Symbol/StructSymbol";
+import Exception from "./Util/Exception";
 
 const CListener = require("../grammar/CListener").CListener;
 
@@ -56,7 +57,7 @@ class SymbolTableBuilder extends CListener {
     exitCompoundStatement(ctx) {
         this.currentScope = this.currentScope.enclosingScope;
         if (this.currentScope == null) {
-            throw "kein Scope mehr am Blockende"
+            throw new Exception("Kein Scope mehr am Blockenende");
         }
 
     }
@@ -90,10 +91,13 @@ class SymbolTableBuilder extends CListener {
             if(declaratorList instanceof Array) {
                 for(let i = 0; i < declaratorList.length; i++) {
                     variable = new VariableSymbol(declaratorList[i].getText(), type);
+                    if(this.currentScope.resolve(type) == null) {throw new Exception("Typ ist nicht definiert " + type)}
                     this.currentScope.bind(variable);
                 }
             } else {
                 variable = new VariableSymbol(declaratorList.getText(),type);
+                if(this.currentScope.resolve(type) == null) {throw new Exception("Typ ist nicht definiert " + type)}
+                this.currentScope.resolve(type);
                 this.currentScope.bind(variable);
             }
 
@@ -106,7 +110,7 @@ class SymbolTableBuilder extends CListener {
         if(ctx.getChild(0).tokenName === undefined || ctx.getChild(0).tokenName !== "Constant") {
             let variable = this.currentScope.resolve(ctx.getText());
             if(variable == null) {
-                throw "PrimaryExpression " + ctx.getText().toString() + " nicht gefunden";
+                throw new Exception("Variable nicht gefunden: " + ctx.getText().toString());
             }
         }
     }
@@ -138,7 +142,7 @@ class SymbolTableBuilder extends CListener {
         let name = ctx.primaryExpression().getText();
         let func = this.currentScope.resolve(name);
         if(func == null) {
-            throw "Funktion nicht vorhanden";
+            throw  new Exception("Funktion nicht gefunden");
         }
 
         if(func instanceof VariableSymbol) {
@@ -146,10 +150,10 @@ class SymbolTableBuilder extends CListener {
             if(struct instanceof StructSymbol) {
                 func = struct.resolveMember(ctx.Identifier().getText()); // "."Operator gefolgt vom Identifier A a; a. --> b <--
                 if(func == null) {
-                    throw name + " existiert nicht im struct";
+                    throw new Exception("Member: " + name + " nicht gefunden");
                 }
             } else {
-                throw name + " ist keine Funktion";
+                throw new Exception(name + " ist keine Funktion");
             }
         }
 
@@ -178,7 +182,7 @@ class SymbolTableBuilder extends CListener {
         let type = ctx.typeSpecifier().getText();
         let typedef = this.currentScope.resolve(type);
         if(typedef == null) {
-            throw "Typ ist unbekannt " + type;
+            throw new Exception("Unbekannter Typ: " + type);
         }
 
         let name = ctx.typedefName().getText();

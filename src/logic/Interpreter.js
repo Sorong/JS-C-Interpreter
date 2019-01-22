@@ -4,7 +4,8 @@ import TreeMinimizer from "./TreeMinimizer";
 import ASTBuilder from "./AST/ASTBuilder";
 import UASTBuilder from "./AST/UASTBuilder";
 import RefListener from "./RefListener";
-import Dispatcher from "./Dispatcher";
+import Dispatcher from "./Dispatcher/Dispatcher";
+import Exception from "./Util/Exception";
 
 const Parser = require("../grammar/CParser").CParser;
 const Lexer = require("../grammar/CLexer").CLexer;
@@ -42,7 +43,12 @@ class Interpreter {
     interpret(input) {
         this.init(input);
         let tree = this.getParserTree();
-        antlr4.tree.ParseTreeWalker.DEFAULT.walk(this.defListener, tree);
+        try {
+            antlr4.tree.ParseTreeWalker.DEFAULT.walk(this.defListener, tree);
+        } catch (e) {
+            return e.msg;
+        }
+
         let globalScope = this.defListener.globalScope;
         let allScopes = this.defListener.scopes;
         console.log(tree.toStringTree(this.parser.ruleNames));
@@ -65,6 +71,9 @@ class Interpreter {
             finish += this.dispatcher.outStr;
             finish += "ExitCode: " + out;
         } catch (e) {
+            if(e instanceof Exception) {
+                return e.msg;
+            }
             finish += this.dispatcher.outStr;
             finish += "ExitCode: " + e;
         }

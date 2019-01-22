@@ -1,6 +1,6 @@
 import AST from "./AST";
 import GlobalScope from "../Scope/GlobalScope";
-import {Operator} from "../util/Operator";
+import {Operator} from "../Util/Operator";
 import FunctionSymbol from "../Symbol/FunctionSymbol";
 
 const CVisitor = require("../../grammar/CVisitor").CVisitor;

@@ -1,9 +1,11 @@
-import {Operator} from "./util/Operator";
-import FunctionSymbol from "./Symbol/FunctionSymbol";
-import MemorySpace from "./Memory/MemorySpace";
-import StructSymbol from "./Symbol/StructSymbol";
-import StructInstance from "./Memory/StructInstance";
-import FunctionSpace from "./Memory/FunctionSpace";
+import {Operator} from "../Util/Operator";
+import FunctionSymbol from "../Symbol/FunctionSymbol";
+import MemorySpace from "../Memory/MemorySpace";
+import StructSymbol from "../Symbol/StructSymbol";
+import StructInstance from "../Memory/StructInstance";
+import FunctionSpace from "../Memory/FunctionSpace";
+import ReturnValue from "./ReturnValue";
+import Exception from "../Util/Exception";
 
 class Dispatcher {
     globalScope;
@@ -107,7 +109,7 @@ class Dispatcher {
             this.sharedReturnValue = 0;   //return aktuell nicht im AST
         }
 
-        throw this.sharedReturnValue;
+        throw new ReturnValue(this.sharedReturnValue);
     }
 
     assign(ast) {
@@ -124,7 +126,7 @@ class Dispatcher {
         //     return;
         // }
         let space = this.getSpaceWithSymbol(left.token);
-        if(space == null) { space = this.currentSpace}
+        if(space == null) { space = this.currentSpace; }
         space.put(left.token, v);
     }
 
@@ -186,7 +188,7 @@ class Dispatcher {
         let struct = this.load(expr);
         if(struct == null || (!(struct.scope instanceof StructSymbol) && struct.scope.resolveMember(b.token) == null)) {
             //Todo: Errorhandling
-            return null;
+            throw new Exception("Member nicht gefunden");
         }
         return struct.get(b.token)
     }
@@ -226,19 +228,19 @@ class Dispatcher {
         }
         let fnSymbol = ast.scope.resolve(ast.token);
         if(fnSymbol == null) {
-            throw "Funktion nicht gefunden";
+            throw new Exception("Funktion nicht gefunden");
         }
         let fspace = new FunctionSpace(fnSymbol);
         let saveSpace = this.currentSpace;
         this.currentSpace = fspace;
 
         let argcount = ast.children.length;
-        if(ast.children.length > 0 && ast.children[0].token == "Block") {
+        if(ast.children.length > 0 && ast.children[0].token === "Block") {
             argcount -= 1;
         }
         let fArgs = fspace.formalArgs();
         if( (fArgs == null && argcount > 0) || fArgs != null && fArgs.length !== argcount) {
-            throw "Ungültiger Funktionsaufruf für " + ast.token;
+            throw new Exception("Ungültiger Funktionsaufruf für " + ast.token);
         }
         if(fArgs != null) {
             for(let i = 0; i < fArgs.length; i++) {
@@ -257,7 +259,10 @@ class Dispatcher {
             }
 
         } catch (e) {
-            result = e;
+            if(e instanceof Exception) {
+                throw e;
+            }
+            result = e.payload;
             this.stack.pop();
             this.currentSpace = saveSpace;
         }
