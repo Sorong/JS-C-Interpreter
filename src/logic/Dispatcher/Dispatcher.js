@@ -61,7 +61,7 @@ class Dispatcher {
             case "Constant":
                 return this.load(ast);
             case "Array":
-                return this.loadArray(ast);
+                return;
             case "Compare":
             case "Plus":
             case "Star":
@@ -215,8 +215,13 @@ class Dispatcher {
         if(left === undefined || right === undefined) {
             throw new Exception("AdditionError");
         }
-
-        return eval(left + ast.token + right);
+        let ret;
+        try {
+            ret = eval(left + ast.token + right);
+        } catch (e) {
+            throw new Exception("Arithmetischer Error");
+        }
+        return ret;
     }
 
     operatorConcat(ast) {
@@ -318,6 +323,9 @@ class Dispatcher {
             for(let i = 0; i < fArgs.length; i++) {
                 let param = ast.children[i];
                 let arg = this.exec(param);
+                if(arg === undefined) {
+                    throw new Exception("Ungüliter Parameter");
+                }
                 fspace.put(fArgs[i].name, arg);
             }
         }
@@ -335,9 +343,9 @@ class Dispatcher {
                 throw e;
             }
             result = e.payload;
-            this.stack.pop();
-            this.currentSpace = saveSpace;
         }
+        this.stack.pop();
+        this.currentSpace = saveSpace;
         return result;
     }
     whileloop(ast) {

@@ -9,7 +9,7 @@ int fibonacci(int i) {
  {
      int i;
      i = 0;
-     while (i <= 12) {
+     while (i <= 20) {
          print(fibonacci(i));
          i = i + 1;
      }
