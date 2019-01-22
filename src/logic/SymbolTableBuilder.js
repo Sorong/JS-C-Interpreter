@@ -147,6 +147,7 @@ class SymbolTableBuilder extends CListener {
 
         if(func instanceof VariableSymbol && !func.isArray()) {
             let struct = this.currentScope.resolve(func.type);
+            if(ctx.Identifier() == null) {return;}
             if(struct instanceof StructSymbol) {
                 func = struct.resolveMember(ctx.Identifier().getText()); // "."Operator gefolgt vom Identifier A a; a. --> b <--
                 if(func == null) {
@@ -188,6 +189,14 @@ class SymbolTableBuilder extends CListener {
         let name = ctx.typedefName().getText();
         let variable = new VariableSymbol(name, type);
         this.currentScope.bind(variable);
+    }
+
+    enterForDeclaration(ctx) {
+
+    }
+
+    exitForDeclaration(ctx) {
+        this.exitDeclaration(ctx);
     }
 }
 

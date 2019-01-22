@@ -86,6 +86,13 @@ class Dispatcher {
             case "Print":
                 this.print(ast);
                 break;
+            case "For":
+                this.forLoop(ast);
+                break;
+            case "MinusMinus":
+            case "PlusPlus":
+                this.operatorConcat(ast);
+                break;
             default:
                 throw new Exception("Unknown Tokentype " + tokentype);
         }
@@ -211,6 +218,29 @@ class Dispatcher {
         return eval(left + ast.token + right);
     }
 
+    operatorConcat(ast) {
+        let operator = ast.token;
+        let operand = ast.children[0];
+        let v = ast.tokentype === "PlusPlus" ? 1 : -1;
+        if(operand.tokentype == "Dot") {
+            this.fieldAssign(operand, this.load(operand) + v);
+            return;
+        }
+
+        // if ( lhs.getType()==PieParser.DOT ) {    struct member
+        //     fieldassign(lhs, value); // field ^('=' ^('.' a x) expr)
+        //     return;
+        // }
+        let space = this.getSpaceWithSymbol(operand.token);
+        if(space == null) { space = this.currentSpace; }
+        if(operand.tokentype == "Array") {
+            let index = parseInt(operand.children[0].token);
+            space.members[operand][index] = parseInt(space.members[operand.token][index]) + v;
+        } else {
+            space.put(operand, parseInt(space.members[operand.token]) + v);
+        }
+    }
+
     load(ast) {
         if(ast.tokentype === "Constant") {
             return ast.token;
@@ -334,6 +364,19 @@ class Dispatcher {
             }
         }
         return v;
+    }
+
+    forLoop(ast) {
+
+        this.exec(ast.children[0]);
+        let cond = this.exec(ast.children[1]);
+        let i = 0;
+        while(cond) {
+            this.exec(ast.children[3]);
+            this.exec(ast.children[2]);
+            cond = this.exec(ast.children[1]);
+        }
+
     }
 }
 
