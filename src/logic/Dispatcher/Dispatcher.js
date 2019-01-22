@@ -60,6 +60,8 @@ class Dispatcher {
             case "Dot":
             case "Constant":
                 return this.load(ast);
+            case "Array":
+                return this.loadArray(ast);
             case "Compare":
             case "Plus":
                 return this.operator(ast);
@@ -67,6 +69,9 @@ class Dispatcher {
                 return this.resolveIdentifier(ast);
             case "Struct":
                 return this.instance(ast);
+            case "DeclarationArray":
+                this.declarationArray(ast);
+                break;
             case "Declaration":
                 this.declaration(ast);
                 break;
@@ -82,7 +87,7 @@ class Dispatcher {
                 this.print(ast);
                 break;
             default:
-                throw "Unknown Tokentype " + tokentype;
+                throw new Exception("Unknown Tokentype " + tokentype);
         }
         return 0;
     }
@@ -104,7 +109,17 @@ class Dispatcher {
 
     returnStatement(ast) {
         if(ast.children.length !== 0) {
-            this.sharedReturnValue = this.exec(ast.children[0]);
+            if(ast.children[0].tokentype === "Array") {
+                let space = this.getSpaceWithSymbol(ast.children[0].token);
+                if(space != null) {
+                    let index = parseInt(ast.children[0].children[0].token);
+                    this.sharedReturnValue = space.members[ast.children[0]][index];
+                } else {
+                    this.sharedReturnValue = null;
+                }
+            } else {
+                this.sharedReturnValue = this.exec(ast.children[0]);
+            }
         } else {
             this.sharedReturnValue = 0;   //return aktuell nicht im AST
         }
@@ -127,7 +142,13 @@ class Dispatcher {
         // }
         let space = this.getSpaceWithSymbol(left.token);
         if(space == null) { space = this.currentSpace; }
-        space.put(left.token, v);
+        if(left.tokentype == "Array") {
+            let index = parseInt(left.children[0].token);
+            space.members[left.token][index] = v;
+        } else {
+            space.put(left.token, v);
+        }
+
     }
 
     fieldAssign(ast, val) {
@@ -135,19 +156,23 @@ class Dispatcher {
         let member = ast.children[1];
         let o = this.load(name);
         let m = o.scope.resolveMember(member.token);
-        if(o instanceof StructInstance && m != null && m.name == member.token) {
+        if(o instanceof StructInstance && m != null && m.name === member.token) {
             o.put(member.token, val);
         } else {
-            throw "Ungültiges Feld " + member + " in " + name
+            throw new Exception("Ungültiges Feld " + member + " in " + name);
         }
     }
+
     declaration(ast) {
         for(let i = 0; i < ast.children.length; i++) {
             let space = this.getSpaceWithSymbol(ast.children[i].token);
             if(space != null) {
-                throw "Mehrfachdeklaration von " + ast.children[i].token;
+                throw new Exception("Mehrfachdeklaration von " + ast.children[i].token);
             }
             let declType = ast.scope.resolve(ast.children[i].token);
+            if(declType == null) {
+                throw new Exception("Variable kann nich deklariert werden");
+            }
             let instance = ast.scope.resolve(declType.type);
             if(instance instanceof StructSymbol) {
                 this.currentSpace.put(ast.children[i].token, new StructInstance(instance));
@@ -157,12 +182,20 @@ class Dispatcher {
 
         }
     }
+    declarationArray(ast) {
+        let declType = ast.scope.resolve(ast.token);
+        if(declType == null) {
+            throw new Exception("Variable kann nich deklariert werden");
+        }
+        let arr = new Array(declType.arrayLength);
+        this.currentSpace.put(ast.token, arr);
+    }
 
     operator(ast) {
         let left = this.exec(ast.children[0]);
         let right = this.exec(ast.children[1]);
         if(left === undefined || right === undefined) {
-            return "AdditionError";
+            throw new Exception("AdditionError");
         }
 
         return eval(left + ast.token + right);
@@ -187,12 +220,10 @@ class Dispatcher {
         let b = ast.children[1];
         let struct = this.load(expr);
         if(struct == null || (!(struct.scope instanceof StructSymbol) && struct.scope.resolveMember(b.token) == null)) {
-            //Todo: Errorhandling
             throw new Exception("Member nicht gefunden");
         }
         return struct.get(b.token)
     }
-
 
     getSpaceWithSymbol(name) {
         if(this.stack.length > 0 && this.stack[this.stack.length-1].get(name) !== null) {
@@ -218,7 +249,7 @@ class Dispatcher {
         } else if(cond === false && ast.children.length > 2) {
             this.exec(ast.children[2]);
         } else if(cond !== false && cond !== true) {
-            throw "Ungültiger Vergleich"
+            throw  new Exception("Ungültiger Vergleich");
         }
     }
 

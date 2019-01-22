@@ -145,7 +145,7 @@ class SymbolTableBuilder extends CListener {
             throw  new Exception("Funktion nicht gefunden");
         }
 
-        if(func instanceof VariableSymbol) {
+        if(func instanceof VariableSymbol && !func.isArray()) {
             let struct = this.currentScope.resolve(func.type);
             if(struct instanceof StructSymbol) {
                 func = struct.resolveMember(ctx.Identifier().getText()); // "."Operator gefolgt vom Identifier A a; a. --> b <--

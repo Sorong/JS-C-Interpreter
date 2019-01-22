@@ -1,4 +1,5 @@
 int main() {
 int i[5];
-return 0;
+i[0] = 1;
+return i[0];
 }

@@ -143,8 +143,17 @@ class UASTBuilder extends CVisitor {
 
      visitDirectDeclarator(ctx) { //2x directdeclarator hintereinander ist möglich
          let ast = new AST(ctx.getChild(0).getText());
-         ast.tokentype = "Declaration";
-         ast.addChild(this.visit(ctx.getChild(0)));
+
+         let v = this.visit(ctx.getChild(0));
+         if(ctx.getText().slice(-1) === "]" && v != null) {
+             ast.addChild(this.visit(ctx.getChild(ctx.getChildCount() - 2 )));
+             ast.tokentype = "DeclarationArray";
+         } else {
+             ast.addChild(v);
+             ast.tokentype = "Declaration";
+         }
+             //     ast.tokentype = "Array";
+             // }
 
          return ast;
      }
@@ -202,7 +211,11 @@ class UASTBuilder extends CVisitor {
             if (ast.tokentype == null) {
                 ast.token = ctx.getChild(i).getText();
                 let type = Operator[ctx.getChild(i).getText()];
-                ast.tokentype = type !== undefined ? type : "Function";
+                if(ctx.getText().slice(-1) === "]") {
+                    ast.tokentype = "Array";
+                } else {
+                    ast.tokentype = type !== undefined ? type : "Function";
+                }
             } else if (astNode !== null) {
                 ast.addChild(astNode);
             }
@@ -278,6 +291,11 @@ class UASTBuilder extends CVisitor {
 
     visitIterationStatement(ctx) {
         return this.visitSelectionStatement(ctx);
+    }
+
+    visitPrimaryExpression(ctx) {
+        let ast = this.visit(ctx.getChild(0));
+        return ast;
     }
 }
 
