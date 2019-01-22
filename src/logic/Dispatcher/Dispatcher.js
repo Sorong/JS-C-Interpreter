@@ -192,8 +192,18 @@ class Dispatcher {
     }
 
     operator(ast) {
-        let left = this.exec(ast.children[0]);
-        let right = this.exec(ast.children[1]);
+        let left;
+        if(ast.children[0].tokentype === "Array") {
+            left = this.loadArrayContent(ast.children[0])
+        } else {
+            left = this.exec(ast.children[0]);
+        }
+        let right;
+        if(ast.children[1].tokentype === "Array") {
+            right = this.loadArrayContent(ast.children[1])
+        } else {
+            right = this.exec(ast.children[1]);
+        }
         if(left === undefined || right === undefined) {
             throw new Exception("AdditionError");
         }
@@ -311,6 +321,19 @@ class Dispatcher {
         let o = this.exec(ast.children[0]);
         this.outStr = this.outStr.concat(o);
         this.outStr += "\n";
+    }
+
+    loadArrayContent(ast) {
+        let space = this.getSpaceWithSymbol(ast.token);
+        let v;
+        if(space != null) {
+            let index = parseInt(ast.children[0].token);
+            v = space.members[ast.token][index];
+            if(v === undefined) {
+                throw new Exception("Array is not assigned");
+            }
+        }
+        return v;
     }
 }
 
